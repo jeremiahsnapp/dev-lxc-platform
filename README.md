@@ -27,12 +27,8 @@ using `vagrant halt` when it is not being used.
 
 The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
 
-The vagrant-hostmanager is used to add/remove the vm's private IP, hostname
-and aliases in your workstation's /etc/hosts file.
-
     gem install berkshelf
     vagrant plugin install vagrant-berkshelf
-    vagrant plugin install vagrant-hostmanager
     vagrant plugin install vagrant-omnibus
 
 ### Start the vm and provision it.

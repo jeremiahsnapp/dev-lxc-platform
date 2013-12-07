@@ -3,7 +3,6 @@
 
 # The following Vagrant plugins are required
 # vagrant-berkshelf
-# vagrant-hostmanager
 # vagrant-omnibus
 
 dev_lxc_disk = File.expand_path("~/VirtualBox VMs/dev_lxc.vmdk")
@@ -24,11 +23,6 @@ Vagrant.configure("2") do |config|
 
   config.berkshelf.enabled = true
 
-  config.hostmanager.enabled = true
-  config.hostmanager.manage_host = true
-  config.hostmanager.ignore_private_ip = false
-  config.hostmanager.include_offline = false
-  config.vm.host_name = "manage.opscode.dev"
   config.vm.network :private_network, ip: "33.33.34.13"
 
   config.omnibus.chef_version = :latest
