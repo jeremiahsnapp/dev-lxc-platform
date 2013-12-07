@@ -52,10 +52,13 @@ container are thinly provisioned which conserves disk space.
 
 The containers are created in `/var/lib/lxc`.
 
-    sudo lxc-create -B btrfs -t ubuntu -n ubuntu-lucid -- -r lucid
-    sudo lxc-create -B btrfs -t ubuntu -n ubuntu-precise -- -r precise
-    sudo lxc-create -B btrfs -t centos -n centos-5 -- -R 5
-    sudo lxc-create -B btrfs -t centos -n centos-6 -- -R 6
+I prepended the names of each container with `g-` to identify these as "golden"
+containers.  Normally I will clone these containers rather than run them.
+
+    sudo lxc-create -B btrfs -t ubuntu -n g-ubuntu-lucid -- -r lucid
+    sudo lxc-create -B btrfs -t ubuntu -n g-ubuntu-precise -- -r precise
+    sudo lxc-create -B btrfs -t centos -n g-centos-5 -- -R 5
+    sudo lxc-create -B btrfs -t centos -n g-centos-6 -- -R 6
 
 Ubuntu templates use 'ubuntu' for the default username and password.
 
@@ -65,25 +68,25 @@ Centos templates use 'root' for the default username and password.
 
 Using the `-s` snapshot option will automatically use Btrfs to conserve disk space.
 
-    sudo lxc-clone -s -o ubuntu-precise -n ubuntu-precise-2
+    sudo lxc-clone -s -o g-ubuntu-precise -n ubuntu-precise
 
 A Clone's `/etc/hostname` gets auto-updated but `/etc/hosts` does not so
 `/etc/hosts` needs to be updated with the new hostname.
 
-    sudo chroot /var/lib/lxc/ubuntu-precise-2/rootfs sed -i "/127.0.1.1/ c\127.0.1.1   ubuntu-precise-2" /etc/hosts
+    sudo chroot /var/lib/lxc/ubuntu-precise/rootfs sed -i "/127.0.1.1/ c\127.0.1.1   ubuntu-precise" /etc/hosts
 
 ### Configure a container to mount the Vagrant vm's `/downloads` directory.
 
-    sudo chroot /var/lib/lxc/ubuntu-precise-2/rootfs mkdir /downloads
-    sudo sed -i '$ a\lxc.mount.entry = /downloads /var/lib/lxc/ubuntu-precise-2/rootfs/downloads none bind 0 0' /var/lib/lxc/ubuntu-precise-2/config
+    sudo chroot /var/lib/lxc/ubuntu-precise/rootfs mkdir /downloads
+    sudo sed -i '$ a\lxc.mount.entry = /downloads /var/lib/lxc/ubuntu-precise/rootfs/downloads none bind 0 0' /var/lib/lxc/ubuntu-precise/config
 
 ### Start the container.
 
-    sudo lxc-start -d -n ubuntu-precise-2
+    sudo lxc-start -d -n ubuntu-precise
 
 ### Connect to the container.
 
-    sudo lxc-console -n ubuntu-precise-2
+    sudo lxc-console -n ubuntu-precise
 
 ### Detach from the container.
 
@@ -97,11 +100,11 @@ This will also show you a running container's IP address.
 
 ### Stop the container.
 
-    sudo lxc-stop -n ubuntu-precise-2
+    sudo lxc-stop -n ubuntu-precise
 
 ### Destroy the container.
 
-    sudo lxc-destroy -n ubuntu-precise-2
+    sudo lxc-destroy -n ubuntu-precise
 
 ### View the Vagrant vm's iptables NAT settings.
 
