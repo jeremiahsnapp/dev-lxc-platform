@@ -64,6 +64,24 @@ Ubuntu templates use 'ubuntu' for the default username and password.
 
 Centos templates use 'root' for the default username and password.
 
+### Install useful tools in the golden containers.
+
+    chroot /var/lib/lxc/g-ubuntu-lucid/rootfs/ apt-get install -y man curl wget vim-nox emacs22-nox
+    chroot /var/lib/lxc/g-ubuntu-precise/rootfs/ apt-get install -y man curl wget vim-nox emacs23-nox
+    chroot /var/lib/lxc/g-centos-5/rootfs/ yum install -y which man curl wget vim-enhanced emacs-nox
+    chroot /var/lib/lxc/g-centos-6/rootfs/ yum install -y which man curl wget vim-enhanced emacs-nox
+
+### Install latest Chef client in the golden containers.
+
+    curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/g-ubuntu-lucid/rootfs/ bash
+    curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/g-ubuntu-precise/rootfs/ bash
+    curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/g-centos-5/rootfs/ bash
+    curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/g-centos-6/rootfs/ bash
+
+### Optional - Install a specific version of Chef client.
+
+    curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/g-ubuntu-precise/rootfs/ bash -s -- -v 11.8.2
+	
 ### Clone a container.
 
 Using the `-s` snapshot option will automatically use Btrfs to conserve disk space.
