@@ -20,6 +20,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.synced_folder "../downloads", "/downloads"
+  config.vm.synced_folder "~/.chef", "/root/.chef"
 
   config.berkshelf.enabled = true
 
