@@ -1,5 +1,5 @@
 include_recipe 'apt'
-include_recipe 'dev-lxc::helpful-packages'
+include_recipe 'dev-lxc::helpful-addons'
 
 package 'btrfs-tools'
 
