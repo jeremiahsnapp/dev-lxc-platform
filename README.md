@@ -128,11 +128,31 @@ This will also show you a running container's IP address.
 
     sudo lxc-destroy -n ubuntu-precise
 
-### View the Vagrant vm's iptables NAT settings.
+## Container Networking
+
+### Enable direct communication from the workstation to all containers.
+
+Adding a route entry to the workstation enables direct communication between
+the workstation and any container.
+
+For OS X run the following command. This route entry won't survive a worstation reboot.
+
+sudo route -n add 10.0.3.0/24 33.33.34.13
+
+### Enable direct communication from the workstation to individual containers.
+
+#### Vagrant VM's iptables
+
+If adding a route entry in the workstation as described above is not desirable then
+you may choose to use the Vagrant vm's iptables.
+The Vagrant vm's iptables offers a flexible way to alter network paths between the
+workstation and containers.
+
+#### View the Vagrant vm's iptables NAT settings.
 
     sudo iptables -t nat -nL PREROUTING
 
-### Connect the workstation directly to a running container.
+#### Enable direct communication from the workstation to a running container.
 
 If a container's IP is 10.0.3.238 it can be reached directly from the
 workstation by adding appropriate NAT rules to iptables.
@@ -151,7 +171,7 @@ Here are a couple of examples for adding and removing these rules.
     # Delete the rule when it is not needed.
     sudo iptables -t nat -D PREROUTING -d 33.33.34.13 -p tcp --dport 22 -j DNAT --to-destination 10.0.3.238:22
 
-### Connect the workstation directly to multiple running containers.
+#### Enable direct communication from the workstation to multiple running containers.
 
 Add additional IP addresses to the Vagrant vm's eth1 interface and then add
 iptables NAT rules appropriately.
@@ -159,7 +179,7 @@ iptables NAT rules appropriately.
     sudo ip addr add 33.33.34.14/32 dev eth1
     sudo ip addr delete 33.33.34.14/32 dev eth1
 
-### Use a terminal multiplexer?
+## Use a terminal multiplexer?
 
 Since you may spend a lot of time doing work within the Vagrant vm you might
 consider using a terminal multiplexer such as tmux or byobu (enhanced tmux).
