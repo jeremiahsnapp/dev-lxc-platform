@@ -124,9 +124,9 @@ This will also show you a running container's IP address.
 
     sudo lxc-destroy -n ubuntu-precise
 
-## Container Networking
+## Workstation to Container Networking
 
-### Enable direct communication from the workstation to all containers.
+### Recommended: Affects all containers.
 
 Adding a route entry to the workstation enables direct communication between
 the workstation and any container.
@@ -135,7 +135,7 @@ For OS X run the following command. This route entry won't survive a worstation 
 
 sudo route -n add 10.0.3.0/24 33.33.34.13
 
-### Enable direct communication from the workstation to individual containers.
+### Alternative: Affects inidividual container.
 
 #### Vagrant VM's iptables
 
@@ -148,7 +148,7 @@ workstation and containers.
 
     sudo iptables -t nat -nL PREROUTING
 
-#### Enable direct communication from the workstation to a running container.
+#### Configure iptables for an individual container.
 
 If a container's IP is 10.0.3.238 it can be reached directly from the
 workstation by adding appropriate NAT rules to iptables.
@@ -167,7 +167,7 @@ Here are a couple of examples for adding and removing these rules.
     # Delete the rule when it is not needed.
     sudo iptables -t nat -D PREROUTING -d 33.33.34.13 -p tcp --dport 22 -j DNAT --to-destination 10.0.3.238:22
 
-#### Enable direct communication from the workstation to multiple running containers.
+#### Additional setup for iptables and multiple containers.
 
 Add additional IP addresses to the Vagrant vm's eth1 interface and then add
 iptables NAT rules appropriately.
