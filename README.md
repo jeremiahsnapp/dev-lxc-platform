@@ -9,10 +9,6 @@ The Vagrantfile is configured to mount a `../downloads` directory from your
 workstation.  Put your software packages in the `../downloads` directory on
 your workstation so you don't have to download them to the vm.
 
-The Vagrantfile is configured to mount the `~/.chef` directory from your
-workstation into the vm's `/root/.chef` directory.  This makes it easy
-to have the same knife configurations available within the Vagrant vm.
-
 ### Consider **NOT** destroying the Vagrant vm.
 
 Vagrant will create a second disk to store the LXC containers in a Btrfs
