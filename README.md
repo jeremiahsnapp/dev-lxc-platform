@@ -39,6 +39,14 @@ The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
 
     vagrant ssh
 
+### Use a terminal multiplexer
+
+Since you may spend a lot of time doing work within the Vagrant vm you might
+consider using a terminal multiplexer such as tmux or byobu (enhanced tmux).
+
+These tools are already installed in the Vagrant vm by the
+dev-lxc::helpful-packages recipe.
+
 ## Containers
 
 ### Create containers using Btrfs backingstore.
@@ -174,11 +182,3 @@ iptables NAT rules appropriately.
 
     sudo ip addr add 33.33.34.14/32 dev eth1
     sudo ip addr delete 33.33.34.14/32 dev eth1
-
-## Use a terminal multiplexer?
-
-Since you may spend a lot of time doing work within the Vagrant vm you might
-consider using a terminal multiplexer such as tmux or byobu (enhanced tmux).
-
-These tools are already installed in the Vagrant vm by the
-dev-lxc::helpful-packages recipe.
