@@ -62,3 +62,21 @@ cookbook_file '/etc/lxc/dnsmasq.conf' do
   source 'dnsmasq.conf'
   notifies :restart, 'service[lxc-net]'
 end
+
+directory '/usr/local/share/lxc/hooks' do
+  recursive true
+end
+
+cookbook_file '/usr/local/share/lxc/hooks/clone-config-mount-entry' do
+  source 'clone-config-mount-entry'
+  mode 00755
+end
+
+cookbook_file '/usr/local/share/lxc/hooks/clone-etc-hosts' do
+  source 'clone-etc-hosts'
+  mode 00755
+end
+
+cookbook_file '/etc/lxc/default.conf' do
+  source 'lxc-default.conf'
+end
