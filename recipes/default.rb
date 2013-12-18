@@ -47,3 +47,18 @@ mount '/var/cache/lxc' do
   pass 0
   action [:mount, :enable]
 end
+
+service 'lxc-net' do
+  provider Chef::Provider::Service::Upstart
+  action [:enable, :start]
+end
+
+cookbook_file '/etc/default/lxc-net' do
+  source 'lxc-net'
+  notifies :restart, 'service[lxc-net]'
+end
+
+cookbook_file '/etc/lxc/dnsmasq.conf' do
+  source 'dnsmasq.conf'
+  notifies :restart, 'service[lxc-net]'
+end
