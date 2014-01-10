@@ -4,8 +4,14 @@
 # The following Vagrant plugins are required
 # vagrant-berkshelf
 # vagrant-omnibus
+# vagrant-persistent-storage
+#   until further notice Marc Paradise's fork of vagrant-persistent-storage must be used
+#   to install it please follow these instructions
 
-dev_lxc_disk = File.expand_path("~/VirtualBox VMs/dev_lxc.vmdk")
+#   git clone https://github.com/marcparadise/vagrant-persistent-storage.git
+#   cd vagrant-persistent-storage
+#   gem build vagrant-persistent-storage.gemspec
+#   vagrant plugin install vagrant-persistent-storage-0.0.5.gem
 
 Vagrant.configure("2") do |config|
   config.vm.box = "opscode-ubuntu-13.10"
@@ -14,10 +20,13 @@ Vagrant.configure("2") do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--cpus", "4"]
     vb.customize ["modifyvm", :id, "--memory", "4096"]
-    vb.customize ['createhd', '--filename', dev_lxc_disk, '--size', 40 * 1024]
-    vb.customize ['storageattach', :id, '--storagectl', 'IDE Controller', '--port',
-                  1, '--device', 0, '--type', 'hdd', '--medium', dev_lxc_disk]
   end
+
+  config.persistent_storage.enabled = true
+  config.persistent_storage.manage = false
+  config.persistent_storage.format = false
+  config.persistent_storage.size = 40 * 1024
+  config.persistent_storage.location = File.expand_path("~/VirtualBox VMs/dev-lxc.vdi")
 
   config.vm.synced_folder "../downloads", "/downloads"
 

@@ -9,12 +9,11 @@ The Vagrantfile is configured to mount a `../downloads` directory from your
 workstation.  Put your software packages in the `../downloads` directory on
 your workstation so you don't have to download them to the vm.
 
-### Consider **NOT** destroying the Vagrant vm.
+### Persistent Btrfs volume
 
 Vagrant will create a second disk to store the LXC containers in a Btrfs
-filesystem.  If you don't want to constantly recreate your LXC containers
-you may want to consider **NOT** destroying the Vagrant vm and instead just
-using `vagrant halt` when it is not being used.
+filesystem.  The vagrant-persistent-storage plugin will ensure the volume
+is detached before the vm is destroyed and reattached when the vm is created.
 
 ## Here are some good LXC  docs
 
@@ -30,6 +29,14 @@ The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
     gem install berkshelf
     vagrant plugin install vagrant-berkshelf
     vagrant plugin install vagrant-omnibus
+
+Until further notice Marc Paradise's fork of vagrant-persistent-storage must be used.
+To install it please follow these instructions.
+
+    git clone https://github.com/marcparadise/vagrant-persistent-storage.git
+	cd vagrant-persistent-storage
+	gem build vagrant-persistent-storage.gemspec
+	vagrant plugin install vagrant-persistent-storage-0.0.5.gem
 
 ### Start the vm and provision it.
 
