@@ -6,3 +6,6 @@ version           '0.1.0'
 supports 'ubuntu'
 
 depends 'apt'
+depends 'build-essential'
+depends 'chruby_install'
+depends 'ruby_install'
