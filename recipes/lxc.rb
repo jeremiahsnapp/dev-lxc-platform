@@ -45,6 +45,11 @@ cookbook_file '/etc/lxc/dnsmasq.conf' do
   notifies :restart, 'service[lxc-net]'
 end
 
+file '/etc/lxc/dhcp-hosts.conf' do
+  action :create_if_missing
+  notifies :restart, 'service[lxc-net]'
+end
+
 directory '/usr/local/share/lxc/hooks' do
   recursive true
 end
