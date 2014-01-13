@@ -65,6 +65,16 @@ function xck {
     echo "Stopping '$WORKING_CONTAINER'"
     lxc-stop -n $WORKING_CONTAINER
 }
+function xcka {
+    for CONTAINER in $(lxc-ls -1); do
+	if lxc-wait -t 1 -n $CONTAINER -s RUNNING; then
+	    echo "Stopping '$CONTAINER'"
+	    lxc-stop -n $CONTAINER
+	    echo "Waiting for '$CONTAINER' to be STOPPED"
+	    lxc-wait -t 10 -n $CONTAINER -s STOPPED
+	fi
+    done
+}
 function xcd {
     if [[ -n $1 ]]; then
 	echo "Setting WORKING_CONTAINER=$1"
