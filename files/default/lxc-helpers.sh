@@ -70,10 +70,12 @@ function xcd {
 	echo "Setting WORKING_CONTAINER=$1"
 	WORKING_CONTAINER=$1
     fi
-    echo "Killing '$WORKING_CONTAINER'"
-    lxc-kill -n $WORKING_CONTAINER
-    echo "Waiting for '$WORKING_CONTAINER' to be STOPPED"
-    lxc-wait -t 10 -n $WORKING_CONTAINER -s STOPPED
+    if lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
+	echo "Killing '$WORKING_CONTAINER'"
+	lxc-kill -n $WORKING_CONTAINER
+	echo "Waiting for '$WORKING_CONTAINER' to be STOPPED"
+	lxc-wait -t 10 -n $WORKING_CONTAINER -s STOPPED
+    fi
     echo "Destroying '$WORKING_CONTAINER'"
     lxc-destroy -n $WORKING_CONTAINER
 }
