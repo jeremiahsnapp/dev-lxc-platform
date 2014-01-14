@@ -10,8 +10,12 @@ function xcw {
     [[ -n $1 ]] && WORKING_CONTAINER=$1
     echo "Working Container is '$WORKING_CONTAINER'"
 }
-function xcr {
-    echo "Running command in '$WORKING_CONTAINER'"
+function xca {
+    if (( ! $# )); then
+	echo "Logging into '$WORKING_CONTAINER' as user '$USER'"
+    else
+	echo "Running command in '$WORKING_CONTAINER'"
+    fi
     lxc-attach -n $WORKING_CONTAINER --clear-env -- $@
 }
 function xc-chroot {
