@@ -45,12 +45,14 @@ cookbook_file '/etc/lxc/dnsmasq.conf' do
   notifies :restart, 'service[lxc-net]'
 end
 
-file '/etc/lxc/dhcp-hosts.conf' do
+cookbook_file '/etc/lxc/dhcp-hosts.conf' do
+  source 'dhcp-hosts.conf'
   action :create_if_missing
   notifies :restart, 'service[lxc-net]'
 end
 
-file '/etc/lxc/addn-hosts.conf' do
+cookbook_file '/etc/lxc/addn-hosts.conf' do
+  source 'addn-hosts.conf'
   action :create_if_missing
   notifies :restart, 'service[lxc-net]'
 end
