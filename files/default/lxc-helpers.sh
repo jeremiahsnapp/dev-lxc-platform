@@ -4,11 +4,11 @@ export GOLDEN_CONTAINER=g-ubuntu-precise-chef-client
 
 function xcg {
     [[ -n $1 ]] && GOLDEN_CONTAINER=$1
-    echo "Golden Container is '$GOLDEN_CONTAINER'"
+    echo "GOLDEN_CONTAINER is '$GOLDEN_CONTAINER'"
 }
 function xcw {
     [[ -n $1 ]] && WORKING_CONTAINER=$1
-    echo "Working Container is '$WORKING_CONTAINER'"
+    echo "WORKING_CONTAINER is '$WORKING_CONTAINER'"
 }
 function xca {
     if (( ! $# )); then
