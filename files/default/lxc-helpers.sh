@@ -22,7 +22,7 @@ function xca {
     else
 	echo "Running command in '$WORKING_CONTAINER'"
     fi
-    lxc-attach -n $WORKING_CONTAINER --clear-env -- $@
+    lxc-attach -n $WORKING_CONTAINER --keep-env -- $@
 }
 # Run command in WORKING_CONTAINER chroot
 function xc-chroot {
