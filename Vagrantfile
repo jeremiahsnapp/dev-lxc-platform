@@ -38,6 +38,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :chef_solo do |chef|
     # chef.log_level = :debug
+    chef.add_recipe "apt"
+    chef.add_recipe "dev-lxc::btrfs"
     chef.add_recipe "dev-lxc"
   end
 end
