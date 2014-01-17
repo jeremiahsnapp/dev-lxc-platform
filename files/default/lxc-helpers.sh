@@ -78,6 +78,27 @@ function xcz {
     echo "chef_server_url 'http://33.33.34.1:8889'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee /etc/chef/client.rb
     echo "client_key '/root/chef-zero.pem'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
 }
+# xcgc container
+#   Set WORKING_CONTAINER to container
+#   Print the path of the WORKING_CONTAINER config file
+#
+# xcgc
+#   Print the path of the WORKING_CONTAINER config file
+function xcgc {
+    if [[ -n $1 ]]; then
+	echo "Setting WORKING_CONTAINER=$1"
+	WORKING_CONTAINER=$1
+    fi
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xcw"
+	return 1
+    fi
+    if [[ -a "/var/lib/lxc/$WORKING_CONTAINER/config" ]]; then
+	echo "/var/lib/lxc/$WORKING_CONTAINER/config"
+    else
+	echo "No config file exists for container '$WORKING_CONTAINER'"
+    fi
+}
 # xcs container1 container2
 #   Set GOLDEN_CONTAINER to container1 and WORKING_CONTAINER to container2
 #   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
