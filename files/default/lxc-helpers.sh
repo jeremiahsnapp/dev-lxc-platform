@@ -7,12 +7,12 @@ export GOLDEN_CONTAINER=g-ubuntu-precise-chef-client
 # Set and show GOLDEN_CONTAINER
 function xcg {
     [[ -n $1 ]] && GOLDEN_CONTAINER=$1
-    echo "GOLDEN_CONTAINER is set to '$GOLDEN_CONTAINER'"
+    echo $GOLDEN_CONTAINER
 }
 # Set and show WORKING_CONTAINER
 function xcw {
     [[ -n $1 ]] && WORKING_CONTAINER=$1
-    echo "WORKING_CONTAINER is set to '$WORKING_CONTAINER'"
+    echo $WORKING_CONTAINER
 }
 # Run command in WORKING_CONTAINER
 # If no arguments are given then log into WORKING_CONTAINER
