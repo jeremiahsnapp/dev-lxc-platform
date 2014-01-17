@@ -99,6 +99,29 @@ function xcgc {
 	echo "No config file exists for container '$WORKING_CONTAINER'"
     fi
 }
+# xcm host_path container_mount_point
+#   Create the mount point in WORKING_CONTAINER if it does not exist
+#   Add mount configuration to the WORKING_CONTAINER config file
+function xcm {
+    if (( $# != 2 )); then
+	echo "Please specify the host_path and container_mount_point"
+	return 1
+    fi
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xcw"
+	return 1
+    fi
+    if chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs [ ! -d "$2" ]; then
+	echo "Creating mount point in container '$WORKING_CONTAINER'"
+	chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs mkdir -p "$2"
+    fi
+    if ! grep "^lxc.mount.entry = .* /var/lib/lxc/$WORKING_CONTAINER/rootfs$2 none bind 0 0" /var/lib/lxc/$WORKING_CONTAINER/config; then
+	echo "Adding lxc.mount.entry to the '$WORKING_CONTAINER' config file"
+	sed -i "$ a\lxc.mount.entry = $1 /var/lib/lxc/$WORKING_CONTAINER/rootfs$2 none bind 0 0" /var/lib/lxc/$WORKING_CONTAINER/config
+    else
+	echo "An lxc.mount.entry already exists for that mount point in the '$WORKING_CONTAINER' config file"
+    fi
+}
 # xcs container1 container2
 #   Set GOLDEN_CONTAINER to container1 and WORKING_CONTAINER to container2
 #   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
