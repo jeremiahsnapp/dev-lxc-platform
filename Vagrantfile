@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   config.persistent_storage.size = 40 * 1024
   config.persistent_storage.location = File.expand_path("~/VirtualBox VMs/dev-lxc.vdi")
 
-  config.vm.synced_folder "../downloads", "/downloads"
+  config.vm.synced_folder File.expand_path("~/dev/dev-lxc-shared"), "/dev-lxc-shared"
 
   config.berkshelf.enabled = true
 
