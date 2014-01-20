@@ -2,26 +2,26 @@ include_recipe 'build-essential'
 
 package 'lxc-dev'
 
-node.default['ruby_install']['version'] = '0.3.4'
-include_recipe 'ruby_install'
+node.default['rbenv']['group_users'] = ['root', 'vagrant']
 
-ruby_install_ruby 'ruby 2.1.0'
+include_recipe "rbenv::default"
+include_recipe "rbenv::ruby_build"
 
-node.default[:chruby_install][:default_ruby] = 'ruby-2.1.0'
-include_recipe 'chruby_install'
+rbenv_ruby "2.1.0"
 
 git '/usr/local/src/ruby-lxc' do
   repository 'https://github.com/lxc/ruby-lxc.git'
 end
 
-execute 'gem-build-ruby-lxc' do
-  command '/opt/rubies/ruby-2.1.0/bin/gem build ruby-lxc.gemspec'
+rbenv_execute 'gem-build-ruby-lxc' do
+  ruby_version '2.1.0'
   cwd '/usr/local/src/ruby-lxc'
-  not_if { ::File.exists?('/usr/local/src/ruby-lxc/ruby-lxc-0.1.0.gem') }
+  command 'gem build ruby-lxc.gemspec'
+  creates 'ruby-lxc-0.1.0.gem'
 end
 
 gem_package 'ruby-lxc' do
-  gem_binary '/opt/rubies/ruby-2.1.0/bin/gem'
+  gem_binary '/opt/rbenv/versions/2.1.0/bin/gem'
   source '/usr/local/src/ruby-lxc/ruby-lxc-0.1.0.gem'
   options '--no-ri --no-rdoc'
 end

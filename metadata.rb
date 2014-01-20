@@ -7,5 +7,4 @@ supports 'ubuntu'
 
 depends 'apt'
 depends 'build-essential'
-depends 'chruby_install'
-depends 'ruby_install'
+depends 'rbenv'
