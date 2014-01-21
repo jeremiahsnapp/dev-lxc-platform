@@ -1,22 +1,26 @@
-# List all containers
-alias xcl='lxc-ls --fancy'
+# xc-ls
+#   List all containers
+alias xc-ls='lxc-ls --fancy'
 
 # Set default value of GOLDEN_CONTAINER
 export GOLDEN_CONTAINER=g-ubuntu-precise-chef-client
 
-# Set and show GOLDEN_CONTAINER
-function xcg {
+# xc-golden
+#   Set and show GOLDEN_CONTAINER
+function xc-golden {
     [[ -n $1 ]] && GOLDEN_CONTAINER=$1
     echo $GOLDEN_CONTAINER
 }
-# Set and show WORKING_CONTAINER
-function xcw {
+# xc-working
+#   Set and show WORKING_CONTAINER
+function xc-working {
     [[ -n $1 ]] && WORKING_CONTAINER=$1
     echo $WORKING_CONTAINER
 }
-# Run command in WORKING_CONTAINER
-# If no arguments are given then log into WORKING_CONTAINER
-function xca {
+# xc-attach
+#   Run command in WORKING_CONTAINER
+#   If no arguments are given then log into WORKING_CONTAINER
+function xc-attach {
     if (( ! $# )); then
 	echo "Logging into '$WORKING_CONTAINER' as user '$USER'"
     else
@@ -28,7 +32,8 @@ function xca {
     fi
     lxc-attach -n $WORKING_CONTAINER --keep-env -- $@
 }
-# Run command in WORKING_CONTAINER chroot
+# xc-chroot
+#   Run command in WORKING_CONTAINER chroot
 function xc-chroot {
     if [[ -z $WORKING_CONTAINER ]]; then
 	echo "Please set the WORKING_CONTAINER first using xcw"
@@ -37,12 +42,12 @@ function xc-chroot {
     echo "Running command in '$WORKING_CONTAINER' chroot"
     chroot "/var/lib/lxc/$WORKING_CONTAINER/rootfs" $@
 }
-# xci chef_version
+# xc-chef-install chef_version
 #   Install specific version of Chef in WORKING_CONTAINER
 #
-# xci
+# xc-chef-install
 #   Install latest version of  Chef in WORKING_CONTAINER
-function xci {
+function xc-chef-install {
     if [[ -n $1 ]]; then
 	local CHEF_VERSION="-v $1"
     fi
@@ -53,13 +58,13 @@ function xci {
     echo "Installing Chef $1 on '$WORKING_CONTAINER'"
     curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs/ bash -s -- $CHEF_VERSION
 }
-# xcz container
+# xc-chef-zero container
 #   Set WORKING_CONTAINER to container
 #   Configure WORKING_CONTAINER to work with chef-zero
 #
-# xcz
+# xc-chef-zero
 #   Configure WORKING_CONTAINER to work with chef-zero
-function xcz {
+function xc-chef-zero {
     if [[ -n $1 ]]; then
 	echo "Setting WORKING_CONTAINER=$1"
 	WORKING_CONTAINER=$1
@@ -78,13 +83,13 @@ function xcz {
     echo "chef_server_url 'http://33.33.34.1:8889'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee /etc/chef/client.rb
     echo "client_key '/root/chef-zero.pem'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
 }
-# xcgc container
+# xc-get-config container
 #   Set WORKING_CONTAINER to container
 #   Print the path of the WORKING_CONTAINER config file
 #
-# xcgc
+# xc-get-config
 #   Print the path of the WORKING_CONTAINER config file
-function xcgc {
+function xc-get-config {
     if [[ -n $1 ]]; then
 	echo "Setting WORKING_CONTAINER=$1"
 	WORKING_CONTAINER=$1
@@ -99,10 +104,10 @@ function xcgc {
 	echo "No config file exists for container '$WORKING_CONTAINER'"
     fi
 }
-# xcm host_path container_mount_point
+# xc-mount host_path container_mount_point
 #   Create the mount point in WORKING_CONTAINER if it does not exist
 #   Add mount configuration to the WORKING_CONTAINER config file
-function xcm {
+function xc-mount {
     if (( $# != 2 )); then
 	echo "Please specify the host_path and container_mount_point"
 	return 1
@@ -122,20 +127,20 @@ function xcm {
 	echo "An lxc.mount.entry already exists for that mount point in the '$WORKING_CONTAINER' config file"
     fi
 }
-# xcs container1 container2
+# xc-start container1 container2
 #   Set GOLDEN_CONTAINER to container1 and WORKING_CONTAINER to container2
 #   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
 #   Start WORKING_CONTAINER
 #
-# xcs container
+# xc-start container
 #   Set WORKING_CONTAINER to container
 #   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
 #   Start WORKING_CONTAINER
 #
-# xcs
+# xc-start
 #   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
 #   Start WORKING_CONTAINER
-function xcs {
+function xc-start {
     if [[ -n $1 ]]; then
 	if [[ -n $2 ]]; then
 	    echo "Setting GOLDEN_CONTAINER=$1"
@@ -164,13 +169,13 @@ function xcs {
     echo "Waiting for '$WORKING_CONTAINER' to be RUNNING"
     lxc-wait -t 10 -n $WORKING_CONTAINER -s RUNNING
 }
-# xck container
+# xc-kill container
 #   Set WORKING_CONTAINER to container
 #   Stop WORKING_CONTAINER
 #
-# xck
+# xc-kill
 #   Stop WORKING_CONTAINER
-function xck {
+function xc-kill {
     if [[ -n $1 ]]; then
 	echo "Setting WORKING_CONTAINER=$1"
 	WORKING_CONTAINER=$1
@@ -182,8 +187,9 @@ function xck {
     echo "Stopping '$WORKING_CONTAINER'"
     lxc-stop -n $WORKING_CONTAINER
 }
-# Stop all containers
-function xcka {
+# xc-kill-all
+#   Stop all containers
+function xc-kill-all {
     for CONTAINER in $(lxc-ls -1); do
 	if lxc-wait -t 1 -n $CONTAINER -s RUNNING; then
 	    echo "Stopping '$CONTAINER'"
@@ -193,15 +199,15 @@ function xcka {
 	fi
     done
 }
-# xcd container
+# xc-destroy container
 #   Set WORKING_CONTAINER to container
 #   If WORKING_CONTAINER is running then stop it
 #   Destroy WORKING_CONTAINER
 #
-# xcd
+# xc-destroy
 #   If WORKING_CONTAINER is running then stop it
 #   Destroy WORKING_CONTAINER
-function xcd {
+function xc-destroy {
     if [[ -n $1 ]]; then
 	echo "Setting WORKING_CONTAINER=$1"
 	WORKING_CONTAINER=$1
