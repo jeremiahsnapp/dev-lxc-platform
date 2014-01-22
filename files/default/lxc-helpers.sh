@@ -1,7 +1,3 @@
-# xc-ls
-#   List all containers
-alias xc-ls='lxc-ls --fancy'
-
 # Set default value of GOLDEN_CONTAINER
 export GOLDEN_CONTAINER=g-ubuntu-precise-chef-client
 
@@ -83,6 +79,32 @@ function xc-chef-zero {
     echo "chef_server_url 'http://33.33.34.1:8889'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee /etc/chef/client.rb
     echo "client_key '/root/chef-zero.pem'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
 }
+# xc-destroy container
+#   Set WORKING_CONTAINER to container
+#   If WORKING_CONTAINER is running then stop it
+#   Destroy WORKING_CONTAINER
+#
+# xc-destroy
+#   If WORKING_CONTAINER is running then stop it
+#   Destroy WORKING_CONTAINER
+function xc-destroy {
+    if [[ -n $1 ]]; then
+	echo "Setting WORKING_CONTAINER=$1"
+	WORKING_CONTAINER=$1
+    fi
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xcw"
+	return 1
+    fi
+    if lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
+	echo "Killing '$WORKING_CONTAINER'"
+	lxc-kill -n $WORKING_CONTAINER
+	echo "Waiting for '$WORKING_CONTAINER' to be STOPPED"
+	lxc-wait -t 10 -n $WORKING_CONTAINER -s STOPPED
+    fi
+    echo "Destroying '$WORKING_CONTAINER'"
+    lxc-destroy -n $WORKING_CONTAINER
+}
 # xc-get-config container
 #   Set WORKING_CONTAINER to container
 #   Print the path of the WORKING_CONTAINER config file
@@ -103,6 +125,41 @@ function xc-get-config {
     else
 	echo "No config file exists for container '$WORKING_CONTAINER'"
     fi
+}
+# xc-kill container
+#   Set WORKING_CONTAINER to container
+#   Stop WORKING_CONTAINER
+#
+# xc-kill
+#   Stop WORKING_CONTAINER
+function xc-kill {
+    if [[ -n $1 ]]; then
+	echo "Setting WORKING_CONTAINER=$1"
+	WORKING_CONTAINER=$1
+    fi
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xcw"
+	return 1
+    fi
+    echo "Stopping '$WORKING_CONTAINER'"
+    lxc-stop -n $WORKING_CONTAINER
+}
+# xc-kill-all
+#   Stop all containers
+function xc-kill-all {
+    for CONTAINER in $(lxc-ls -1); do
+	if lxc-wait -t 1 -n $CONTAINER -s RUNNING; then
+	    echo "Stopping '$CONTAINER'"
+	    lxc-stop -n $CONTAINER
+	    echo "Waiting for '$CONTAINER' to be STOPPED"
+	    lxc-wait -t 10 -n $CONTAINER -s STOPPED
+	fi
+    done
+}
+# xc-ls
+#   List all containers
+function  xc-ls {
+    lxc-ls --fancy
 }
 # xc-mount host_path container_mount_point
 #   Create the mount point in WORKING_CONTAINER if it does not exist
@@ -168,60 +225,4 @@ function xc-start {
     lxc-start -d -n $WORKING_CONTAINER
     echo "Waiting for '$WORKING_CONTAINER' to be RUNNING"
     lxc-wait -t 10 -n $WORKING_CONTAINER -s RUNNING
-}
-# xc-kill container
-#   Set WORKING_CONTAINER to container
-#   Stop WORKING_CONTAINER
-#
-# xc-kill
-#   Stop WORKING_CONTAINER
-function xc-kill {
-    if [[ -n $1 ]]; then
-	echo "Setting WORKING_CONTAINER=$1"
-	WORKING_CONTAINER=$1
-    fi
-    if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
-	return 1
-    fi
-    echo "Stopping '$WORKING_CONTAINER'"
-    lxc-stop -n $WORKING_CONTAINER
-}
-# xc-kill-all
-#   Stop all containers
-function xc-kill-all {
-    for CONTAINER in $(lxc-ls -1); do
-	if lxc-wait -t 1 -n $CONTAINER -s RUNNING; then
-	    echo "Stopping '$CONTAINER'"
-	    lxc-stop -n $CONTAINER
-	    echo "Waiting for '$CONTAINER' to be STOPPED"
-	    lxc-wait -t 10 -n $CONTAINER -s STOPPED
-	fi
-    done
-}
-# xc-destroy container
-#   Set WORKING_CONTAINER to container
-#   If WORKING_CONTAINER is running then stop it
-#   Destroy WORKING_CONTAINER
-#
-# xc-destroy
-#   If WORKING_CONTAINER is running then stop it
-#   Destroy WORKING_CONTAINER
-function xc-destroy {
-    if [[ -n $1 ]]; then
-	echo "Setting WORKING_CONTAINER=$1"
-	WORKING_CONTAINER=$1
-    fi
-    if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
-	return 1
-    fi
-    if lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
-	echo "Killing '$WORKING_CONTAINER'"
-	lxc-kill -n $WORKING_CONTAINER
-	echo "Waiting for '$WORKING_CONTAINER' to be STOPPED"
-	lxc-wait -t 10 -n $WORKING_CONTAINER -s STOPPED
-    fi
-    echo "Destroying '$WORKING_CONTAINER'"
-    lxc-destroy -n $WORKING_CONTAINER
 }
