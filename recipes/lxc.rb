@@ -6,6 +6,11 @@ apt_repository 'ubuntu-lxc' do
   key '7635B973'
 end
 
+# this is needed as of lxc daily build 1/22/2014
+# the package's preinstall script fails
+# because /etc/lxc doesn't exist
+directory '/etc/lxc'
+
 package 'lxc'
 
 service 'lxc-net' do
