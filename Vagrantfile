@@ -5,13 +5,6 @@
 # vagrant-berkshelf
 # vagrant-omnibus
 # vagrant-persistent-storage
-#   until further notice Marc Paradise's fork of vagrant-persistent-storage must be used
-#   to install it please follow these instructions
-
-#   git clone https://github.com/marcparadise/vagrant-persistent-storage.git
-#   cd vagrant-persistent-storage
-#   gem build vagrant-persistent-storage.gemspec
-#   vagrant plugin install vagrant-persistent-storage-0.0.5.gem
 
 Vagrant.configure("2") do |config|
   config.vm.box = "opscode-ubuntu-13.10"

@@ -29,14 +29,7 @@ The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
     gem install berkshelf
     vagrant plugin install vagrant-berkshelf
     vagrant plugin install vagrant-omnibus
-
-Until further notice Marc Paradise's fork of vagrant-persistent-storage must be used.
-To install it please follow these instructions.
-
-    git clone https://github.com/marcparadise/vagrant-persistent-storage.git
-	cd vagrant-persistent-storage
-	gem build vagrant-persistent-storage.gemspec
-	vagrant plugin install vagrant-persistent-storage-0.0.5.gem
+	vagrant plugin install vagrant-persistent-storage
 
 ### Start the vm and provision it.
 
