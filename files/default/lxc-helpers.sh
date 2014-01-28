@@ -143,13 +143,9 @@ function xc-mount {
 	echo "Please set the WORKING_CONTAINER first using xcw"
 	return 1
     fi
-    if chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs [ ! -d "$2" ]; then
-	echo "Creating mount point in container '$WORKING_CONTAINER'"
-	chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs mkdir -p "$2"
-    fi
-    if ! grep "^lxc.mount.entry = .* /var/lib/lxc/$WORKING_CONTAINER/rootfs$2 none bind 0 0" /var/lib/lxc/$WORKING_CONTAINER/config; then
+    if ! grep "^lxc.mount.entry = .* $2 " /var/lib/lxc/$WORKING_CONTAINER/config; then
 	echo "Adding lxc.mount.entry to the '$WORKING_CONTAINER' config file"
-	sed -i "$ a\lxc.mount.entry = $1 /var/lib/lxc/$WORKING_CONTAINER/rootfs$2 none bind 0 0" /var/lib/lxc/$WORKING_CONTAINER/config
+	sed -i "$ a\lxc.mount.entry = $1 $2 none bind,create=dir 0 0" /var/lib/lxc/$WORKING_CONTAINER/config
     else
 	echo "An lxc.mount.entry already exists for that mount point in the '$WORKING_CONTAINER' config file"
     fi

@@ -1,9 +1,0 @@
-#!/bin/sh
-#
-# Update the path in lxc.mount.entry entries in the cloned container's config
-#
-
-if [ -f $LXC_CONFIG_FILE ]; then
-    sed -i "/lxc.mount.entry/ s|$LXC_SRC_NAME|$LXC_NAME|" $LXC_CONFIG_FILE
-fi
-exit 0
