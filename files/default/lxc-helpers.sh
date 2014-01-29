@@ -51,8 +51,12 @@ function xc-chef-install {
 	echo "Please set the WORKING_CONTAINER first using xcw"
 	return 1
     fi
+    if ! lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
+	echo "Please start '$WORKING_CONTAINER' before running this command"
+	return 1
+    fi
     echo "Installing Chef $1 on '$WORKING_CONTAINER'"
-    curl -L https://www.opscode.com/chef/install.sh | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs/ bash -s -- $CHEF_VERSION
+    curl -L https://www.opscode.com/chef/install.sh | lxc-attach -n $WORKING_CONTAINER --keep-env -- bash -s -- $CHEF_VERSION
 }
 # xc-chef-zero container
 #   Set WORKING_CONTAINER to container
