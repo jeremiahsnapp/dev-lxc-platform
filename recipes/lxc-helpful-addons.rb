@@ -43,3 +43,14 @@ end
 cookbook_file '/etc/profile.d/lxc-helpers.sh' do
   source 'lxc-helpers.sh'
 end
+
+# resource lxc-helpers in case byobu is used
+# ref: https://bugs.launchpad.net/byobu/+bug/525552
+ruby_block "edit root bashrc" do
+  block do
+    rc = Chef::Util::FileEdit.new("/root/.bashrc")
+    rc.insert_line_if_no_match(/lxc-helpers.sh$/,
+       ". /etc/profile.d/lxc-helpers.sh")
+    rc.write_file
+  end
+end
