@@ -35,5 +35,6 @@ Vagrant.configure("2") do |config|
     chef.add_recipe "dev-lxc::btrfs"
     chef.add_recipe "dev-lxc::mount-lxc-btrfs"
     chef.add_recipe "dev-lxc"
+    chef.add_recipe "dev-lxc::ruby-lxc"
   end
 end
