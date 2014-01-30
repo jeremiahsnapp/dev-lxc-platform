@@ -130,6 +130,36 @@ function xc-get-config {
 	echo "No config file exists for container '$WORKING_CONTAINER'"
     fi
 }
+# xc-kill container
+#   Set WORKING_CONTAINER to container
+#   Kill WORKING_CONTAINER
+#
+# xc-kill
+#   Kill WORKING_CONTAINER
+function xc-kill {
+    if [[ -n $1 ]]; then
+	echo "Setting WORKING_CONTAINER=$1"
+	WORKING_CONTAINER=$1
+    fi
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xcw"
+	return 1
+    fi
+    echo "Killing '$WORKING_CONTAINER'"
+    lxc-stop -k -n $WORKING_CONTAINER
+}
+# xc-kill-all
+#   Kill all containers
+function xc-kill-all {
+    for CONTAINER in $(lxc-ls -1); do
+	if lxc-wait -t 1 -n $CONTAINER -s RUNNING; then
+	    echo "Killing '$CONTAINER'"
+	    lxc-stop -k -n $CONTAINER
+	    echo "Waiting for '$CONTAINER' to be STOPPED"
+	    lxc-wait -t 10 -n $CONTAINER -s STOPPED
+	fi
+    done
+}
 # xc-ls
 #   Run lxc-ls with arguments given
 #   If no arguments are given the default to --fancy
