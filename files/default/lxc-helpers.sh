@@ -23,7 +23,7 @@ function xc-attach {
 	echo "Running command in '$WORKING_CONTAINER'"
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     lxc-attach -n $WORKING_CONTAINER --keep-env -- $@
@@ -32,7 +32,7 @@ function xc-attach {
 #   Run command in WORKING_CONTAINER chroot
 function xc-chroot {
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     echo "Running command in '$WORKING_CONTAINER' chroot"
@@ -48,7 +48,7 @@ function xc-chef-install {
 	local CHEF_VERSION="-v $1"
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     if ! lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
@@ -70,7 +70,7 @@ function xc-chef-zero {
 	WORKING_CONTAINER=$1
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     echo "Configuring Chef's client.rb in '$WORKING_CONTAINER' to work with chef-zero"
@@ -97,7 +97,7 @@ function xc-destroy {
 	WORKING_CONTAINER=$1
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     if lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
@@ -121,7 +121,7 @@ function xc-get-config {
 	WORKING_CONTAINER=$1
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     if [[ -a "/var/lib/lxc/$WORKING_CONTAINER/config" ]]; then
@@ -142,7 +142,7 @@ function xc-kill {
 	WORKING_CONTAINER=$1
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     echo "Killing '$WORKING_CONTAINER'"
@@ -179,7 +179,7 @@ function xc-mount {
 	return 1
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     if ! grep "^lxc.mount.entry = .* $2 " /var/lib/lxc/$WORKING_CONTAINER/config; then
@@ -215,12 +215,12 @@ function xc-start {
 	fi
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     if ! lxc-info -n $WORKING_CONTAINER &> /dev/null; then
 	if [[ -z $GOLDEN_CONTAINER ]]; then
-	    echo "Please set the WORKING_CONTAINER first using xcw"
+	    echo "Please set the WORKING_CONTAINER first using xc-working"
 	    return 1
 	fi
 	echo "Cloning '$GOLDEN_CONTAINER' into '$WORKING_CONTAINER'"
@@ -243,7 +243,7 @@ function xc-stop {
 	WORKING_CONTAINER=$1
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xcw"
+	echo "Please set the WORKING_CONTAINER first using xc-working"
 	return 1
     fi
     echo "Stopping '$WORKING_CONTAINER'"
