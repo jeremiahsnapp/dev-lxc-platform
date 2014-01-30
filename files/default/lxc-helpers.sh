@@ -131,9 +131,14 @@ function xc-get-config {
     fi
 }
 # xc-ls
-#   List all containers
+#   Run lxc-ls with arguments given
+#   If no arguments are given the default to --fancy
 function  xc-ls {
-    lxc-ls --fancy
+    if (( ! $# )); then
+	lxc-ls --fancy
+    else
+	lxc-ls $@
+    fi
 }
 # xc-mount host_path container_mount_point
 #   Create the mount point in WORKING_CONTAINER if it does not exist
