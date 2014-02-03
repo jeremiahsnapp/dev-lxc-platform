@@ -1,11 +1,11 @@
-# Set default value of GOLDEN_CONTAINER
-export GOLDEN_CONTAINER=g-ubuntu-precise-chef-client
+# Set default value of BASE_CONTAINER
+export BASE_CONTAINER=g-ubuntu-precise-chef-client
 
-# xc-golden
-#   Set and show GOLDEN_CONTAINER
-function xc-golden {
-    [[ -n $1 ]] && GOLDEN_CONTAINER=$1
-    echo $GOLDEN_CONTAINER
+# xc-base
+#   Set and show BASE_CONTAINER
+function xc-base {
+    [[ -n $1 ]] && BASE_CONTAINER=$1
+    echo $BASE_CONTAINER
 }
 # xc-working
 #   Set and show WORKING_CONTAINER
@@ -190,23 +190,23 @@ function xc-mount {
     fi
 }
 # xc-start container1 container2
-#   Set GOLDEN_CONTAINER to container1 and WORKING_CONTAINER to container2
-#   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
+#   Set BASE_CONTAINER to container1 and WORKING_CONTAINER to container2
+#   If WORKING_CONTAINER does not exist then clone BASE_CONTAINER to WORKING_CONTAINER
 #   Start WORKING_CONTAINER
 #
 # xc-start container
 #   Set WORKING_CONTAINER to container
-#   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
+#   If WORKING_CONTAINER does not exist then clone BASE_CONTAINER to WORKING_CONTAINER
 #   Start WORKING_CONTAINER
 #
 # xc-start
-#   If WORKING_CONTAINER does not exist then clone GOLDEN_CONTAINER to WORKING_CONTAINER
+#   If WORKING_CONTAINER does not exist then clone BASE_CONTAINER to WORKING_CONTAINER
 #   Start WORKING_CONTAINER
 function xc-start {
     if [[ -n $1 ]]; then
 	if [[ -n $2 ]]; then
-	    echo "Setting GOLDEN_CONTAINER=$1"
-	    GOLDEN_CONTAINER=$1
+	    echo "Setting BASE_CONTAINER=$1"
+	    BASE_CONTAINER=$1
 	    echo "Setting WORKING_CONTAINER=$2"
 	    WORKING_CONTAINER=$2
 	else
@@ -219,12 +219,12 @@ function xc-start {
 	return 1
     fi
     if ! lxc-info -n $WORKING_CONTAINER &> /dev/null; then
-	if [[ -z $GOLDEN_CONTAINER ]]; then
+	if [[ -z $BASE_CONTAINER ]]; then
 	    echo "Please set the WORKING_CONTAINER first using xc-working"
 	    return 1
 	fi
-	echo "Cloning '$GOLDEN_CONTAINER' into '$WORKING_CONTAINER'"
-	lxc-clone -s -o $GOLDEN_CONTAINER -n $WORKING_CONTAINER
+	echo "Cloning '$BASE_CONTAINER' into '$WORKING_CONTAINER'"
+	lxc-clone -s -o $BASE_CONTAINER -n $WORKING_CONTAINER
     fi
     echo "Starting '$WORKING_CONTAINER'"
     lxc-start -d -n $WORKING_CONTAINER
