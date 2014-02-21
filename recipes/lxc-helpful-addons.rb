@@ -51,7 +51,7 @@ cookbook_file '/etc/profile.d/lxc-helpers.sh' do
   source 'lxc-helpers.sh'
 end
 
-# resource lxc-helpers in case byobu is used
+# re-source lxc-helpers in case byobu is used
 # ref: https://bugs.launchpad.net/byobu/+bug/525552
 ruby_block "edit root bashrc" do
   block do
