@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
   config.persistent_storage.manage = false
   config.persistent_storage.format = false
   config.persistent_storage.size = 40 * 1024
-  config.persistent_storage.location = File.expand_path("~/VirtualBox VMs/dev-lxc.vdi")
+  config.persistent_storage.location = File.expand_path("~/VirtualBox VMs/dev-lxc-platform.vdi")
 
   config.vm.synced_folder File.expand_path("~/dev"), "/dev-shared"
   config.vm.synced_folder File.expand_path("~/oc"), "/oc"
@@ -33,9 +33,9 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     # chef.log_level = :debug
     chef.add_recipe "apt"
-    chef.add_recipe "dev-lxc::btrfs"
-    chef.add_recipe "dev-lxc::mount-lxc-btrfs"
-    chef.add_recipe "dev-lxc"
-    chef.add_recipe "dev-lxc::dev-lxc"
+    chef.add_recipe "dev-lxc-platform::btrfs"
+    chef.add_recipe "dev-lxc-platform::mount-lxc-btrfs"
+    chef.add_recipe "dev-lxc-platform"
+    chef.add_recipe "dev-lxc-platform::dev-lxc"
   end
 end
