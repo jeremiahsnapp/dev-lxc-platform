@@ -13,15 +13,13 @@ cookbook_file '/etc/lxc/dnsmasq.conf' do
   notifies :restart, 'service[lxc-net]'
 end
 
-directory '/var/lib/lxc/dnsmasq'
-
-cookbook_file '/var/lib/lxc/dnsmasq/dhcp-hosts.conf' do
+cookbook_file '/etc/lxc/dhcp-hosts.conf' do
   source 'dhcp-hosts.conf'
   action :create_if_missing
   notifies :restart, 'service[lxc-net]'
 end
 
-cookbook_file '/var/lib/lxc/dnsmasq/addn-hosts.conf' do
+cookbook_file '/etc/lxc/addn-hosts.conf' do
   source 'addn-hosts.conf'
   action :create_if_missing
   notifies :restart, 'service[lxc-net]'

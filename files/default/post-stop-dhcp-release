@@ -1,4 +1,4 @@
 #!/bin/sh
 hwaddr=$(perl -lane '/^lxc.network.hwaddr/ && print($F[2]) && exit' $LXC_CONFIG_FILE)
-ip=$(perl -F, -lane "/$hwaddr/ && print(\$F[1])" /var/lib/lxc/dnsmasq/dhcp-hosts.conf)
+ip=$(perl -F, -lane "/$hwaddr/ && print(\$F[1])" /etc/lxc/dhcp-hosts.conf)
 dhcp_release lxcbr0 $ip $hwaddr
