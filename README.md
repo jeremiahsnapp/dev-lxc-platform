@@ -59,6 +59,11 @@ The route entry won't survive a worstation reboot. You will have to create it as
 
     sudo route -n add 10.0.3.0/24 33.33.34.13
 
+Your workstation needs to know how to resolve the .lxc domain.
+For OS X you can run the following command.
+
+    echo nameserver 10.0.3.1 | sudo tee /etc/resolver/lxc
+
 ## LXC Introduction
 
 Read the following introduction to LXC if you aren't already familiar with it.
