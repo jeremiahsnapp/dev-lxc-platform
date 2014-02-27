@@ -29,6 +29,21 @@ The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
     vagrant plugin install vagrant-omnibus
 	vagrant plugin install vagrant-persistent-storage
 
+### Workstation to Container Networking
+
+Adding a route entry to the workstation enables direct communication between
+the workstation and any container.
+
+For OS X run the following command.
+The route entry won't survive a worstation reboot. You will have to create it as needed.
+
+    sudo route -n add 10.0.3.0/24 33.33.34.13
+
+Your workstation needs to know how to resolve the .lxc domain.
+For OS X you can run the following command.
+
+    echo nameserver 10.0.3.1 | sudo tee /etc/resolver/lxc
+
 ### Start the vm and provision it.
 
     vagrant up
@@ -50,21 +65,6 @@ running the following command.
     byobu-enable
 
 The prefix key is set to `Ctrl-o`
-
-## Workstation to Container Networking
-
-Adding a route entry to the workstation enables direct communication between
-the workstation and any container.
-
-For OS X run the following command.
-The route entry won't survive a worstation reboot. You will have to create it as needed.
-
-    sudo route -n add 10.0.3.0/24 33.33.34.13
-
-Your workstation needs to know how to resolve the .lxc domain.
-For OS X you can run the following command.
-
-    echo nameserver 10.0.3.1 | sudo tee /etc/resolver/lxc
 
 ## LXC Introduction
 
