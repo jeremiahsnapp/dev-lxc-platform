@@ -49,6 +49,8 @@ running the following command.
 
     byobu-enable
 
+The prefix key is set to `Ctrl-o`
+
 ## Workstation to Container Networking
 
 Adding a route entry to the workstation enables direct communication between
