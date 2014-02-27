@@ -20,6 +20,11 @@ Vagrant will create a second virtual disk to store the LXC containers in a Btrfs
 The vagrant-persistent-storage plugin will ensure the volume is detached before the vm is
 destroyed and reattached when the vm is created.
 
+While this persistent volume allows the Vagrant VM to treated as disposable I recommend
+that you don't bother destroying it regularly unless you want to wait for it to be
+provisioned each time.  I keep the VM running a lot of the time so I can jump in
+and use it when I need to.  If I really want to shut it down I just `vagrant halt` it.
+
 ## Requirements
 
 The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
