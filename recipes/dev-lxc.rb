@@ -26,7 +26,7 @@ rbenv_execute 'gem-build-dev-lxc' do
   creates 'dev-lxc-0.1.0.gem'
 end
 
-gem_package 'gem-lxc' do
+gem_package 'dev-lxc' do
   gem_binary '/opt/rbenv/versions/2.1.0/bin/gem'
   source '/usr/local/src/dev-lxc/dev-lxc-0.1.0.gem'
   options '--no-ri --no-rdoc'
