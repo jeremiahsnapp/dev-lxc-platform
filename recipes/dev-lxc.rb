@@ -23,7 +23,6 @@ rbenv_execute 'gem-build-dev-lxc' do
   ruby_version '2.1.0'
   cwd '/usr/local/src/dev-lxc'
   command 'gem build dev-lxc.gemspec'
-  creates 'dev-lxc-0.1.0.gem'
 end
 
 gem_package 'dev-lxc' do
