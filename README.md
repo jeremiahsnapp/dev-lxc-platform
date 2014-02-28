@@ -10,9 +10,9 @@ The dev-lxc tool uses LXC containers to build Chef server clusters.
 The contained Vagrantfile is configured to use 8GB ram in order to give plenty of room to run
 multiple containers. Feel free to reduce this if it is too much for your environment.
 
-The contained Vagrantfile is configured to mount `~/dev` and `~/oc` directories from your
-workstation.  You can put Chef packages somewhere under the `~/dev` directory on your
-workstation so you don't have to download them to the vm.
+The contained Vagrantfile is configured to mount `~/dev` directory from your workstation.
+You can put Chef packages somewhere under the `~/dev` directory on your workstation so
+you don't have to download them to the vm.
 
 ### Persistent Btrfs volume
 
