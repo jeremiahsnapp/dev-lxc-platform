@@ -69,6 +69,11 @@ running the following command.
 
     byobu-enable
 
+You can easily disable auto-run at any time using `byobu-disable`.
+
+Pressing `Fn-F1` in OS X will get you a help screen and selecting the "Quick Start Guide"
+will give you a list of frequently used key bindings.
+
 The prefix key is set to `Ctrl-o`
 
 ## LXC Introduction
