@@ -81,6 +81,10 @@ Read the following introduction to LXC if you aren't already familiar with it.
 
 The following commands must be run as the root user.
 
+### Create the container.
+
+    lxc-create -B btrfs -t download -n ubuntu-1204 -- -d ubuntu -r precise -a amd64
+
 ### Start the container.
 
     lxc-start -d -n ubuntu-1204
