@@ -83,6 +83,15 @@ The following commands must be run as the root user.
 
 ### Create the container.
 
+Using the 'download' template is a very fast and storage efficient way to create a container
+for many distros since it actually downloads the compressed tarball of a prebuilt container's rootfs.
+
+By default the download template pulls from https://images.linuxcontainers.org/ but you can
+also use template parameters to specify a different image site.
+
+As an alternative to the 'download' template you could use any other template that is found in
+`/usr/share/lxc/templates/` or create your own.
+
     lxc-create -B btrfs -t download -n ubuntu-1204 -- -d ubuntu -r precise -a amd64
 
 ### Start the container.
