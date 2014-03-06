@@ -1,5 +1,5 @@
 apt_repository 'ubuntu-lxc' do
-  uri 'http://ppa.launchpad.net/ubuntu-lxc/daily/ubuntu'
+  uri 'http://ppa.launchpad.net/ubuntu-lxc/stable/ubuntu'
   distribution node['lsb']['codename']
   components ['main']
   keyserver 'keyserver.ubuntu.com'
