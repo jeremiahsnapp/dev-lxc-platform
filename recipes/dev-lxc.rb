@@ -11,22 +11,6 @@ end
 
 package 'lxc-dev'
 
-rbenv_gem 'ruby-lxc' do
+rbenv_gem 'dev-lxc' do
   ruby_version '2.1.0'
-end
-
-git '/usr/local/src/dev-lxc' do
-  repository 'https://github.com/jeremiahsnapp/dev-lxc.git'
-end
-
-rbenv_execute 'gem-build-dev-lxc' do
-  ruby_version '2.1.0'
-  cwd '/usr/local/src/dev-lxc'
-  command 'gem build dev-lxc.gemspec'
-end
-
-gem_package 'dev-lxc' do
-  gem_binary '/opt/rbenv/versions/2.1.0/bin/gem'
-  source '/usr/local/src/dev-lxc/dev-lxc-0.1.0.gem'
-  options '--no-ri --no-rdoc'
 end
