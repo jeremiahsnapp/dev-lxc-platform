@@ -6,7 +6,13 @@ apt_repository 'ubuntu-lxc' do
   key '7635B973'
 end
 
-package 'lxc'
+package 'lxc' do
+  action :upgrade
+end
+
+package 'lxc-templates' do
+  action :upgrade
+end
 
 service 'lxc-net' do
   provider Chef::Provider::Service::Upstart
