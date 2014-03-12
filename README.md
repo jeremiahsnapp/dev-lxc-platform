@@ -9,16 +9,16 @@ The environment is also suitable for other tools that use LXC such as
 [Chef Metal](http://www.getchef.com/blog/2014/03/04/chef-metal-0-2-release/)
 or just general LXC container usage.
 
-The dev-lxc-platform repo contains a Vagrantfile which uses an Ubuntu 13.10
+The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 13.10
 [Vagrant base box](https://github.com/opscode/bento) created by Chef.
 
-The Vagrantfile uses the dev-lxc-platform cookbook contained in this repo to install
+The .kitchen.yml uses the dev-lxc-platform cookbook contained in this repo to install
 and configure a suitable LXC with Btrfs backed container storage.
 
-The Vagrantfile is configured to use 8GB ram in order to give plenty of room to run
+The .kitchen.yml is configured to use 8GB ram in order to give plenty of room to run
 multiple containers. Feel free to reduce this if it is too much for your environment.
 
-The Vagrantfile is configured to mount `~/dev` directory from your workstation so you
+The .kitchen.yml is configured to mount `~/dev` directory from your workstation so you
 can share things like Chef packages from your workstation to the Vagrant VM and
 ultimately to running LXC containers. Feel free to change this to a directory that
 is appropriate for your environment.
@@ -29,19 +29,18 @@ Vagrant will create a second virtual disk to store the LXC containers in a Btrfs
 The vagrant-persistent-storage plugin will ensure the volume is detached before the VM is
 destroyed and reattached when the VM is created.
 
-While this persistent volume allows the Vagrant VM to treated as disposable I recommend
+While this persistent volume allows the Vagrant VM to be treated as disposable I recommend
 that you don't bother destroying the VM regularly unless you want to wait for it to be
 provisioned each time.  I keep the VM running a lot of the time so I can jump in
 and use it when I need to.  If I really want to shut it down I just `vagrant halt` it.
 
 ## Requirements
 
-The Vagrantfile requires the Berkshelf gem and the following vagrant plugins.
+The following gems and vagrant plugins are required.
 
     gem install berkshelf
-    vagrant plugin install vagrant-berkshelf
-    vagrant plugin install vagrant-omnibus
-	vagrant plugin install vagrant-persistent-storage
+    gem install test-kitchen
+    vagrant plugin install vagrant-persistent-storage
 
 ### Workstation to Container Networking
 
@@ -58,13 +57,32 @@ For OS X you can run the following command.
 
     echo nameserver 10.0.3.1 | sudo tee /etc/resolver/lxc
 
-### Start the vm and provision it.
+### Create the vm and converge it.
 
-    vagrant up
+    kitchen converge
 
 ### Connect to the vm.
 
-    vagrant ssh
+    kitchen login
+
+### Enable standard Vagrant commands
+
+Since the dev-lxc-platform VM is created using test-kitchen normal Vagrant commands will not
+affect the VM.
+
+Enabling standard Vagrant can be useful especially since test-kitchen is not able to halt the VM.
+
+Correctly setting the `VAGRANT_CWD` environment variable will allow Vagrant commands to be used.
+
+You can run the following command in the top level directory of the `dev-lxc-platform` repo.
+
+    export VAGRANT_CWD=$(realpath .kitchen/kitchen-vagrant/default-ubuntu-1310)
+
+Alternatively, you can use [direnv](http://direnv.net/) with the `.envrc` file included in the
+dev-lxc-platform repo to automatically set `VAGRANT_CWD` upon entering the top level directory
+of the dev-lxc-platform repo.
+
+You can install `direnv` by running `brew install direnv`.
 
 ### Use a terminal multiplexer
 

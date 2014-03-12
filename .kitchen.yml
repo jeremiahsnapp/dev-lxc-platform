@@ -1,0 +1,33 @@
+---
+driver:
+  name: vagrant
+  vagrantfile_erb: Vagrantfile.erb
+  customize:
+    cpus: 4
+    memory: 8192
+    natdnshostresolver1: "on"
+  synced_folders:
+    - ["#{File.expand_path('~/dev')}", "/dev-shared"]
+  network:
+    - ["private_network", {ip: "33.33.34.13"}]
+  persistent_storage:
+    enabled: true
+    manage: false
+    format: false
+    size: 40 * 1024
+    location: File.expand_path('~/VirtualBox VMs/dev-lxc-platform.vdi')
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: ubuntu-13.10
+
+suites:
+  - name: default
+    run_list:
+      - recipe[apt]
+      - recipe[dev-lxc-platform::btrfs]
+      - recipe[dev-lxc-platform::mount-lxc-btrfs]
+      - recipe[dev-lxc-platform]
+      - recipe[dev-lxc-platform::dev-lxc]
