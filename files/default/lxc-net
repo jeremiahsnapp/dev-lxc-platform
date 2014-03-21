@@ -27,4 +27,4 @@ LXC_DHCP_CONFILE=/etc/lxc/dnsmasq.conf
 # domain.  You can then add "server=/lxc/10.0.3.1' (or your actual )
 # to /etc/dnsmasq.conf, after which 'container1.lxc' will resolve on your
 # host.
-#LXC_DOMAIN="lxc"
+LXC_DOMAIN="lxc"
