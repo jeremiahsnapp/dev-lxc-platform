@@ -2,6 +2,7 @@
 driver:
   name: vagrant
   vagrantfile_erb: Vagrantfile.erb
+#  gui: true
   customize:
     cpus: 4
     memory: 8192
@@ -21,7 +22,7 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-13.10
+  - name: ubuntu-14.04
 
 suites:
   - name: default
