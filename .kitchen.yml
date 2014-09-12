@@ -19,7 +19,7 @@ driver:
     location: File.expand_path('~/VirtualBox VMs/dev-lxc-platform.vdi')
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
   - name: ubuntu-14.04
