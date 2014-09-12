@@ -1,19 +1,13 @@
 include_recipe 'build-essential'
 
-node.default['rbenv']['group_users'] = ['root', 'vagrant']
-
-include_recipe "rbenv::default"
-include_recipe "rbenv::ruby_build"
-
-rbenv_ruby "2.1.2" do
-  global true
-end
-
 package 'lxc-dev'
 
-rbenv_gem 'dev-lxc' do
-  ruby_version '2.1.2'
+include_recipe 'ruby-install'
+ruby_install_ruby 'ruby 2.1.2' do
+  gems [ { name: 'dev-lxc' } ]
 end
+
+include_recipe 'chruby_install'
 
 ruby_block "alias dev-lxc" do
   block do
