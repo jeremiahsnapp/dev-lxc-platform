@@ -5,7 +5,7 @@ driver:
 #  gui: true
   customize:
     cpus: 4
-    memory: 8192
+    memory: 4096
     natdnshostresolver1: "on"
   synced_folders:
     - ["#{File.expand_path('~/dev')}", "/dev-shared"]
