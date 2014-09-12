@@ -7,8 +7,8 @@ driver:
     cpus: 4
     memory: 4096
     natdnshostresolver1: "on"
-  synced_folders:
-    - ["#{File.expand_path('~/dev')}", "/dev-shared"]
+#  synced_folders:
+#    - ["..", "/dev-shared"]
   network:
     - ["private_network", {ip: "33.33.34.13"}]
   persistent_storage:
