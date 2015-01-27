@@ -1,5 +1,5 @@
 # Set default value of BASE_CONTAINER
-export BASE_CONTAINER=b-ubuntu-1204-chef-client
+export BASE_CONTAINER=b-ubuntu-1404-chef-client
 
 # xc-base
 #   Set and show BASE_CONTAINER
