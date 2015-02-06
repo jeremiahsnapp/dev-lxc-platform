@@ -17,14 +17,18 @@ function xc-working {
 #   Run command in WORKING_CONTAINER
 #   If no arguments are given then log into WORKING_CONTAINER
 function xc-attach {
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+    if ! lxc-info --name $WORKING_CONTAINER > /dev/null 2>&1; then
+	echo "Container '$WORKING_CONTAINER' does not exist. Please create it first."
+	return 1
+    fi
     if (( ! $# )); then
 	echo "Logging into '$WORKING_CONTAINER' as user '$USER'"
     else
 	echo "Running command in '$WORKING_CONTAINER'"
-    fi
-    if [[ -z $WORKING_CONTAINER ]]; then
-	echo "Please set the WORKING_CONTAINER first using xc-working"
-	return 1
     fi
     lxc-attach -n $WORKING_CONTAINER --keep-env -- $@
 }
@@ -33,6 +37,10 @@ function xc-attach {
 function xc-chroot {
     if [[ -z $WORKING_CONTAINER ]]; then
 	echo "Please set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+    if ! lxc-info --name $WORKING_CONTAINER > /dev/null 2>&1; then
+	echo "Container '$WORKING_CONTAINER' does not exist. Please create it first."
 	return 1
     fi
     echo "Running command in '$WORKING_CONTAINER' chroot"
@@ -49,6 +57,10 @@ function xc-chef-install {
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
 	echo "Please set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+    if ! lxc-info --name $WORKING_CONTAINER > /dev/null 2>&1; then
+	echo "Container '$WORKING_CONTAINER' does not exist. Please create it first."
 	return 1
     fi
     if ! lxc-wait -t 1 -n $WORKING_CONTAINER -s RUNNING; then
@@ -71,6 +83,10 @@ function xc-chef-zero {
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
 	echo "Please set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+    if ! lxc-info --name $WORKING_CONTAINER > /dev/null 2>&1; then
+	echo "Container '$WORKING_CONTAINER' does not exist. Please create it first."
 	return 1
     fi
     echo "Configuring Chef's client.rb in '$WORKING_CONTAINER' to work with chef-zero"
@@ -180,6 +196,10 @@ function xc-mount {
     fi
     if [[ -z $WORKING_CONTAINER ]]; then
 	echo "Please set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+    if ! lxc-info --name $WORKING_CONTAINER > /dev/null 2>&1; then
+	echo "Container '$WORKING_CONTAINER' does not exist. Please create it first."
 	return 1
     fi
     if ! grep "^lxc.mount.entry = .* $2 " /var/lib/lxc/$WORKING_CONTAINER/config; then
