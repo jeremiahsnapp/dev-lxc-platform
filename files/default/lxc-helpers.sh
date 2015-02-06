@@ -46,6 +46,66 @@ function xc-chroot {
     echo "Running command in '$WORKING_CONTAINER' chroot"
     chroot "/var/lib/lxc/$WORKING_CONTAINER/rootfs" $@
 }
+# xc-chef-config
+#   Configure /etc/chef in WORKING_CONTAINER
+function xc-chef-config {
+    local OPTIND FLAG CHEF_SERVER_URL VALIDATION_CLIENT_NAME VALIDATION_KEY
+    while getopts :s:u:k:h FLAG; do
+      case $FLAG in
+        s)
+          CHEF_SERVER_URL=$OPTARG
+          ;;
+        u)
+          VALIDATION_CLIENT_NAME=$OPTARG
+          ;;
+        k)
+          VALIDATION_KEY=$OPTARG
+          ;;
+        :)
+          echo "Option -$OPTARG requires an argument." >&2
+          echo "xc-chef-config -s CHEF_SERVER_URL -u VALIDATION_CLIENT_NAME -k VALIDATION_KEY [CONTAINER_NAME]"
+          return 1
+          ;;
+        h)
+          echo "xc-chef-config -s CHEF_SERVER_URL -u VALIDATION_CLIENT_NAME -k VALIDATION_KEY [CONTAINER_NAME]"
+          return 0
+          ;;
+        \?)
+          echo -e \\n"Option -$OPTARG not allowed."
+          echo "xc-chef-config -s CHEF_SERVER_URL -u VALIDATION_CLIENT_NAME -k VALIDATION_KEY [CONTAINER_NAME]"
+          return 1
+          ;;
+      esac
+    done
+    shift $((OPTIND-1))
+
+    if [[ -n $1 ]]; then
+	echo "Setting WORKING_CONTAINER=$1"
+	WORKING_CONTAINER=$1
+    fi
+
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+
+    if ! lxc-info --name $WORKING_CONTAINER > /dev/null 2>&1; then
+	echo "Container '$WORKING_CONTAINER' does not exist. Please create it first."
+	return 1
+    fi
+
+    if chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs [ ! -d /etc/chef ]; then
+	chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs mkdir /etc/chef
+    fi
+
+    echo "Copying '$VALIDATION_KEY' to '/etc/chef/validation.pem' in container '$WORKING_CONTAINER'"
+    cp "$VALIDATION_KEY" /var/lib/lxc/$WORKING_CONTAINER/rootfs/etc/chef/validation.pem
+
+    echo "Configuring '/etc/chef/client.rb in container '$WORKING_CONTAINER'"
+    echo "chef_server_url '$CHEF_SERVER_URL'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee /etc/chef/client.rb
+    echo "validation_client_name '$VALIDATION_CLIENT_NAME'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
+    echo "ssl_verify_mode :verify_none" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
+}
 # xc-chef-install chef_version
 #   Install specific version of Chef in WORKING_CONTAINER
 #
