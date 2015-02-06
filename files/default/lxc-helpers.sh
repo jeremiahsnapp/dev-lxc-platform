@@ -162,7 +162,7 @@ function xc-kill-all {
 }
 # xc-ls
 #   Run lxc-ls with arguments given
-#   If no arguments are given the default to --fancy
+#   If no arguments are given then default to --fancy
 function  xc-ls {
     if (( ! $# )); then
 	lxc-ls --fancy
