@@ -56,7 +56,7 @@ function xc-chef-install {
 	return 1
     fi
     echo "Installing Chef $1 on '$WORKING_CONTAINER'"
-    curl -L https://www.opscode.com/chef/install.sh | lxc-attach -n $WORKING_CONTAINER --keep-env -- bash -s -- $CHEF_VERSION
+    curl -L https://www.chef.io/chef/install.sh | lxc-attach -n $WORKING_CONTAINER --keep-env -- bash -s -- $CHEF_VERSION
 }
 # xc-chef-zero container
 #   Set WORKING_CONTAINER to container
