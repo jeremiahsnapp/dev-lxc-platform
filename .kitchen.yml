@@ -22,10 +22,6 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-12.04
-    driver:
-      box: ubuntu/precise64
-      box_url: https://vagrantcloud.com/ubuntu/boxes/precise64/versions/1/providers/virtualbox.box
   - name: ubuntu-14.04
     driver:
       box: ubuntu/trusty64
