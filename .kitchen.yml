@@ -25,7 +25,7 @@ platforms:
   - name: ubuntu-14.04
     driver:
       box: ubuntu/trusty64
-      box_url: https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/1/providers/virtualbox.box
+      box_url: https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
 
 suites:
   - name: default
