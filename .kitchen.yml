@@ -5,7 +5,7 @@ driver:
 #  gui: true
   customize:
     cpus: 4
-    memory: 4096
+    memory: 6144
     natdnshostresolver1: "on"
 #  synced_folders:
 #    - ["..", "/dev-shared"]
