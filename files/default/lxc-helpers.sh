@@ -7,12 +7,14 @@ function xc-base {
     [[ -n $1 ]] && BASE_CONTAINER=$1
     echo $BASE_CONTAINER
 }
+export -f xc-base
 # xc-working
 #   Set and show WORKING_CONTAINER
 function xc-working {
     [[ -n $1 ]] && WORKING_CONTAINER=$1
     echo $WORKING_CONTAINER
 }
+export -f xc-working
 # xc-attach
 #   Run command in WORKING_CONTAINER
 #   If no arguments are given then log into WORKING_CONTAINER
@@ -32,6 +34,7 @@ function xc-attach {
     fi
     lxc-attach -n $WORKING_CONTAINER --keep-env -- $@
 }
+export -f xc-attach
 # xc-chroot
 #   Run command in WORKING_CONTAINER chroot
 function xc-chroot {
@@ -46,6 +49,7 @@ function xc-chroot {
     echo "Running command in '$WORKING_CONTAINER' chroot"
     chroot "/var/lib/lxc/$WORKING_CONTAINER/rootfs" $@
 }
+export -f xc-chroot
 # xc-chef-config
 #   Configure /etc/chef in WORKING_CONTAINER
 function xc-chef-config {
@@ -106,6 +110,7 @@ function xc-chef-config {
     echo "validation_client_name '$VALIDATION_CLIENT_NAME'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
     echo "ssl_verify_mode :verify_none" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
 }
+export -f xc-chef-config
 # xc-chef-install chef_version
 #   Install specific version of Chef in WORKING_CONTAINER
 #
@@ -130,6 +135,7 @@ function xc-chef-install {
     echo "Installing Chef $1 on '$WORKING_CONTAINER'"
     curl -L https://www.chef.io/chef/install.sh | lxc-attach -n $WORKING_CONTAINER --keep-env -- bash -s -- $CHEF_VERSION
 }
+export -f xc-chef-install
 # xc-chef-zero container
 #   Set WORKING_CONTAINER to container
 #   Configure WORKING_CONTAINER to work with chef-zero
@@ -159,6 +165,7 @@ function xc-chef-zero {
     echo "chef_server_url 'http://33.33.34.1:8889'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee /etc/chef/client.rb
     echo "client_key '/root/chef-zero.pem'" | chroot /var/lib/lxc/$WORKING_CONTAINER/rootfs tee -a /etc/chef/client.rb
 }
+export -f xc-chef-zero
 # xc-destroy container
 #   Set WORKING_CONTAINER to container
 #   If WORKING_CONTAINER is running then kill it
@@ -185,6 +192,7 @@ function xc-destroy {
     echo "Destroying '$WORKING_CONTAINER'"
     lxc-destroy -n $WORKING_CONTAINER
 }
+export -f xc-destroy
 # xc-get-config container
 #   Set WORKING_CONTAINER to container
 #   Print the path of the WORKING_CONTAINER config file
@@ -206,6 +214,7 @@ function xc-get-config {
 	echo "No config file exists for container '$WORKING_CONTAINER'"
     fi
 }
+export -f xc-get-config
 # xc-kill container
 #   Set WORKING_CONTAINER to container
 #   Kill WORKING_CONTAINER
@@ -224,6 +233,7 @@ function xc-kill {
     echo "Killing '$WORKING_CONTAINER'"
     lxc-stop -k -n $WORKING_CONTAINER
 }
+export -f xc-kill
 # xc-kill-all
 #   Kill all containers
 function xc-kill-all {
@@ -236,6 +246,7 @@ function xc-kill-all {
 	fi
     done
 }
+export -f xc-kill-all
 # xc-ls
 #   Run lxc-ls with arguments given
 #   If no arguments are given then default to --fancy
@@ -246,6 +257,7 @@ function  xc-ls {
 	lxc-ls $@
     fi
 }
+export -f xc-ls
 # xc-mount host_path container_mount_point
 #   Create the mount point in WORKING_CONTAINER if it does not exist
 #   Add mount configuration to the WORKING_CONTAINER config file
@@ -269,6 +281,7 @@ function xc-mount {
 	echo "An lxc.mount.entry already exists for that mount point in the '$WORKING_CONTAINER' config file"
     fi
 }
+export -f xc-mount
 # xc-start container1 container2
 #   Set BASE_CONTAINER to container1 and WORKING_CONTAINER to container2
 #   If WORKING_CONTAINER does not exist then clone BASE_CONTAINER to WORKING_CONTAINER
@@ -311,6 +324,7 @@ function xc-start {
     echo "Waiting for '$WORKING_CONTAINER' to be RUNNING"
     lxc-wait -t 10 -n $WORKING_CONTAINER -s RUNNING
 }
+export -f xc-start
 # xc-stop container
 #   Set WORKING_CONTAINER to container
 #   Stop WORKING_CONTAINER
@@ -329,6 +343,7 @@ function xc-stop {
     echo "Stopping '$WORKING_CONTAINER'"
     lxc-stop -n $WORKING_CONTAINER
 }
+export -f xc-stop
 # xc-stop-all
 #   Stop all containers
 function xc-stop-all {
@@ -341,3 +356,4 @@ function xc-stop-all {
 	fi
     done
 }
+export -f xc-stop-all
