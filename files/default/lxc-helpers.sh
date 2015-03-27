@@ -249,13 +249,8 @@ function xc-kill-all {
 export -f xc-kill-all
 # xc-ls
 #   Run lxc-ls with arguments given
-#   If no arguments are given then default to --fancy
-function  xc-ls {
-    if (( ! $# )); then
-	lxc-ls --fancy
-    else
-	lxc-ls $@
-    fi
+function xc-ls {
+    lxc-ls --fancy -F name,state,memory,ipv4 $@
 }
 export -f xc-ls
 # xc-mount host_path container_mount_point
