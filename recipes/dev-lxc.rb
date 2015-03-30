@@ -19,11 +19,3 @@ ruby_block "alias dev-lxc" do
     rc.write_file
   end
 end
-
-ruby_block "add WORKING_CONTAINER to PS1" do
-  block do
-    rc = Chef::Util::FileEdit.new("/root/.bashrc")
-    rc.insert_line_if_no_match(/^PS1='.*WORKING_CONTAINER/, %q(PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w ($WORKING_CONTAINER)\$ '))
-    rc.write_file
-  end
-end
