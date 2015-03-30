@@ -2,14 +2,17 @@ include_recipe 'build-essential'
 
 package 'lxc-dev'
 
-include_recipe 'ruby-install'
-ruby_install_ruby 'ruby 2.1.2'
+execute "Setup ChefDK as default ruby" do
+  command "chef shell-init bash >> /root/.bashrc"
+  user "root"
+  environment( { "HOME" => "/root" } )
+  not_if "grep 'PATH=.*chefdk' /root/.bashrc"
+end
 
-include_recipe 'chruby_install'
-
-gem_package 'dev-lxc' do
-  gem_binary '/opt/rubies/ruby-2.1.2/bin/gem'
-  action :upgrade
+execute "install dev-lxc gem" do
+  command "chef gem install dev-lxc"
+  user "root"
+  environment( { "HOME" => "/root" } )
 end
 
 ruby_block "alias dev-lxc" do
