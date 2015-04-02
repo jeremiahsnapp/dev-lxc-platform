@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+if [[ -z "$1" ]]; then
+    cluster_path="$PWD"
+else
+    cluster_path=$(readlink -f "$1")
+fi
+
+if [[ ! -d "$cluster_path" ]]; then
+    echo ERROR: Cluster path "$cluster_path" does not exist
+    exit 1
+fi
+
+cluster="${cluster_path##*/}"
+
+cd "$cluster_path"
+
+if TMUX= tmux new-session -s "$cluster" -n cluster -d; then
+    tmux split-window -h -t "$cluster"
+    tmux send-keys -t "$cluster" "watch -n0.5 free -h" C-m
+
+    tmux split-window -v -t "$cluster"
+    tmux send-keys -t "$cluster" "watch -n0.5 dev-lxc list-images" C-m
+
+    tmux select-pane -t "$cluster:cluster.1"
+
+    tmux split-window -v -t "$cluster"
+    tmux send-keys -t "$cluster" "watch -n0.5 dev-lxc status" C-m
+
+    tmux new-window -a -t "$cluster" -n shell
+fi
+
+tmux select-window -t "$cluster:cluster"
+
+tmux select-pane -t "$cluster:cluster.0"
+
+if ! tmux switch-client -t "$cluster"; then
+    tmux attach -t "$cluster"
+fi

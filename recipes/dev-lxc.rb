@@ -22,3 +22,10 @@ ruby_block "alias dev-lxc" do
     rc.write_file
   end
 end
+
+cookbook_file '/usr/local/bin/cluster-view' do
+  source 'cluster-view'
+  owner 'root'
+  group 'root'
+  mode 0755
+end
