@@ -50,17 +50,6 @@ cookbook_file '/etc/profile.d/lxc-helpers.sh' do
   source 'lxc-helpers.sh'
 end
 
-# re-source lxc-helpers in case byobu is used
-# ref: https://bugs.launchpad.net/byobu/+bug/525552
-ruby_block "edit root bashrc" do
-  block do
-    rc = Chef::Util::FileEdit.new("/root/.bashrc")
-    rc.insert_line_if_no_match(/lxc-helpers.sh$/,
-       ". /etc/profile.d/lxc-helpers.sh")
-    rc.write_file
-  end
-end
-
 ruby_block "add WORKING_CONTAINER to PS1" do
   block do
     rc = Chef::Util::FileEdit.new("/root/.bashrc")
