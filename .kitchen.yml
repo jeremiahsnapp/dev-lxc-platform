@@ -26,8 +26,8 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
     driver:
-      box: ubuntu/trusty64
-      box_url: https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box
+      box: opscode-ubuntu-14.04
+      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 
 suites:
   - name: default
