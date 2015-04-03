@@ -33,6 +33,7 @@ suites:
   - name: default
     run_list:
       - recipe[apt]
+      - recipe[ntp]
       - recipe[dev-lxc-platform::btrfs]
       - recipe[dev-lxc-platform::mount-lxc-btrfs]
       - recipe[dev-lxc-platform]
