@@ -32,7 +32,7 @@ function xc-attach {
     else
 	echo "Running command in '$WORKING_CONTAINER'"
     fi
-    lxc-attach -n $WORKING_CONTAINER --keep-env -- $@
+    env -i LANG="en_US.UTF-8" TERM="linux" HOME="$HOME" lxc-attach -n $WORKING_CONTAINER -- $@
 }
 export -f xc-attach
 # xc-chroot
@@ -207,7 +207,7 @@ function xc-start {
     echo -n "Waiting for network availability in '$WORKING_CONTAINER' "
 
     for i in {1..10}; do
-      if xc-attach ip -o -f inet a show dev eth0 | grep -q eth0; then
+      if lxc-attach -n $WORKING_CONTAINER --clear-env -- ip -o -f inet a show dev eth0 | grep -q eth0; then
 	echo
         return 0
       fi
