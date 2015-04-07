@@ -161,6 +161,47 @@ function xc-mount {
     fi
 }
 export -f xc-mount
+# xc-snapshot container1 container2
+#   Set WORKING_CONTAINER to container1 and snapshot clone it into container2
+#   WORKING_CONTAINER must exist and not be running
+#
+# xc-snapshot container
+#   Snapshot clone WORKING_CONTAINER into container
+#   WORKING_CONTAINER must exist and not be running
+function xc-snapshot {
+    if [[ -n $1 ]]; then
+	if [[ -n $2 ]]; then
+	    echo "Setting WORKING_CONTAINER=$1"
+	    WORKING_CONTAINER=$1
+	    local SNAPSHOT_CONTAINER=$2
+	else
+	    local SNAPSHOT_CONTAINER=$1
+	fi
+    fi
+    if [[ -z $WORKING_CONTAINER ]]; then
+	echo "Please specify a container to snapshot or set the WORKING_CONTAINER first using xc-working"
+	return 1
+    fi
+    if [[ -z $SNAPSHOT_CONTAINER ]]; then
+	echo "Please specify a name for the snapshot"
+	return 1
+    fi
+    if ! lxc-info -n $WORKING_CONTAINER &> /dev/null; then
+	echo "Aborting snapshot because container '$WORKING_CONTAINER' does not exist."
+	return 1
+    fi
+    if lxc-info -n $SNAPSHOT_CONTAINER &> /dev/null; then
+	echo "Aborting snapshot because snapshot '$SNAPSHOT_CONTAINER' already exists."
+	return 1
+    fi
+    if ! lxc-wait -t 0 -n $WORKING_CONTAINER -s STOPPED &> /dev/null; then
+	echo "Aborting snapshot because container '$WORKING_CONTAINER' is not STOPPED."
+	return 1
+    fi
+    echo "Making a snapshot clone of '$WORKING_CONTAINER' in '$SNAPSHOT_CONTAINER'"
+    lxc-clone -s -o $WORKING_CONTAINER -n $SNAPSHOT_CONTAINER
+}
+export -f xc-snapshot
 # xc-start container1 container2
 #   Set BASE_CONTAINER to container1 and WORKING_CONTAINER to container2
 #   If WORKING_CONTAINER does not exist then clone BASE_CONTAINER to WORKING_CONTAINER
