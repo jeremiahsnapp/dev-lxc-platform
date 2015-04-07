@@ -233,7 +233,7 @@ function xc-start {
     fi
     if ! lxc-info -n $WORKING_CONTAINER &> /dev/null; then
 	if [[ -z $BASE_CONTAINER ]]; then
-	    echo "Please set the WORKING_CONTAINER first using xc-working"
+	    echo "Please specify a base container or set the BASE_CONTAINER first using xc-base"
 	    return 1
 	fi
 	echo "Cloning '$BASE_CONTAINER' into '$WORKING_CONTAINER'"
