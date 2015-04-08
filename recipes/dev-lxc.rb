@@ -1,3 +1,13 @@
+directory '/btrfs/dev-lxclib'
+directory '/var/lib/dev-lxc'
+mount '/var/lib/dev-lxc' do
+  device '/btrfs/dev-lxclib'
+  fstype 'none'
+  options 'bind'
+  pass 0
+  action [:mount, :enable]
+end
+
 include_recipe 'build-essential'
 
 package 'lxc-dev'
