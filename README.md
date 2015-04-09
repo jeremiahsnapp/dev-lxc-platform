@@ -12,7 +12,7 @@ or just general LXC container usage.
 ### Features
 
 1. LXC 1.0 Containers - Resource efficient servers with fast start/stop times and standard init
-2. Btrfs - Efficient storage backend provides fast, lightweight container cloning
+2. Btrfs - Efficient, persistent storage backend provides fast, lightweight container cloning
 3. Dnsmasq - DHCP networking and DNS resolution
 4. Platform Images - Images that are built to resemble a traditional server
 
