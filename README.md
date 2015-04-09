@@ -6,41 +6,32 @@ to build Chef server clusters.
 
 The environment is also suitable for other tools that use LXC such as
 [docker](https://www.docker.io/), [Test Kitchen](http://kitchen.ci/) and
-[Chef Metal](http://www.getchef.com/blog/2014/03/04/chef-metal-0-2-release/)
+[Chef Provisioning](https://docs.chef.io/provisioning.html)
 or just general LXC container usage.
 
-The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 13.10
-[Vagrant base box](https://github.com/opscode/bento) created by Chef.
+### Features
 
-The .kitchen.yml uses the dev-lxc-platform cookbook contained in this repo to install
-and configure a suitable LXC with Btrfs backed container storage.
+1. LXC 1.0 Containers - Resource efficient servers with fast start/stop times and standard init
+2. Btrfs - Efficient storage backend provides fast, lightweight container cloning
+3. Dnsmasq - DHCP networking and DNS resolution
+4. Platform Images - Images that are built to resemble a traditional server
 
-The .kitchen.yml is configured to use 8GB ram in order to give plenty of room to run
-multiple containers. Feel free to reduce this if it is too much for your environment.
-
-The .kitchen.yml is configured to mount `~/dev` directory from your workstation so you
-can share things like Chef packages from your workstation to the Vagrant VM and
-ultimately to running LXC containers. Feel free to change this to a directory that
-is appropriate for your environment.
-
-### Persistent Btrfs volume
-
-Vagrant will create a second virtual disk to store the LXC containers in a Btrfs filesystem.
-The vagrant-persistent-storage plugin will ensure the volume is detached before the VM is
-destroyed and reattached when the VM is created.
-
-While this persistent volume allows the Vagrant VM to be treated as disposable I recommend
-that you don't bother destroying the VM regularly unless you want to wait for it to be
-provisioned each time.  I keep the VM running a lot of the time so I can jump in
-and use it when I need to.  If I really want to shut it down I just `vagrant halt` it.
+Creating snapshot clones of Btrfs backed containers is very fast which is helpful
+especially for experimenting and troubleshooting.
 
 ## Requirements
 
-The following gems and vagrant plugins are required.
+Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 
-    gem install berkshelf
-    gem install test-kitchen
-    vagrant plugin install vagrant-persistent-storage
+Download and install [Vagrant](https://www.vagrantup.com/downloads.html).
+
+Install the vagrant-persistent-storage plugin.
+
+```
+vagrant plugin install vagrant-persistent-storage
+```
+
+Download and install [ChefDK](http://downloads.chef.io/chef-dk/).
 
 ### Workstation to Container Networking
 
@@ -57,9 +48,36 @@ For OS X you can run the following command.
 
     echo nameserver 10.0.3.1 | sudo tee /etc/resolver/lxc
 
+### Kitchen Configuration
+
+The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 14.04
+[Vagrant base box](https://github.com/opscode/bento) created by Chef.
+
+The .kitchen.yml uses the dev-lxc-platform cookbook contained in this repo to install
+and configure a suitable LXC with Btrfs backed container storage.
+
+The .kitchen.yml is configured to use 6GB ram in order to give plenty of room to run
+multiple containers. Feel free to reduce this if it is too much for your environment.
+
+The .kitchen.yml has a commented out `synced_folders` section.
+Uncomment and configure the section appropriately if you want to mount a directory from
+your workstation into the Vagrant VM. This is useful for sharing things like Chef packages
+from your workstation into the Vagrant VM and ultimately into running LXC containers.
+
 ### Create the vm and converge it.
 
     kitchen converge
+
+### Persistent Btrfs volume
+
+Vagrant will create a second virtual disk to store the LXC containers in a Btrfs filesystem.
+The vagrant-persistent-storage plugin will ensure the volume is detached before the VM is
+destroyed and reattached when the VM is created.
+
+While this persistent volume allows the Vagrant VM to be treated as disposable I recommend
+that you don't bother destroying the VM regularly unless you want to wait for it to be
+provisioned each time.  I keep the VM running a lot of the time so I can jump in
+and use it when I need to.  If I really want to shut it down I just `vagrant halt` it.
 
 ### Connect to the vm.
 
@@ -76,20 +94,22 @@ Correctly setting the `VAGRANT_CWD` environment variable will allow Vagrant comm
 
 You can run the following command in the top level directory of the `dev-lxc-platform` repo.
 
-    export VAGRANT_CWD=$(realpath .kitchen/kitchen-vagrant/default-ubuntu-1310)
+```
+export VAGRANT_CWD=$(realpath .kitchen/kitchen-vagrant/default-ubuntu-1310)
+```
 
 Alternatively, you can use [direnv](http://direnv.net/) with the `.envrc` file included in the
 dev-lxc-platform repo to automatically set `VAGRANT_CWD` upon entering the top level directory
 of the dev-lxc-platform repo.
 
-You can install `direnv` by running `brew install direnv`.
+If you have `homebrew` installed in OS X then you can install `direnv` by running `brew install direnv`.
 
 ### Use a terminal multiplexer
 
-Since you may spend a lot of time doing work within the Vagrant vm you might
+Since you may spend a lot of time doing work within the Vagrant VM you should
 consider using a terminal multiplexer such as tmux or [byobu](http://byobu.co/).
 
-These tools are already installed in the Vagrant vm.
+These tools are already installed in the Vagrant VM.
 
 Once you login to the root user you can set byobu to auto-run on every login by
 running the following command.
@@ -108,6 +128,119 @@ will give you a list of frequently used key bindings.
 Read the following introduction to LXC if you aren't already familiar with it.
 
 [LXC 1.0 Introduction](https://www.stgraber.org/2013/12/20/lxc-1-0-blog-post-series/)
+
+## Usage
+
+### Use root
+
+The following commands must be run as the root user so once you login to the Vagrant VM you
+should run `sudo -i` to login as the root user.
+
+### Create a Platform Image
+
+Use the installed dev-lxc tool to create a platform image. These platform images can then
+be cloned into new containers.
+
+You can see a menu of platform images this tool can create by using the following command.
+
+```
+dev-lxc create
+```
+
+The initial creation of platform images can take a few minutes so let's start creating
+an Ubuntu 14.04 image now.
+
+```
+dev-lxc create p-ubuntu-1404
+```
+
+### Base Container / Working Container Workflow
+
+The dev-lxc-platform has a number of bash functions with names that begin with `xc-`.
+Many of these are simple wrappers around their counterpart `lxc-` command.
+Type `xc-` and hit the TAB key a couple times to see the list of commands.
+
+The `xc-` commands are designed to use environment variables to identify what container to
+act on. This makes the commands easier to run compared to the `lxc-` commands requirements.
+
+The `BASE_CONTAINER` environment variable can be set to the name of the container that
+should be used during cloning operations.
+
+If the name of the base container is specified when running an `xc-` command then the
+`BASE_CONTAINER` variable is set to that name. Then subsequent `xc-` commands can be
+run without specifying the name and the same container will continue to be treated as the
+base container.
+
+The `WORKING_CONTAINER` environment variable can be set to the name of the container that
+should be acted on by the `xc-` command.
+
+If the name of the working container is specified when running an `xc-` command then the
+`WORKING_CONTAINER` variable is set to that name. Then subsequent `xc-` commands can be
+run without specifying the name and the same container will continue to be treated as the
+working container.
+
+For example:
+
+Clone base container named "p-ubuntu-1404" into working container named "test.lxc" and start it.
+
+```
+xc-start p-ubuntu-1404 test.lxc
+```
+
+Show (or manually set) the name of the base container and working container.
+
+```
+xc-base
+xc-working
+```
+
+Destroy "test.lxc".
+
+```
+xc-destroy
+```
+
+Re-clone base container named "p-ubuntu-1404" into working container named "test.lxc" and start it.
+
+```
+xc-start
+```
+
+#### Mount directories into the working container
+
+Mount the Vagrant VM's `/dev-shared` directory into the working container.
+
+```
+xc-mount /dev-shared dev-shared
+xc-stop
+xc-start
+```
+
+#### Run a command in the working container without logging into it
+
+```
+xc-attach uptime
+```
+
+#### Attach the terminal to the working container
+
+```
+xc-attach
+```
+
+#### Use dev-lxc to install Chef Client into a container.
+
+```
+dev-lxc install-chef-client $(xc-working)
+```
+
+dev-lxc can also configure Chef Client in a container and/or bootstrap it.
+Read the help docs for the following commands.
+
+```
+dev-lxc help configure-chef-client
+dev-lxc help bootstrap-container
+```
 
 ## Basic LXC Usage
 
