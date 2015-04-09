@@ -53,6 +53,11 @@ For OS X you can run the following command.
 The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 14.04
 [Vagrant base box](https://github.com/opscode/bento) created by Chef.
 
+The .kitchen.yml is configured to install ChefDK into the Vagrant VM for provisioning.
+The root user's shell environment is also configured to use ChefDK as the default ruby.
+This makes dev-lxc-platform a great platform for testing and experimenting with other
+Chef container technologies.
+
 The .kitchen.yml uses the dev-lxc-platform cookbook contained in this repo to install
 and configure a suitable LXC with Btrfs backed container storage.
 
