@@ -32,7 +32,12 @@ function xc-attach {
     else
 	echo "Running command in '$WORKING_CONTAINER'"
     fi
-    env -i LANG="en_US.UTF-8" TERM="linux" HOME="$HOME" lxc-attach -n $WORKING_CONTAINER -- $@
+    env -i \
+	LANG="en_US.UTF-8" \
+	TERM="linux" \
+	HOME="$HOME" \
+	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+	lxc-attach -n $WORKING_CONTAINER -- $@
 }
 export -f xc-attach
 # xc-chroot
