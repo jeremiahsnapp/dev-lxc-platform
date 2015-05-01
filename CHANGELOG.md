@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 1.3.0 (2015-05-01)
+
+* Update VAGRANT_CWD path for kitchen 1.4.0
+
 ## 1.2.0 (2015-05-01)
 
 * Change the suggested mount point
