@@ -100,7 +100,7 @@ Correctly setting the `VAGRANT_CWD` environment variable will allow Vagrant comm
 You can run the following command in the top level directory of the `dev-lxc-platform` repo.
 
 ```
-export VAGRANT_CWD=$(realpath .kitchen/kitchen-vagrant/default-ubuntu-1310)
+export VAGRANT_CWD=$(realpath .kitchen/kitchen-vagrant/kitchen-dev-lxc-platform-default-ubuntu-1404)
 ```
 
 Alternatively, you can use [direnv](http://direnv.net/) with the `.envrc` file included in the
