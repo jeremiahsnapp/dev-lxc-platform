@@ -213,10 +213,10 @@ xc-start
 
 #### Mount directories into the working container
 
-Mount the Vagrant VM's `/dev-shared` directory into the working container.
+Mount the Vagrant VM's `/root/dev` directory into the working container.
 
 ```
-xc-mount /dev-shared dev-shared
+xc-mount /root/dev root/dev
 xc-stop
 xc-start
 ```
