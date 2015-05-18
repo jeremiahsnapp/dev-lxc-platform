@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 1.3.2 (2015-05-18)
+
+* Remove dependency on `realpath` in .envrc
+
 ## 1.3.1 (2015-05-14)
 
 * Use more prescriptive synced_folders source
