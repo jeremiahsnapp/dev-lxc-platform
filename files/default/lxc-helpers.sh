@@ -243,6 +243,8 @@ function xc-start {
 	fi
 	echo "Cloning '$BASE_CONTAINER' into '$WORKING_CONTAINER'"
 	lxc-clone -s -o $BASE_CONTAINER -n $WORKING_CONTAINER
+	echo "Deleting SSH Server Host Keys"
+	rm -f /var/lib/lxc/${WORKING_CONTAINER}/rootfs/etc/ssh/ssh_host*_key*
     fi
     echo "Starting '$WORKING_CONTAINER'"
     lxc-start -d -n $WORKING_CONTAINER
