@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 1.3.3 (2015-05-21)
+
+* Delete SSH server host keys when images get cloned
+
 ## 1.3.2 (2015-05-18)
 
 * Remove dependency on `realpath` in .envrc
