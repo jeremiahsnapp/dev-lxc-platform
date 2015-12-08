@@ -1,5 +1,12 @@
 # dev-lxc-platform Change Log
 
+## 2.0.0 (2015-12-08)
+
+* Use Ubuntu 15.04 for host VM to allow creation of containers with systemd for init
+  such as Ubuntu 15.04 and Centos 7
+
+* Install LXD instead of just LXC
+
 ## 1.3.3 (2015-05-21)
 
 * Delete SSH server host keys when images get cloned
