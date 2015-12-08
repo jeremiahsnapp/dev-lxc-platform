@@ -37,5 +37,6 @@ suites:
       - recipe[dev-lxc-platform::fix-ntp]
       - recipe[dev-lxc-platform::btrfs]
       - recipe[dev-lxc-platform::mount-lxc-btrfs]
+      - recipe[dev-lxc-platform::mount-lxd-btrfs]
       - recipe[dev-lxc-platform]
       - recipe[dev-lxc-platform::dev-lxc]
