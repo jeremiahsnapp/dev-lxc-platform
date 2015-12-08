@@ -24,16 +24,17 @@ provisioner:
   chef_omnibus_root: /opt/chefdk
 
 platforms:
-  - name: ubuntu-14.04
+  - name: ubuntu-15.04
     driver:
-      box: opscode-ubuntu-14.04
-      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+      box: opscode-ubuntu-15.04
+      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-15.04_chef-provisionerless.box
 
 suites:
   - name: default
     run_list:
       - recipe[apt]
       - recipe[ntp]
+      - recipe[dev-lxc-platform::fix-ntp]
       - recipe[dev-lxc-platform::btrfs]
       - recipe[dev-lxc-platform::mount-lxc-btrfs]
       - recipe[dev-lxc-platform]

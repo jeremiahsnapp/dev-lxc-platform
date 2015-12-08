@@ -17,7 +17,6 @@ package 'lxc-templates' do
 end
 
 service 'lxc-net' do
-  provider Chef::Provider::Service::Upstart
   action [:enable, :start]
 end
 

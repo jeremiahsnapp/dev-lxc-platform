@@ -6,7 +6,7 @@ package 'htop'
 
 if node['platform'] == 'ubuntu'
   case node['platform_version'].to_f
-  when 14.04
+  when 14.04, 15.04
     package 'emacs24-nox'
   when 12.04
     package 'emacs23-nox'
