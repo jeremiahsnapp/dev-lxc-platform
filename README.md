@@ -1,3 +1,26 @@
+## dev-lxc-platform 2.0 Upgrade Instructions
+
+If you are running dev-lxc-platform 1.x and you want to upgrade to 2.x please use the following instructions.
+
+1. Run `kitchen destroy` to destroy the host VM **BEFORE** pulling/downloading the new dev-lxc-platform code.
+   Destroying the VM before downloading the new dev-lxc-platform code avoids complications caused by the new
+   `.kitchen.yml` file pointing to the Ubuntu 15.04 image.
+   Running `kitchen destroy` should not destroy the second disk that holds the containers you've built as long
+   as you have the `vagrant-persistent-storage` plugin installed.
+
+2. Make sure you have the latest version of Vagrant and Virtualbox installed.
+
+3. Upgrade the `vagrant-persistent-storage` plugin.
+   `vagrant plugin update vagrant-persistent-storage`
+
+4. Run `git pull --rebase` if you already have a clone of the dev-lxc-platform repository or download the
+   latest dev-lxc-platform cookbook code.
+
+5. Run `kitchen converge` from the root directory of the dev-lxc-platform cookbook to build the new
+   Ubuntu 15.04 host VM.
+
+6. Login to the new VM and continue using your containers.
+
 ## Description
 
 The primary purpose of the dev-lxc-platform repo is to build a suitable environment for
@@ -5,13 +28,14 @@ the [dev-lxc](https://github.com/jeremiahsnapp/dev-lxc) tool which uses LXC cont
 to build Chef server clusters.
 
 The environment is also suitable for other tools that use LXC such as
-[docker](https://www.docker.io/), [Test Kitchen](http://kitchen.ci/) and
+[LXD](https://linuxcontainers.org/lxd/introduction/), [docker](https://www.docker.io/),
+[Test Kitchen](http://kitchen.ci/) and
 [Chef Provisioning](https://docs.chef.io/provisioning.html)
 or just general LXC container usage.
 
 ### Features
 
-1. LXC 1.0 Containers - Resource efficient servers with fast start/stop times and standard init
+1. LXD and LXC Containers - Resource efficient servers with fast start/stop times and standard init
 2. Btrfs - Efficient, persistent storage backend provides fast, lightweight container cloning
 3. Dnsmasq - DHCP networking and DNS resolution
 4. Platform Images - Images that are built to resemble a traditional server
@@ -132,7 +156,19 @@ will give you a list of frequently used key bindings.
 
 Read the following introduction to LXC if you aren't already familiar with it.
 
-[LXC 1.0 Introduction](https://www.stgraber.org/2013/12/20/lxc-1-0-blog-post-series/)
+[LXC Introduction](https://linuxcontainers.org/lxc/introduction/)
+
+[LXC Articles](https://linuxcontainers.org/lxc/articles/)
+
+[LXC Getting Started](https://linuxcontainers.org/lxc/getting-started/)
+
+## LXD Introduction
+
+[LXD Introduction](https://linuxcontainers.org/lxd/introduction/)
+
+[LXD Getting Started](https://linuxcontainers.org/lxd/getting-started-cli/)
+
+[LXD Articles](https://linuxcontainers.org/lxd/articles/)
 
 ## Usage
 
@@ -246,55 +282,3 @@ Read the help docs for the following commands.
 dev-lxc help configure-chef-client
 dev-lxc help bootstrap-container
 ```
-
-## Basic LXC Usage
-
-### Use root
-
-The following commands must be run as the root user so once you login to the Vagrant VM you
-should run `sudo -i` to login as the root user.
-
-### Create a container.
-
-Using the 'download' template is a very fast and storage efficient way to create a container
-for many distros since it actually downloads the compressed tarball of a prebuilt container's rootfs.
-
-By default the download template pulls from https://images.linuxcontainers.org/ but you can
-also use template parameters to specify a different image site.
-
-As an alternative to the 'download' template you could use any other template that is found in
-`/usr/share/lxc/templates/` or create your own.
-
-    lxc-create -B btrfs -t download -n ubuntu-1204 -- -d ubuntu -r precise -a amd64
-
-### Start the container.
-
-    lxc-start -d -n ubuntu-1204
-
-### Connect to the container's console.
-
-    lxc-console -n ubuntu-1204
-
-### Detach from the container.
-
-    CTRL-a q
-
-### Attach to the container as the root user without having to login.
-
-    lxc-attach -n ubuntu-1204
-
-### List containers.
-
-    lxc-ls --fancy
-
-### Stop the container.
-
-    lxc-stop -n ubuntu-1204
-
-### Clone the container.
-
-    lxc-clone -s -o ubuntu-1204 -n ubuntu-1204-2
-
-### Destroy the container.
-
-    lxc-destroy -n ubuntu-1204
