@@ -254,7 +254,7 @@ function xc-start {
     echo "'$WORKING_CONTAINER' is RUNNING"
     echo -n "Waiting for network availability in '$WORKING_CONTAINER' "
 
-    for i in {1..10}; do
+    for i in {1..30}; do
       if lxc-attach -n $WORKING_CONTAINER --clear-env -- ip -o -f inet a show dev eth0 | grep -q eth0; then
 	echo
         return 0
@@ -264,7 +264,7 @@ function xc-start {
     done
 
     echo
-    echo "WARNING: Timed out after waiting 10 seconds for network availability in '$WORKING_CONTAINER'"
+    echo "WARNING: Timed out after waiting 30 seconds for network availability in '$WORKING_CONTAINER'"
     return 1
 }
 export -f xc-start
