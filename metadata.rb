@@ -7,3 +7,4 @@ supports 'ubuntu'
 
 depends 'apt'
 depends 'build-essential'
+depends 'sysdig'

@@ -35,6 +35,7 @@ suites:
       - recipe[apt]
       - recipe[ntp]
       - recipe[dev-lxc-platform::fix-ntp]
+      - recipe[dev-lxc-platform::sysdig]
       - recipe[dev-lxc-platform::btrfs]
       - recipe[dev-lxc-platform::mount-lxc-btrfs]
       - recipe[dev-lxc-platform::mount-lxd-btrfs]
