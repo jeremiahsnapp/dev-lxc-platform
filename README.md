@@ -39,6 +39,7 @@ or just general LXC container usage.
 2. Btrfs - Efficient, persistent storage backend provides fast, lightweight container cloning
 3. Dnsmasq - DHCP networking and DNS resolution
 4. Platform Images - Images that are built to resemble a traditional server
+5. Sysdig preinstalled for awesome transparency into container activity
 
 Creating snapshot clones of Btrfs backed containers is very fast which is helpful
 especially for experimenting and troubleshooting.

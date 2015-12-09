@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 2.0.1 (2015-12-09)
+
+* Install Sysdig in Ubuntu VM
+
 ## 2.0.0 (2015-12-08)
 
 * Use Ubuntu 15.04 for host VM to allow creation of containers with systemd for init
