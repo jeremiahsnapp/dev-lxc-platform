@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## Unreleased
+
+* Add bash completion for common subcommands on container names
+
 ## 2.0.1 (2015-12-09)
 
 * Install Sysdig in Ubuntu VM
