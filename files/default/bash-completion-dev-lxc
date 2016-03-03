@@ -1,0 +1,36 @@
+_dev-lxc()
+{
+    shopt -s extglob
+
+    local cur prev opts base
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    #
+    #  The basic options we'll complete.
+    #
+    opts="attach destroy halt list-images realpath run-command snapshot status up"
+
+    #replace spaces and place in extglob format
+    pipeopts="@(`echo $opts | sed 's/ /|/g'`)"
+
+    #
+    #  Complete the arguments to some of the basic commands.
+    #
+    case "${prev}" in
+        $pipeopts)
+            local names=`dev-lxc list-images | grep Final | awk  '{ print $NF }'`
+            COMPREPLY=( $(compgen -W "${names}" -- ${cur}) )
+            return 0
+            ;;
+        *)
+        ;;
+    esac
+
+   COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+   return 0
+}
+
+complete -F _dev-lxc dev-lxc
+complete -F _dev-lxc dl
