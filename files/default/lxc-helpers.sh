@@ -139,7 +139,7 @@ export -f xc-kill-all
 # xc-ls
 #   Run lxc-ls with arguments given
 function xc-ls {
-    lxc-ls --fancy -F name,state,memory,ipv4 $@
+    lxc-ls --fancy -F name,state,ram,ipv4 $@
 }
 export -f xc-ls
 # xc-mount host_path container_mount_point
