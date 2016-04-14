@@ -6,12 +6,12 @@ apt_repository 'ubuntu-lxc' do
   key '7635B973'
 end
 
-package 'lxd' do
+package ['lxd', 'lxd-client', 'lxc', 'lxcfs', 'lxc-templates'] do
   action :upgrade
 end
 
-package 'lxc-templates' do
-  action :upgrade
+remote_file "/etc/bash_completion.d/lxd-client" do
+  source "file:///usr/share/bash-completion/completions/lxc"
 end
 
 service 'lxc-net' do
