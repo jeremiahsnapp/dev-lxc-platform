@@ -63,10 +63,3 @@ cookbook_file '/usr/local/bin/containers-view' do
   group 'root'
   mode 0755
 end
-
-cookbook_file '/etc/bash_completion.d/dev-lxc' do
-  source 'bash-completion-dev-lxc'
-  owner 'root'
-  group 'root'
-  mode 0755
-end
