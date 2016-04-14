@@ -18,5 +18,3 @@ cookbook_file '/root/.emacs' do
 end
 
 package 'vim-nox'
-
-package 'parallel'
