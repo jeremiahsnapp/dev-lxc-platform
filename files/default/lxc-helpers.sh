@@ -204,7 +204,7 @@ function xc-snapshot {
 	return 1
     fi
     echo "Making a snapshot clone of '$WORKING_CONTAINER' in '$SNAPSHOT_CONTAINER'"
-    lxc-clone -s -o $WORKING_CONTAINER -n $SNAPSHOT_CONTAINER
+    lxc-copy -s -n $WORKING_CONTAINER -N $SNAPSHOT_CONTAINER
 }
 export -f xc-snapshot
 # xc-start container1 container2
@@ -242,7 +242,7 @@ function xc-start {
 	    return 1
 	fi
 	echo "Cloning '$BASE_CONTAINER' into '$WORKING_CONTAINER'"
-	lxc-clone -s -o $BASE_CONTAINER -n $WORKING_CONTAINER
+	lxc-copy -s -n $BASE_CONTAINER -N $WORKING_CONTAINER
 	echo "Deleting SSH Server Host Keys"
 	rm -f /var/lib/lxc/${WORKING_CONTAINER}/rootfs/etc/ssh/ssh_host*_key*
     fi
