@@ -7,3 +7,10 @@ include_recipe 'dev-lxc-platform::helpful-addons'
 include_recipe 'dev-lxc-platform::lxc'
 
 include_recipe 'dev-lxc-platform::lxc-helpful-addons'
+
+execute "Setup ChefDK as default ruby" do
+  command "chef shell-init bash >> /root/.bashrc"
+  user "root"
+  environment( { "HOME" => "/root" } )
+  not_if "grep 'PATH=.*chefdk' /root/.bashrc"
+end

@@ -12,13 +12,6 @@ include_recipe 'build-essential'
 
 package 'lxc-dev'
 
-execute "Setup ChefDK as default ruby" do
-  command "chef shell-init bash >> /root/.bashrc"
-  user "root"
-  environment( { "HOME" => "/root" } )
-  not_if "grep 'PATH=.*chefdk' /root/.bashrc"
-end
-
 execute "install dev-lxc gem" do
   command "chef gem install dev-lxc"
   user "root"
