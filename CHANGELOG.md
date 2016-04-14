@@ -1,8 +1,12 @@
 # dev-lxc-platform Change Log
 
-## Unreleased
+## 2.1.0 (2016-04-14)
 
-* Add bash completion for common subcommands on container names
+* Add bash completion for common dev-lxc subcommands on container names
+
+* Add bash completion for lxd-client
+
+* No longer install parallel package
 
 ## 2.0.1 (2015-12-09)
 
