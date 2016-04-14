@@ -1,5 +1,15 @@
 # dev-lxc-platform Change Log
 
+## 3.0.0 (2016-04-14)
+
+* Require Ubuntu 15.10 host VM to get LXD/LXC 2.0
+
+* Uninstall system ruby
+
+* Use lxc-copy instead of lxc-clone because lxc-clone is deprecated
+
+* lxc-ls format column "memory" changed to "ram"
+
 ## 2.1.0 (2016-04-14)
 
 * Add bash completion for common dev-lxc subcommands on container names
