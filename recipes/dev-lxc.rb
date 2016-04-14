@@ -25,6 +25,13 @@ execute "install dev-lxc gem" do
   environment( { "HOME" => "/root" } )
 end
 
+cookbook_file '/etc/bash_completion.d/dev-lxc' do
+  source 'bash-completion-dev-lxc'
+  owner 'root'
+  group 'root'
+  mode 0755
+end
+
 ruby_block "alias dev-lxc" do
   block do
     rc = Chef::Util::FileEdit.new("/root/.bashrc")
