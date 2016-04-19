@@ -15,6 +15,13 @@ cookbook_file '/root/.byobu/.tmux.conf' do
   action :create_if_missing
 end
 
+execute 'enable byobu' do
+  command '/usr/bin/byobu-enable'
+  environment ({'HOME' => '/root'})
+  user 'root'
+  not_if 'grep byobu-launch /root/.profile'
+end
+
 ruby_block "alias tls" do
   block do
     rc = Chef::Util::FileEdit.new("/root/.bashrc")
