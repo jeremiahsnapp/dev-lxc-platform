@@ -1,5 +1,11 @@
 # dev-lxc-platform Change Log
 
+## 3.1.0 (2016-04-19)
+
+* Enable byobu by default for root user
+
+* Use host's resolv.conf to resolve container FQDNs
+
 ## 3.0.0 (2016-04-14)
 
 * Require Ubuntu 15.10 host VM to get LXD/LXC 2.0
