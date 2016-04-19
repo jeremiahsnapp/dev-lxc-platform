@@ -24,6 +24,16 @@ cookbook_file '/etc/lxc/addn-hosts.conf' do
   notifies :restart, 'service[lxc-net]'
 end
 
+execute 'update resolv.conf' do
+  command '/sbin/resolvconf -u'
+  action :nothing
+end
+
+cookbook_file '/etc/resolvconf/resolv.conf.d/head' do
+  source 'resolvconf-head'
+  notifies :run, 'execute[update resolv.conf]'
+end
+
 directory '/usr/local/share/lxc/hooks' do
   recursive true
 end

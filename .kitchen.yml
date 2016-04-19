@@ -6,7 +6,6 @@ driver:
   customize:
     cpus: 4
     memory: 6144
-    natdnshostresolver1: "on"
 #  synced_folders:
 #    - ["~/dev", "/root/dev"]
   network:
