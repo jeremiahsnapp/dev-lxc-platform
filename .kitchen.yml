@@ -6,8 +6,8 @@ driver:
   customize:
     cpus: 4
     memory: 6144
-#  synced_folders:
-#    - ["~/dev", "/root/dev"]
+  synced_folders:
+    - ["~/dev", "/root/dev"]
   network:
     - ["private_network", {ip: "33.33.34.13"}]
   persistent_storage:
