@@ -1,5 +1,11 @@
 # dev-lxc-platform Change Log
 
+## 3.1.1 (2016-04-21)
+
+* Use include_recipe in default.rb for all dev-lxc-platform recipes
+
+* Enable synced_folders by default
+
 ## 3.1.0 (2016-04-19)
 
 * Enable byobu by default for root user
