@@ -10,7 +10,7 @@ _dev-lxc()
     #
     #  The basic options we'll complete.
     #
-    opts="attach destroy halt list-images realpath run-command snapshot status up"
+    opts="attach destroy halt run-command snapshot status up"
 
     #replace spaces and place in extglob format
     pipeopts="@(`echo $opts | sed 's/ /|/g'`)"
