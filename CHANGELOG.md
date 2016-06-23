@@ -1,5 +1,11 @@
 # dev-lxc-platform Change Log
 
+## 3.1.2 (2016-06-23)
+
+* Pin to dev-lxc 1.7.0
+
+* Add .gitattributes to force eol=lf handling
+
 ## 3.1.1 (2016-04-21)
 
 * Use include_recipe in default.rb for all dev-lxc-platform recipes
