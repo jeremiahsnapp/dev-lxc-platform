@@ -66,10 +66,3 @@ ruby_block "add WORKING_CONTAINER to PS1" do
     rc.write_file
   end
 end
-
-cookbook_file '/usr/local/bin/containers-view' do
-  source 'containers-view'
-  owner 'root'
-  group 'root'
-  mode 0755
-end
