@@ -1,5 +1,25 @@
 # dev-lxc-platform Change Log
 
+## 4.0.0 (2016-06-23)
+
+* Overhaul README for 4.0 release
+
+* Comment synced_folders in .kitchen.yml
+
+* Update list of dev-lxc commands in bash completion script
+
+* Remove extra right side panes from cluster-view
+
+* Remove WORKING_CONTAINER from PS1 prompt
+
+* Remove xc-* bash functions
+
+* Remove old unnecessary attributes
+
+* Remove containers-view
+
+* Remove version pin when installing dev-lxc gem
+
 ## 3.1.2 (2016-06-23)
 
 * Pin to dev-lxc 1.7.0
