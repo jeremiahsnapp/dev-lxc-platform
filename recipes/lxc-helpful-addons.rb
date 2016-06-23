@@ -55,10 +55,6 @@ cookbook_file '/etc/lxc/default.conf' do
   source 'lxc-default.conf'
 end
 
-cookbook_file '/etc/profile.d/lxc-helpers.sh' do
-  source 'lxc-helpers.sh'
-end
-
 ruby_block "add WORKING_CONTAINER to PS1" do
   block do
     rc = Chef::Util::FileEdit.new("/root/.bashrc")
