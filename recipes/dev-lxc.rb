@@ -13,7 +13,7 @@ include_recipe 'build-essential'
 package 'lxc-dev'
 
 execute "install dev-lxc gem" do
-  command "chef gem install dev-lxc -v 1.7.0"
+  command "chef gem install dev-lxc"
   user "root"
   environment( { "HOME" => "/root" } )
 end
