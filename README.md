@@ -21,10 +21,12 @@ with its persistent storage disk.
 5. Run `git pull --rebase` if you already have a clone of the dev-lxc-platform repository or download the
    latest dev-lxc-platform cookbook code.
 
-6. Run `kitchen converge` from the root directory of the dev-lxc-platform cookbook to build the new
+6. Delete the `Berksfile.lock` file if it exists so new versions of required cookbooks will be used.
+
+7. Run `kitchen converge` from the root directory of the dev-lxc-platform cookbook to build the new
    Ubuntu 15.10 host VM.
 
-7. Login to the new VM and start using the new dev-lxc 2.0 tool.
+8. Login to the new VM and start using the new dev-lxc 2.0 tool.
 
 ## Description
 
