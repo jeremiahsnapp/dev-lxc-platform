@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 4.0.1 (2016-06-24)
+
+* Remove btrfs directory and mount of /var/lib/dev-lxc
+
 ## 4.0.0 (2016-06-23)
 
 * Overhaul README for 4.0 release
