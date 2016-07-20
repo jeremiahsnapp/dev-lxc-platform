@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 4.0.2 (2016-07-20)
+
+* Change default mount point from dev to work
+
 ## 4.0.1 (2016-06-24)
 
 * Remove btrfs directory and mount of /var/lib/dev-lxc
