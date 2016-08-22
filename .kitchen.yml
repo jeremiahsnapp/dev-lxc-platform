@@ -23,10 +23,10 @@ provisioner:
   chef_omnibus_root: /opt/chefdk
 
 platforms:
-  - name: ubuntu-15.10
+  - name: ubuntu-16.04
     driver:
-      box: opscode-ubuntu-15.10
-      box_url: https://cloud-images.ubuntu.com/vagrant/wily/current/wily-server-cloudimg-amd64-vagrant-disk1.box
+      box: bento/ubuntu-16.04
+      box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-16.04_chef-provisionerless.box
 
 suites:
   - name: default
