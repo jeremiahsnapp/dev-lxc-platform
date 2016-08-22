@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 5.0.0 (2016-08-22)
+
+* Use bento/ubuntu-16.04 Vagrant box for the host VM
+
 ## 4.0.2 (2016-07-20)
 
 * Change default mount point from dev to work
