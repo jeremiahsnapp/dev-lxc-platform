@@ -1,21 +1,21 @@
-## dev-lxc-platform 4.0 Upgrade Instructions
+## dev-lxc-platform 5.0 Upgrade Instructions
 
 If you want to continue using dev-lxc 1.x then use version 3.1.2 of the dev-lxc-platform cookbook.
 
-dev-lxc-platform 4.0 is designed to use the new dev-lxc 2.0 tool which has many breaking changes.
+dev-lxc-platform 5.0 is designed to use the new dev-lxc 2.x tool which has many breaking changes.
 It is highly recommended that any existing version of dev-lxc-platform is destroyed first along
 with its persistent storage disk.
 
 1. Run `kitchen destroy` to destroy the host VM **BEFORE** pulling/downloading the new dev-lxc-platform code.
    Destroying the VM before downloading the new dev-lxc-platform code avoids complications caused by the new
-   `.kitchen.yml` file pointing to the Ubuntu 15.10 image.
+   `.kitchen.yml` file pointing to the Ubuntu image.
 
-2. Make sure you have the latest version of Vagrant and Virtualbox installed.
+2. Make sure you have the latest version of Vagrant and Virtualbox installed. This has been tested with Vagrant 1.8.5 and Virtualbox 5.0.14.
 
 3. Upgrade the `vagrant-persistent-storage` plugin.
    `vagrant plugin update vagrant-persistent-storage`
 
-4. WARNING - existing containers will be destroyed. Destroy the persistent storage disk.
+4. WARNING - this step will destroy existing containers. This step is only required if you are upgrading from dev-lxc 1.x to 2.x style clusters.
    `rm ~/VirtualBox VMs/dev-lxc-platform.vdi`
 
 5. Run `git pull --rebase` if you already have a clone of the dev-lxc-platform repository or download the
@@ -24,9 +24,9 @@ with its persistent storage disk.
 6. Delete the `Berksfile.lock` file if it exists so new versions of required cookbooks will be used.
 
 7. Run `kitchen converge` from the root directory of the dev-lxc-platform cookbook to build the new
-   Ubuntu 15.10 host VM.
+   Ubuntu host VM.
 
-8. Login to the new VM and start using the new dev-lxc 2.0 tool.
+8. Login to the new VM and start using the dev-lxc 2.x tool.
 
 ## Description
 
