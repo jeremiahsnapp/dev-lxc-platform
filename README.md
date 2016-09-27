@@ -82,7 +82,7 @@ For OS X you can run the following command.
 
 ### Kitchen Configuration
 
-The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 14.04
+The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 16.04
 [Vagrant base box](https://github.com/opscode/bento) created by Chef.
 
 The .kitchen.yml is configured to install ChefDK into the Vagrant VM for provisioning.
