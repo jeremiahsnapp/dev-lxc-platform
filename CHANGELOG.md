@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 5.0.1 (2016-11-28)
+
+* Remove dhcp release post-stop hook
+
 ## 5.0.0 (2016-08-22)
 
 * Use bento/ubuntu-16.04 Vagrant box for the host VM
