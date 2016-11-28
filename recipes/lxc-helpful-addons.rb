@@ -46,11 +46,6 @@ end
 # This provides the dhcp_release tool
 package 'dnsmasq-utils'
 
-cookbook_file '/usr/local/share/lxc/hooks/post-stop-dhcp-release' do
-  source 'post-stop-dhcp-release'
-  mode 00755
-end
-
 cookbook_file '/etc/lxc/default.conf' do
   source 'lxc-default.conf'
 end
