@@ -23,9 +23,9 @@ provisioner:
   chef_omnibus_root: /opt/chefdk
 
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu-16.10
     driver:
-      box: bento/ubuntu-16.04
+      box: bento/ubuntu-16.10
 
 suites:
   - name: default
