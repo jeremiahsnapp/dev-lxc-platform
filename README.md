@@ -142,6 +142,8 @@ to your user's <shell>rc file.
 
 Read the following introduction to LXC if you aren't already familiar with it.
 
+[LXC Blog Series - by LXC Project Lead Stéphane Graber](https://www.stgraber.org/2013/12/20/lxc-1-0-blog-post-series/)
+
 [LXC Introduction](https://linuxcontainers.org/lxc/introduction/)
 
 [LXC Articles](https://linuxcontainers.org/lxc/articles/)
@@ -149,6 +151,8 @@ Read the following introduction to LXC if you aren't already familiar with it.
 [LXC Getting Started](https://linuxcontainers.org/lxc/getting-started/)
 
 ## LXD Introduction
+
+[LXD Blog Series - by LXD Project Lead Stéphane Graber](https://www.stgraber.org/2016/03/11/lxd-2-0-blog-post-series-012/)
 
 [LXD Introduction](https://linuxcontainers.org/lxd/introduction/)
 
