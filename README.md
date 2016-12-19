@@ -63,7 +63,9 @@ Install the vagrant-persistent-storage plugin.
 vagrant plugin install vagrant-persistent-storage
 ```
 
-Download and install [ChefDK](http://downloads.chef.io/chef-dk/).
+Download and install [ChefDK](http://downloads.chef.io/).
+
+Run `chef shell-init` to read its usage docs. Then run the appropriate command for your shell.
 
 ### Workstation to Container Networking
 
