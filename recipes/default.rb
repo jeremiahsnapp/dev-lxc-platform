@@ -6,10 +6,10 @@ apt_package 'ruby' do
 end
 
 execute "Setup ChefDK as default ruby" do
-  command "chef shell-init bash >> /root/.bashrc"
+  command "echo 'eval \"$(chef shell-init bash)\"' >> /root/.bashrc"
   user "root"
   environment( { "HOME" => "/root" } )
-  not_if "grep 'PATH=.*chefdk' /root/.bashrc"
+  not_if "grep 'chef shell-init' /root/.bashrc"
 end
 
 include_recipe 'dev-lxc-platform::byobu'
