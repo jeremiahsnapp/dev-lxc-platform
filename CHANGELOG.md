@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 6.0.1 (2016-12-20)
+
+* Improve the way Chef DK is setup as default ruby
+
 ## 6.0.0 (2016-12-19)
 
 * Use bento/ubuntu-16.10 Vagrant box for the host VM
