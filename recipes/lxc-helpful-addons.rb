@@ -24,14 +24,14 @@ cookbook_file '/etc/lxc/addn-hosts.conf' do
   notifies :restart, 'service[lxc-net]'
 end
 
-execute 'update resolv.conf' do
-  command '/sbin/resolvconf -u'
+# restarting systemd-resolved.service updates /etc/resolv.conf AND /run/systemd/resolve/resolv.conf
+service 'systemd-resolved.service' do
   action :nothing
 end
 
 cookbook_file '/etc/resolvconf/resolv.conf.d/head' do
   source 'resolvconf-head'
-  notifies :run, 'execute[update resolv.conf]'
+  notifies :restart, 'service[systemd-resolved.service]'
 end
 
 directory '/usr/local/share/lxc/hooks' do
