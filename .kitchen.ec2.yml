@@ -1,0 +1,38 @@
+---
+driver:
+  name: ec2
+  instance_type: t2.medium
+  aws_ssh_key_id: your_aws_ssh_key_id
+
+transport:
+  ssh_key: ~/.ssh/your_private_key_file
+
+provisioner:
+  name: chef_zero
+  chef_omnibus_install_options: -P chefdk
+  chef_omnibus_root: /opt/chefdk
+
+platforms:
+  - name: ubuntu-16.10
+    driver:
+      block_device_mappings:
+        - device_name: /dev/sda1
+          ebs:
+            volume_type: gp2
+            volume_size: 20
+            delete_on_termination: true
+        - device_name: /dev/sda2
+          ebs:
+            volume_type: gp2
+            volume_size: 40
+            delete_on_termination: true
+
+suites:
+  - name: default
+    run_list:
+      - recipe[apt]
+      - recipe[ntp]
+      - recipe[dev-lxc-platform]
+    attributes:
+      dev-lxc-platform:
+        btrfs_device: /dev/xvdb
