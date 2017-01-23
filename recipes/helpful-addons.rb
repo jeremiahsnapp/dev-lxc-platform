@@ -21,3 +21,11 @@ bash 'extract mitmproxy' do
   code "tar xzf #{Chef::Config['file_cache_path']}/mitmproxy-1.0.2-linux.tar.gz -C /usr/local/bin"
   action :nothing
 end
+
+ruby_block "export LANG=en_US.UTF-8 for mitmproxy" do
+  block do
+    rc = Chef::Util::FileEdit.new("/root/.bashrc")
+    rc.insert_line_if_no_match(/^export LANG=en_US.UTF-8$/, "export LANG=en_US.UTF-8")
+    rc.write_file
+  end
+end
