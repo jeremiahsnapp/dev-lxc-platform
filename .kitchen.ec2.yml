@@ -1,7 +1,7 @@
 ---
 driver:
   name: ec2
-  instance_type: t2.medium
+  instance_type: t2.large
   aws_ssh_key_id: your_aws_ssh_key_id
 
 transport:
