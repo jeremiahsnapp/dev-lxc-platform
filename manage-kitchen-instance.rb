@@ -73,7 +73,7 @@ class ManageInstance < Thor
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
     when 'ec2'
-      i = get_instance(kitchen_instance_file)
+      i = get_ec2_instance(instance_config)
       puts "Starting EC2 instance #{i.id}"
       i.start
       i.wait_until_running
@@ -94,7 +94,7 @@ class ManageInstance < Thor
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
     when 'ec2'
-      i = get_instance(kitchen_instance_file)
+      i = get_ec2_instance(instance_config)
       puts "Stopping EC2 instance #{i.id}"
       i.stop
       i.wait_until_stopped
