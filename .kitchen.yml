@@ -1,32 +1,54 @@
 ---
-driver:
-  name: vagrant
-  vagrantfile_erb: Vagrantfile.erb
-#  gui: true
-  customize:
-    cpus: 4
-    memory: 6144
-#  synced_folders:
-#    - ["~/work", "/root/work"]
-  network:
-    - ["private_network", {ip: "33.33.34.13"}]
-  persistent_storage:
-    enabled: true
-    manage: false
-    format: false
-    size: 40 * 1024
-    location: File.expand_path('~/VirtualBox VMs/dev-lxc-platform.vdi')
-
 provisioner:
   name: chef_zero
   chef_omnibus_install_options: -P chefdk
   chef_omnibus_root: /opt/chefdk
 
 platforms:
-  - name: ubuntu-16.10
+  - name: ec2
     driver:
+      name: ec2
+      instance_type: t2.large
+      image_search:
+        name: ubuntu/images/*/ubuntu-*-16.10*
+      block_device_mappings:
+        - device_name: /dev/sda1
+          ebs:
+            volume_type: gp2
+            volume_size: 20
+            delete_on_termination: true
+        - device_name: /dev/sda2
+          ebs:
+            volume_type: gp2
+            volume_size: 40
+            delete_on_termination: true
+      aws_ssh_key_id: your_aws_ssh_key_id
+    transport:
+      ssh_key: ~/.ssh/your_private_key_file
+    attributes:
+      dev-lxc-platform:
+        btrfs_device: /dev/xvdb
+  - name: vagrant
+    driver:
+      name: vagrant
       box: bento/ubuntu-16.10
       box_url: https://atlas.hashicorp.com/bento/boxes/ubuntu-16.10/versions/2.3.1/providers/virtualbox.box
+      vagrantfile_erb: Vagrantfile.erb
+      # gui: true
+      customize:
+        cpus: 4
+        memory: 6144
+      # synced_folders:
+      #   - ["~/work", "/root/work"]
+      persistent_storage:
+        enabled: true
+        manage: false
+        format: false
+        size: 40 * 1024
+        location: File.expand_path('~/VirtualBox VMs/dev-lxc-platform.vdi')
+    attributes:
+      dev-lxc-platform:
+        btrfs_device: /dev/sdb
 
 suites:
   - name: default
@@ -35,5 +57,3 @@ suites:
       - recipe[ntp]
       - recipe[dev-lxc-platform]
     attributes:
-      dev-lxc-platform:
-        btrfs_device: /dev/sdb
