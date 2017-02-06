@@ -56,4 +56,8 @@ suites:
       - recipe[apt]
       - recipe[ntp]
       - recipe[dev-lxc-platform]
+      - recipe[dev-lxc-platform::create-base-containers]
     attributes:
+      dev-lxc-platform:
+        base_containers:
+          - b-ubuntu-1404
