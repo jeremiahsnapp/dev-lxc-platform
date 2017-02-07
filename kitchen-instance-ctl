@@ -4,7 +4,7 @@ require "yaml"
 require 'aws-sdk'
 require 'thor'
 
-class ManageInstance < Thor
+class KitchenInstanceCTL < Thor
 
   no_commands{
     def get_instance_config(kitchen_instance_file=nil)
@@ -41,17 +41,28 @@ class ManageInstance < Thor
         puts "Instance #{i.id} is #{i.state.name}"
         exit 1
       end
-      puts "Updating hostname for EC2 instance #{i.id} to #{i.public_dns_name}"
+      puts "Updating the hostname in #{kitchen_instance_file} to #{i.public_dns_name}"
       kitchen_instance = YAML.load(IO.read(kitchen_instance_file))
       kitchen_instance['hostname'] = i.public_dns_name
       IO.write(kitchen_instance_file, kitchen_instance.to_yaml)
     end
-  }    
 
-  desc "status", "Print instance state"
-  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file. `.kitchen/default-ubuntu-1610.yml` will be used by default"
-  def status
-    kitchen_instance_file = options[:file] || '.kitchen/default-ubuntu-1610.yml'
+    def update_kitchen_instance_file_port(kitchen_instance_file, port)
+      if port == 0
+        puts "ERROR: Port is not set for the Vagrant instance. Make sure the instance exists and is running."
+        exit 1
+      end
+      puts "Updating the port in #{kitchen_instance_file} to '#{port}'"
+      kitchen_instance = YAML.load(IO.read(kitchen_instance_file))
+      kitchen_instance['port'] = "#{port}"
+      IO.write(kitchen_instance_file, kitchen_instance.to_yaml)
+    end
+  }
+
+  desc "status [PLATFORM_NAME]", "Print instance state"
+  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`"
+  def status(platform_name=nil)
+    kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
     when 'ec2'
@@ -66,10 +77,10 @@ class ManageInstance < Thor
     end
   end
 
-  desc "start", "Start instance"
-  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file. `.kitchen/default-ubuntu-1610.yml` will be used by default"
-  def start
-    kitchen_instance_file = options[:file] || '.kitchen/default-ubuntu-1610.yml'
+  desc "start [PLATFORM_NAME]", "Start instance"
+  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`"
+  def start(platform_name=nil)
+    kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
     when 'ec2'
@@ -81,16 +92,19 @@ class ManageInstance < Thor
     when 'vagrant'
       p = get_vagrant_instance_path(kitchen_instance_file)
       puts "Starting Vagrant instance at path #{p}"
+      port = ""
       Dir.chdir(p) do
         system('vagrant up')
+        port = `vagrant port --guest 22`
       end
+      update_kitchen_instance_file_port(kitchen_instance_file, port.to_i)
     end
   end
 
-  desc "stop", "Stop instance"
-  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file. `.kitchen/default-ubuntu-1610.yml` will be used by default"
-  def stop
-    kitchen_instance_file = options[:file] || '.kitchen/default-ubuntu-1610.yml'
+  desc "stop [PLATFORM_NAME]", "Stop instance"
+  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`"
+  def stop(platform_name=nil)
+    kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
     when 'ec2'
@@ -109,4 +123,4 @@ class ManageInstance < Thor
 
 end
 
-ManageInstance.start(ARGV)
+KitchenInstanceCTL.start(ARGV)
