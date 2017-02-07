@@ -6,6 +6,7 @@ mount '/var/lib/lxc' do
   options 'bind'
   pass 0
   action [:mount, :enable]
+  not_if "mount -t btrfs | grep -q ' on /var/lib/lxc .*,subvol=/lxclib'"
 end
 
 directory '/btrfs/lxccache'
@@ -16,4 +17,5 @@ mount '/var/cache/lxc' do
   options 'bind'
   pass 0
   action [:mount, :enable]
+  not_if "mount -t btrfs | grep -q ' on /var/cache/lxc .*,subvol=/lxccache'"
 end

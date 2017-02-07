@@ -6,4 +6,5 @@ mount '/var/lib/lxd' do
   options 'bind'
   pass 0
   action [:mount, :enable]
+  not_if "mount -t btrfs | grep -q ' on /var/lib/lxd .*,subvol=/lxdlib'"
 end
