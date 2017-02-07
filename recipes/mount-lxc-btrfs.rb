@@ -5,6 +5,6 @@ mount '/var/lib/lxc' do
   fstype 'none'
   options 'bind'
   pass 0
-  action [:mount, :enable]
+  action [:enable, :mount]
   not_if "mount -t btrfs | grep -q ' on /var/lib/lxc .*,subvol=/lxclib'"
 end
