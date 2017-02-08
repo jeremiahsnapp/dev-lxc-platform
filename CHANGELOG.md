@@ -1,5 +1,18 @@
 # dev-lxc-platform Change Log
 
+## 7.0.0 (2017-02-08)
+
+* Update README.md
+* Refactor BTRFS mounts and ensure they are idempotent
+* Add create-base-containers recipe and attribute
+* Use attribute to specify btrfs device
+* Update .kitchen.yml so it works for EC2 and Vagrant instances
+* Create kitchen-instance-ctl command to stop, start and get status of kitchen instances
+* Remove .envrc file
+* Install mitmproxy
+* Restart services immediately. They might be needed later in the chef-client run
+* Restart systemd-resolved.service to update resolv.conf files
+
 ## 6.0.1 (2016-12-20)
 
 * Improve the way Chef DK is setup as default ruby
