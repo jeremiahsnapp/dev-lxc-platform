@@ -1,33 +1,3 @@
-## dev-lxc-platform 5.0 Upgrade Instructions
-
-If you want to continue using dev-lxc 1.x then use version 3.1.2 of the dev-lxc-platform cookbook.
-
-dev-lxc-platform 5.0 is designed to use the new dev-lxc 2.x tool which has many breaking changes.
-It is highly recommended that any existing version of dev-lxc-platform is destroyed first along
-with its persistent storage disk.
-
-1. Run `kitchen destroy` to destroy the host VM **BEFORE** pulling/downloading the new dev-lxc-platform code.
-   Destroying the VM before downloading the new dev-lxc-platform code avoids complications caused by the new
-   `.kitchen.yml` file pointing to the Ubuntu image.
-
-2. Make sure you have the latest version of Vagrant and Virtualbox installed. This has been tested with Vagrant 1.8.5 and Virtualbox 5.0.14.
-
-3. Upgrade the `vagrant-persistent-storage` plugin.
-   `vagrant plugin update vagrant-persistent-storage`
-
-4. WARNING - this step will destroy existing containers. This step is only required if you are upgrading from dev-lxc 1.x to 2.x style clusters.
-   `rm ~/VirtualBox VMs/dev-lxc-platform.vdi`
-
-5. Run `git pull --rebase` if you already have a clone of the dev-lxc-platform repository or download the
-   latest dev-lxc-platform cookbook code.
-
-6. Delete the `Berksfile.lock` file if it exists so new versions of required cookbooks will be used.
-
-7. Run `kitchen converge` from the root directory of the dev-lxc-platform cookbook to build the new
-   Ubuntu host VM.
-
-8. Login to the new VM and start using the dev-lxc 2.x tool.
-
 ## Description
 
 The primary purpose of the dev-lxc-platform repo is to build a suitable environment for
@@ -51,96 +21,131 @@ or just general LXC container usage.
 Creating snapshot clones of Btrfs backed containers is very fast which is helpful
 especially for experimenting and troubleshooting.
 
-## Requirements
+## Build dev-lxc-platform instance
 
-Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+The dev-lxc tool is used in a system that has been configured by the dev-lxc-platform cookbook.
 
-Download and install [Vagrant](https://www.vagrantup.com/downloads.html).
+The easiest way to build a dev-lxc-platform system is to download the dev-lxc-platform repository
+and use Test Kitchen to build a VirtualBox Vagrant instance or an AWS EC2 instance.
 
-Install the vagrant-persistent-storage plugin.
+Install the [Chef DK](http://downloads.chef.io/) which provides Test Kitchen and other required tools.
+
+Run `chef shell-init` to display its usage docs. Then run the appropriate command for your shell.
+
+Vagrant instance prerequisites:
+
+* Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* Install [Vagrant](https://www.vagrantup.com/downloads.html)
+* Install the `vagrant-persistent-storage` plugin by running the following command.
 
 ```
 vagrant plugin install vagrant-persistent-storage
 ```
 
-Download and install [ChefDK](http://downloads.chef.io/).
+The `vagrant-persistent-storage` plugin will create a second virtual disk to store the LXC containers in a Btrfs filesystem.
+It will also ensure the volume is detached before the instance is destroyed and reattached when the instance is created.
+This means you could run `kitchen destroy vagrant && kitchen converge vagrant` and you would still be able to use containers
+that you created prior to rebuilding the Vagrant instance. However, to avoid rebuilding the Vagrant instance unnecessarily
+you could use the `kitchen-instance-ctl` command to stop and start the instance as described below.
 
-Run `chef shell-init` to read its usage docs. Then run the appropriate command for your shell.
+EC2 instance prerequisites:
 
-### Workstation to Container Networking
-
-Adding a route entry to the workstation enables direct communication between
-the workstation and any container.
-
-For OS X run the following command.
-The route entry won't survive a worstation reboot. You will have to create it as needed.
-
-    sudo route -n add 10.0.3.0/24 33.33.34.13
-
-Your workstation needs to know how to resolve the .lxc domain.
-For OS X you can run the following command.
-
-    echo nameserver 10.0.3.1 | sudo tee /etc/resolver/lxc
-
-### Kitchen Configuration
-
-The dev-lxc-platform repo contains a .kitchen.yml which uses an Ubuntu 16.10
-[Vagrant base box](https://github.com/opscode/bento) created by Chef.
-
-The .kitchen.yml is configured to install ChefDK into the Vagrant VM for provisioning.
-The root user's shell environment is also configured to use ChefDK as the default ruby.
-This makes dev-lxc-platform a great platform for testing and experimenting with other
-Chef container technologies.
-
-The .kitchen.yml uses the dev-lxc-platform cookbook contained in this repo to install
-and configure a suitable LXC with Btrfs backed container storage.
-
-The .kitchen.yml is configured to use 6GB ram in order to give plenty of room to run
-multiple containers. Feel free to reduce this if it is too much for your environment.
-
-The .kitchen.yml has a commented out `synced_folders` section.
-Uncomment and configure the section appropriately if you want to mount a directory from
-your workstation into the Vagrant VM. This is useful for sharing things from your workstation
-into the Vagrant VM and ultimately into running LXC containers.
-
-### Persistent Btrfs volume
-
-Vagrant will create a second virtual disk to store the LXC containers in a Btrfs filesystem.
-The vagrant-persistent-storage plugin will ensure the volume is detached before the VM is
-destroyed and reattached when the VM is created.
-
-While this persistent volume allows the Vagrant VM to be treated as disposable I recommend
-that you don't bother destroying the VM regularly unless you want to wait for it to be
-provisioned each time.  I keep the VM running a lot of the time so I can jump in
-and use it when I need to.  If I really want to shut it down I just `vagrant halt` it.
-
-### Enable standard Vagrant commands
-
-Since the dev-lxc-platform VM is created using test-kitchen normal Vagrant commands will not
-affect the VM.
-
-Enabling standard Vagrant can be useful especially since test-kitchen is not able to halt the VM.
-
-Correctly setting the `VAGRANT_CWD` environment variable will allow Vagrant commands to be used.
-
-You can run the following command in the top level directory of the `dev-lxc-platform` repo.
+* Make sure your `~/.aws/config` or `C:\Users\USERNAME \.aws\config` file's contents look similar to the following.
 
 ```
-export VAGRANT_CWD="$(pwd)/.kitchen/kitchen-vagrant/kitchen-dev-lxc-platform-default-ubuntu-1510"
+[default]
+aws_access_key_id=<your aws access key id>
+aws_secret_access_key=<your aws secret access key>
+region=<your preferred aws region>
 ```
 
-Alternatively, you can use [direnv](http://direnv.net/) with the `.envrc` file included in the
-dev-lxc-platform repo to automatically set `VAGRANT_CWD` upon entering the top level directory
-of the dev-lxc-platform repo.
+Download the dev-lxc-platform repository to your workstation.
 
-If you have `homebrew` installed in OS X then you can install `direnv` by running `brew install direnv`.
+```
+git clone https://github.com/jeremiahsnapp/dev-lxc-platform.git
+cd dev-lxc-platform
+```
 
-Be sure to follow the [direnv install instructions](http://direnv.net/) to add the appropriate line
-to your user's <shell>rc file.
+Configure .kitchen.yml for the instance you are building.
+
+* EC2: (required) Set `aws_ssh_key_id` and `transport ssh_key`
+* Vagrant: (optional) Set `cpus`, `memory`, `synced_folders` and `persistent_storage location`
+
+Build the instance.
+
+```
+kitchen converge <ec2 or vagrant>
+```
+
+## Stop and start dev-lxc-platform instances
+
+It can be helpful to stop an instance and start it up again when it's needed but Test Kitchen does not provide a way to do this.
+
+The `kitchen-instance-ctl` command in the root of the dev-lxc-platform repository provides the ability to stop, start and get the status of the kitchen instances.
+
+```
+cd dev-lxc-platform
+./kitchen-instance-ctl status <ec2 or vagrant>
+./kitchen-instance-ctl stop <ec2 or vagrant>
+./kitchen-instance-ctl start <ec2 or vagrant>
+```
+
+## Upgrade dev-lxc-platform instances
+
+```
+cd dev-lxc-platform
+kitchen destroy
+git stash
+git pull --rebase
+rm Berksfile.lock
+# reapply necessary changes to .kitchen.yml
+kitchen converge <ec2 or vagrant>
+```
+
+## Web browser access
+
+Web browser access to containers created inside a dev-lxc-plaform instance requires an SSH connection to the dev-lxc-plaform instance with SOCKS v5 dynamic forwarding enabled.
+
+Append the following contents to your workstation's SSH config file so the `kitchen login` command will automatically create an
+SSH connection with SOCKS v5 dynamic forward enabled. Then configure the web browser to use SOCKS v5 proxy "127.0.0.1 1080" and "Proxy DNS when using SOCKS5 proxy". Be aware that logging out of the SSH session will appear to hang as long as the web browser session is still running.
+
+```
+# for dev-lxc-platform EC2 instance
+Host *.amazonaws.com
+  DynamicForward 1080
+
+# for dev-lxc-platform Vagrant instance
+Host 127.0.0.1
+  DynamicForward 1080
+EOF
+```
+
+## Login to the dev-lxc-platform instance
+
+Login to the dev-lxc-platform instance and switch to the root user.
+
+```
+kitchen login <ec2 or vagrant>
+sudo -i
+```
+
+When you are logged in as the root user you should automatically enter a [byobu session](http://byobu.co/).
+
+Byobu makes it easy to manage multiple terminal windows and panes. You can press `F1` to get help which includes a [list of keybindings](http://manpages.ubuntu.com/manpages/wily/en/man1/byobu.1.html#contenttoc8).
+
+The prefix key is set to `Ctrl-o`
+
+Some of the keys that will be most useful to you are:
+
+* `option-Up`, `option-Down` to switch between Byobu sessions
+* `option-Left`, `option-Right` to switch between windows in a session
+* `shift-Left`, `shift-Right`, `shift-Up`, `shift-Down` to switch between panes in a window
+
+### Use dev-lxc
+
+Read the [dev-lxc README](https://github.com/jeremiahsnapp/dev-lxc)
 
 ## LXC Introduction
-
-Read the following introduction to LXC if you aren't already familiar with it.
 
 [LXC Blog Series - by LXC Project Lead Stéphane Graber](https://www.stgraber.org/2013/12/20/lxc-1-0-blog-post-series/)
 
@@ -159,33 +164,3 @@ Read the following introduction to LXC if you aren't already familiar with it.
 [LXD Getting Started](https://linuxcontainers.org/lxd/getting-started-cli/)
 
 [LXD Articles](https://linuxcontainers.org/lxd/articles/)
-
-## Usage
-
-### Create the vm and converge it.
-
-    kitchen converge
-
-### Connect to the vm.
-
-    kitchen login
-
-### Switch to the root user
-
-```
-sudo -i
-```
-
-Once you switch to the root user you will be in a [byobu](http://byobu.co/) terminal session.
-
-Byobu is a GPLv3 open source text-based window manager and terminal multiplexer which is very helpful
-when working with dev-lxc.
-
-The prefix key is set to `Ctrl-o`
-
-Pressing `Fn-F1` in OS X will get you a help screen and selecting the "Quick Start Guide"
-will give you a list of frequently used key bindings.
-
-### Use dev-lxc
-
-Read the [dev-lxc README](https://github.com/jeremiahsnapp/dev-lxc)
