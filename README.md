@@ -17,6 +17,7 @@ or just general LXC container usage.
 3. Dnsmasq - DHCP networking and DNS resolution
 4. Base Containers - Containers that are built to resemble a traditional server
 5. Sysdig preinstalled for awesome transparency into container activity
+6. mitmproxy preinstalled for awesome transparency into HTTP(S) requests
 
 Creating snapshot clones of Btrfs backed containers is very fast which is helpful
 especially for experimenting and troubleshooting.
