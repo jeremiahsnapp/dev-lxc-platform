@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 7.0.1 (2017-02-09)
+
+* Add mitmproxy alias to .bashrc
+
 ## 7.0.0 (2017-02-08)
 
 * Update README.md
