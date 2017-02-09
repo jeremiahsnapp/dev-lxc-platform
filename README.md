@@ -105,21 +105,28 @@ kitchen converge <ec2 or vagrant>
 
 ## Web browser access
 
-Web browser access to containers created inside a dev-lxc-plaform instance requires an SSH connection to the dev-lxc-plaform instance with SOCKS v5 dynamic forwarding enabled.
+Web browser access to containers running inside a dev-lxc-platform instance requires an SSH connection to the dev-lxc-platform instance with DynamicForward enabled.
 
-Append the following contents to your workstation's SSH config file so the `kitchen login` command will automatically create an
-SSH connection with SOCKS v5 dynamic forward enabled. Then configure the web browser to use SOCKS v5 proxy "127.0.0.1 1080" and "Proxy DNS when using SOCKS5 proxy". Be aware that logging out of the SSH session will appear to hang as long as the web browser session is still running.
+Web browser access to mitmproxy running inside a dev-lxc-platform instance requires an SSH connection to the dev-lxc-platform instance with LocalForward enabled.
+
+Append the following contents to your workstation's SSH config file so the `kitchen login` command will automatically enable DynamicForward
+and LocalForward in the SSH connection.
 
 ```
-# for dev-lxc-platform EC2 instance
-Host *.amazonaws.com
+# for dev-lxc-platform Vagrant and EC2 instances
+Host 127.0.0.1 *.amazonaws.com
+  # DynamicForward for proxying web browser traffic to dev-lxc servers
   DynamicForward 1080
-
-# for dev-lxc-platform Vagrant instance
-Host 127.0.0.1
-  DynamicForward 1080
-EOF
+  # LocalForward for proxying web browser traffic to mitmproxy running in the dev-lxc-platform instance
+  LocalForward 127.0.0.1:8080 127.0.0.1:8080
 ```
+
+Configure the web browser to use "127.0.0.1 1080" for SOCKS v5 proxy and "Proxy DNS when using SOCKS5 proxy" when you want to browse directly
+to dev-lxc containers.
+
+Configure the web browser to use "127.0.0.1 8080" for HTTP and HTTPS proxies when you want the browser requests to go through mitmproxy running inside the dev-lxc-platform instance.
+
+Be aware that logging out of the SSH session will appear to hang as long as the web browser session is still running.
 
 ## Login to the dev-lxc-platform instance
 
