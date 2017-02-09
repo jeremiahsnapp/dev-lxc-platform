@@ -29,3 +29,11 @@ ruby_block "export LANG=en_US.UTF-8 for mitmproxy" do
     rc.write_file
   end
 end
+
+ruby_block "alias mitmproxy --insecure" do
+  block do
+    rc = Chef::Util::FileEdit.new("/root/.bashrc")
+    rc.insert_line_if_no_match(/^alias mitmproxy='mitmproxy --insecure'$/, "alias mitmproxy='mitmproxy --insecure'")
+    rc.write_file
+  end
+end
