@@ -94,13 +94,19 @@ cd dev-lxc-platform
 
 ## Upgrade dev-lxc-platform instances
 
+If you are upgrading to a new major version then you should destroy the instances first otherwise proceed to the next steps.
+
 ```
 cd dev-lxc-platform
 kitchen destroy
+```
+
+Pull down the latest dev-lxc-platform code and converge the instances.
+
+```
 git stash
 git pull --rebase
-rm Berksfile.lock
-# reapply necessary changes to .kitchen.yml
+# reapply necessary changes to .kitchen.yml using `git stash pop` or manually if necessary
 kitchen converge <ec2 or vagrant>
 ```
 
