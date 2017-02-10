@@ -53,8 +53,6 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[apt]
-      - recipe[ntp]
       - recipe[dev-lxc-platform]
       - recipe[dev-lxc-platform::create-base-containers]
     attributes:

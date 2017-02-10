@@ -12,6 +12,10 @@ execute "Setup ChefDK as default ruby" do
   not_if "grep 'chef shell-init' /root/.bashrc"
 end
 
+include_recipe 'apt'
+
+include_recipe 'ntp'
+
 include_recipe 'dev-lxc-platform::byobu'
 
 include_recipe 'dev-lxc-platform::helpful-addons'
