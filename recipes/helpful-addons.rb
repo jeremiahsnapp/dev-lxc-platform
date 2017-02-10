@@ -37,3 +37,9 @@ ruby_block "alias mitmproxy --insecure" do
     rc.write_file
   end
 end
+
+directory '/root/.berkshelf'
+file '/root/.berkshelf/config.json' do
+  content '{ "ssl": { "verify": false } }'
+  action :create_if_missing
+end
