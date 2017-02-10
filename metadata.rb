@@ -7,5 +7,6 @@ supports 'ubuntu'
 
 depends 'apt'
 depends 'build-essential'
+depends 'docker'
 depends 'ntp'
 depends 'sysdig'

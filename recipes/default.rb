@@ -33,3 +33,7 @@ include_recipe 'dev-lxc-platform::lxd'
 include_recipe 'dev-lxc-platform::lxc-helpful-addons'
 
 include_recipe 'dev-lxc-platform::dev-lxc'
+
+include_recipe 'dev-lxc-platform::mount-docker-btrfs'
+
+include_recipe 'dev-lxc-platform::docker'
