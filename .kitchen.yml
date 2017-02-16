@@ -40,6 +40,8 @@ platforms:
         memory: 6144
       # synced_folders:
       #   - ["~/work", "/root/work"]
+      network:
+        - ["private_network", {ip: "192.168.55.55"}]
       persistent_storage:
         enabled: true
         manage: false
