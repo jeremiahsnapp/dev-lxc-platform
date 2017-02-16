@@ -52,7 +52,7 @@ you could use the `kitchen-instance-ctl` command to stop and start the instance 
 
 EC2 instance prerequisites:
 
-* Make sure your `~/.aws/config` or `C:\Users\USERNAME \.aws\config` file's contents look similar to the following.
+* Make sure your `~/.aws/config` or `C:\Users\USERNAME\.aws\config` file's contents look similar to the following.
 
 ```
 [default]
@@ -116,8 +116,7 @@ Web browser access to containers running inside a dev-lxc-platform instance requ
 
 Web browser access to mitmproxy running inside a dev-lxc-platform instance requires an SSH connection to the dev-lxc-platform instance with LocalForward enabled.
 
-Append the following contents to your workstation's SSH config file so the `kitchen login` command will automatically enable DynamicForward
-and LocalForward in the SSH connection.
+Append the following contents to your workstation's SSH config file, `~/.ssh/config` or `C:\Users\USERNAME\.ssh\config`, so the `kitchen login` command will automatically enable DynamicForward and LocalForward in the SSH connection.
 
 ```
 # for dev-lxc-platform Vagrant and EC2 instances
