@@ -1,5 +1,15 @@
 # dev-lxc-platform Change Log
 
+## 8.0.0 (2017-02-16)
+
+* Improve docs
+* Add kitchen-instance-ctl.bat file for Windows users
+* Add private network back to Vagrant config
+* Disable berks ssl verification
+* Fix sysdig install bug
+* Install docker
+* Include apt::default and ntp::default recipes in dev-lxc-platform::default
+
 ## 7.0.1 (2017-02-09)
 
 * Add mitmproxy alias to .bashrc
