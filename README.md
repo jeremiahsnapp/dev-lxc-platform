@@ -147,13 +147,21 @@ When you are logged in as the root user you should automatically enter a [byobu 
 
 Byobu makes it easy to manage multiple terminal windows and panes. You can press `F1` to get help which includes a [list of keybindings](http://manpages.ubuntu.com/manpages/wily/en/man1/byobu.1.html#contenttoc8).
 
-The prefix key is set to `Ctrl-o`
+The prefix key is set to `Ctrl+o`
 
 Some of the keys that will be most useful to you are:
 
-* `option-Up`, `option-Down` to switch between Byobu sessions
-* `option-Left`, `option-Right` to switch between windows in a session
-* `shift-Left`, `shift-Right`, `shift-Up`, `shift-Down` to switch between panes in a window
+* To switch between Byobu sessions
+  * OS X - `option-Up`, `option-Down`
+  * Linux/Windows - `alt-Up`, `alt-Down`
+* To switch between windows in a session
+  * OS X - `option-Left`, `option-Right`
+  * Linux/Windows - `alt-Left`, `alt-Right`
+* To switch between panes in a window
+  * Linux/OS X/ Windows - `shift-Left`, `shift-Right`, `shift-Up`, `shift-Down`
+  * Windows users using Conemu must first disable "Start selection with Shift+Arrow" in "Mark/Copy" under the "Keys & Macro" settings
+
+Note: `Shift-F2` does not create horizontal splits for Windows users. Use the `Ctrl+o |` key binding instead.
 
 ### Use dev-lxc
 
