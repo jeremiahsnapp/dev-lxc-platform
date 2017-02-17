@@ -1,2 +1,2 @@
 @ECHO OFF
-"ruby.exe" "%~dpn0" %*
+chef exec ruby "%~dpn0" %*
