@@ -22,6 +22,9 @@ platforms:
             volume_type: gp2
             volume_size: 40
             delete_on_termination: true
+      user_data: |
+        #cloud-config
+        disable_root: false
       aws_ssh_key_id: your_aws_ssh_key_id
     transport:
       ssh_key: ~/.ssh/your_private_key_file
