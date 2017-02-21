@@ -52,7 +52,7 @@ you could use the `kitchen-instance-ctl` command to stop and start the instance 
 
 EC2 instance prerequisites:
 
-* Make sure your `~/.aws/config` or `C:\Users\USERNAME\.aws\config` file's contents look similar to the following.
+* Make sure your `~/.aws/credentials` or `C:\Users\USERNAME\.aws\credentials` file's contents look similar to the following.
 
 ```
 [default]
