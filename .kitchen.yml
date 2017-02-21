@@ -31,29 +31,29 @@ platforms:
     attributes:
       dev-lxc-platform:
         btrfs_device: /dev/xvdb
-  - name: vagrant
-    driver:
-      name: vagrant
-      box: bento/ubuntu-16.10
-      box_url: https://atlas.hashicorp.com/bento/boxes/ubuntu-16.10/versions/2.3.1/providers/virtualbox.box
-      vagrantfile_erb: Vagrantfile.erb
-      # gui: true
-      customize:
-        cpus: 4
-        memory: 6144
-      # synced_folders:
-      #   - ["~/work", "/root/work"]
-      network:
-        - ["private_network", {ip: "192.168.55.55"}]
-      persistent_storage:
-        enabled: true
-        manage: false
-        format: false
-        size: 40 * 1024
-        location: File.expand_path('~/VirtualBox VMs/dev-lxc-platform.vdi')
-    attributes:
-      dev-lxc-platform:
-        btrfs_device: /dev/sdb
+#  - name: vagrant
+#    driver:
+#      name: vagrant
+#      box: bento/ubuntu-16.10
+#      box_url: https://atlas.hashicorp.com/bento/boxes/ubuntu-16.10/versions/2.3.1/providers/virtualbox.box
+#      vagrantfile_erb: Vagrantfile.erb
+#      # gui: true
+#      customize:
+#        cpus: 4
+#        memory: 6144
+#      # synced_folders:
+#      #   - ["~/work", "/root/work"]
+#      network:
+#        - ["private_network", {ip: "192.168.55.55"}]
+#      persistent_storage:
+#        enabled: true
+#        manage: false
+#        format: false
+#        size: 40 * 1024
+#        location: File.expand_path('~/VirtualBox VMs/dev-lxc-platform.vdi')
+#    attributes:
+#      dev-lxc-platform:
+#        btrfs_device: /dev/sdb
 
 suites:
   - name: default
