@@ -8,3 +8,11 @@ include_recipe 'sysdig'
 edit_resource(:apt_repository, 'sysdig') do
   distribution false
 end
+
+# `apt-get install -q -y sysdig-0.14.0` fails with the following error even though
+# i've confirmed the draios repository and key are properly configured
+# "The following packages cannot be authenticated"
+# adding this option circumvents the issue until i find a better solution
+edit_resource(:package, 'sysdig') do
+  options '--allow-unauthenticated'
+end
