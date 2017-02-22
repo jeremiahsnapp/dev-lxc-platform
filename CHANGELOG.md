@@ -1,5 +1,17 @@
 # dev-lxc-platform Change Log
 
+## 9.0.0 (2017-02-22)
+
+* Improve dev-lxc-platform build docs
+* Add docs about transferring files to EC2 instance
+* Document that Berksfile.lock should be deleted when upgrading major version of dev-lxc-platform
+* Allow unauthenticated sysdig package to install
+* apt_repository can't identify key fingerprints when gnupg 2.1.x is used
+* Use AWS credentials file instead of config file
+* Comment out .kitchen.yml's vagrant instance
+* Allow SSH to EC2 instance's root user
+* Make kitchen-instance-ctl.bat work even if `chef shell-init powershell` has not been run
+
 ## 8.0.0 (2017-02-16)
 
 * Improve docs
