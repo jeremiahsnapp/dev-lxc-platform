@@ -111,6 +111,12 @@ git pull --rebase
 kitchen converge <ec2 or vagrant>
 ```
 
+## Transferring files to EC2 instance
+
+The .kitchen.yml EC2 config uses cloud-config user-data to enable root user SSH access using the same key pair used when logging in as the ubuntu user.
+
+This makes it easy to use tools such as rsync or Filezilla to transfer files from your workstation directly to the root user's home directory.
+
 ## Web browser access
 
 Web browser access to containers running inside a dev-lxc-platform instance requires an SSH connection to the dev-lxc-platform instance with DynamicForward enabled.
