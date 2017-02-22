@@ -99,6 +99,7 @@ If you are upgrading to a new major version then you should destroy the instance
 ```
 cd dev-lxc-platform
 kitchen destroy
+rm Berksfile.lock
 ```
 
 Pull down the latest dev-lxc-platform code and converge the instances.
