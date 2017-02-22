@@ -28,13 +28,26 @@ especially for experimenting and troubleshooting.
 The dev-lxc tool is used in a system that has been configured by the dev-lxc-platform cookbook.
 
 The easiest way to build a dev-lxc-platform system is to download the dev-lxc-platform repository
-and use Test Kitchen to build a VirtualBox Vagrant instance or an AWS EC2 instance.
+and use Test Kitchen to build an AWS EC2 instance or a VirtualBox Vagrant instance.
+
+#### Install Chef DK
 
 Install the [Chef DK](http://downloads.chef.io/) which provides Test Kitchen and other required tools.
 
 Run `chef shell-init` to display its usage docs. Then run the appropriate command for your shell.
 
-Vagrant instance prerequisites:
+#### EC2 instance prerequisites:
+
+* Make sure your `~/.aws/credentials` or `C:\Users\USERNAME\.aws\credentials` file's contents look similar to the following.
+
+```
+[default]
+aws_access_key_id=<your aws access key id>
+aws_secret_access_key=<your aws secret access key>
+region=<your preferred aws region>
+```
+
+#### Vagrant instance prerequisites:
 
 * Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 * Install [Vagrant](https://www.vagrantup.com/downloads.html)
@@ -50,16 +63,7 @@ This means you could run `kitchen destroy vagrant && kitchen converge vagrant` a
 that you created prior to rebuilding the Vagrant instance. However, to avoid rebuilding the Vagrant instance unnecessarily
 you could use the `kitchen-instance-ctl` command to stop and start the instance as described below.
 
-EC2 instance prerequisites:
-
-* Make sure your `~/.aws/credentials` or `C:\Users\USERNAME\.aws\credentials` file's contents look similar to the following.
-
-```
-[default]
-aws_access_key_id=<your aws access key id>
-aws_secret_access_key=<your aws secret access key>
-region=<your preferred aws region>
-```
+#### Download dev-lxc-platform
 
 Download the dev-lxc-platform repository to your workstation.
 
@@ -68,12 +72,14 @@ git clone https://github.com/jeremiahsnapp/dev-lxc-platform.git
 cd dev-lxc-platform
 ```
 
+#### Configure .kitchen.yml
+
 Configure .kitchen.yml for the instance you are building.
 
 * EC2: (required) Set `aws_ssh_key_id` and `transport ssh_key`
 * Vagrant: (optional) Set `cpus`, `memory`, `synced_folders` and `persistent_storage location`
 
-Build the instance.
+#### Build the instance.
 
 ```
 kitchen converge <ec2 or vagrant>
