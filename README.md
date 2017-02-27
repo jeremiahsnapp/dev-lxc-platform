@@ -78,7 +78,9 @@ cd dev-lxc-platform
 Configure .kitchen.yml for the instance you are building.
 
 * EC2: (required) Set `aws_ssh_key_id` and `transport ssh_key`
-* Vagrant: (optional) Set `cpus`, `memory`, `synced_folders` and `persistent_storage location`
+* Vagrant:
+  * (required) uncomment the vagrant platform configuration
+  * (optional) Set `cpus`, `memory`, `synced_folders` and `persistent_storage location`
 
 #### Build the instance.
 
