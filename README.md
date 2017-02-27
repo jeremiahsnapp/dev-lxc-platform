@@ -161,23 +161,28 @@ sudo -i
 
 When you are logged in as the root user you should automatically enter a [byobu session](http://byobu.co/).
 
+## Byobu keybindings
+
 Byobu makes it easy to manage multiple terminal windows and panes. You can press `F1` to get help which includes a [list of keybindings](http://manpages.ubuntu.com/manpages/wily/en/man1/byobu.1.html#contenttoc8).
 
-The prefix key is set to `Ctrl+o`
+`C-` refers to the keyboard's `Control` key.
+`M-` refers to the keyboard's `Meta` key which is the `Alt` key on a PC keyboard and the `Option` key on an Apple keyboard.
 
-Some of the keys that will be most useful to you are:
+The prefix key is set to `C-o`
 
-* To switch between Byobu sessions
-  * OS X - `option-Up`, `option-Down`
-  * Linux/Windows - `alt-Up`, `alt-Down`
-* To switch between windows in a session
-  * OS X - `option-Left`, `option-Right`
-  * Linux/Windows - `alt-Left`, `alt-Right`
-* To switch between panes in a window
-  * Linux/OS X/ Windows - `shift-Left`, `shift-Right`, `shift-Up`, `shift-Down`
+Some of the keyboard shortcuts that will be most useful to you are:
+
+* `M-Up`, `M-Down` - switch between Byobu sessions
+* `M-Left`, `M-Right` - switch between windows in a session
+* `shift-Left`, `shift-Right`, `shift-Up`, `shift-Down` - switch between panes in a window
   * Windows users using Conemu must first disable "Start selection with Shift+Arrow" in "Mark/Copy" under the "Keys & Macro" settings
+* `C-o C-s` - synchronize panes
+* `C-o z` - zoom into and out of a pane
+* `C-o M-1` - evenly split panes horizontally
+* `C-o M-2` - evenly split panes vertically
+* `M-pageup`, `M-pagedown` - page up/down in scrollback
 
-Note: `Shift-F2` does not create horizontal splits for Windows users. Use the `Ctrl+o |` key binding instead.
+Note: `Shift-F2` does not create horizontal splits for Windows users. Use the `C-o |` key binding instead.
 
 ### Use dev-lxc
 
