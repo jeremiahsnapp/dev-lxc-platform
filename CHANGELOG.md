@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 9.1.0 (2017-02-27)
+
+* Preinstall chef-load
+
 ## 9.0.0 (2017-02-22)
 
 * Improve dev-lxc-platform build docs
