@@ -10,3 +10,7 @@ depends 'build-essential'
 depends 'docker'
 depends 'ntp'
 depends 'sysdig'
+
+source_url 'https://github.com/jeremiahsnapp/dev-lxc-platform'
+issues_url 'https://github.com/jeremiahsnapp/dev-lxc-platform/issues'
+chef_version '>= 12.5' if respond_to?(:chef_version)
