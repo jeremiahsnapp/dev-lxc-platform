@@ -43,3 +43,8 @@ file '/root/.berkshelf/config.json' do
   content '{ "ssl": { "verify": false } }'
   action :create_if_missing
 end
+
+remote_file "/usr/local/bin/chef-load" do
+  source 'https://github.com/jeremiahsnapp/chef-load/releases/download/v0.4.0/chef-load_0.4.0_Linux_64bit'
+  mode 0755
+end

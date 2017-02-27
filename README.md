@@ -19,6 +19,7 @@ or just general LXC container usage.
 5. Sysdig preinstalled for awesome transparency into container activity
 6. mitmproxy preinstalled for awesome transparency into HTTP(S) requests
 7. Docker preinstalled
+8. chef-load preinstalled
 
 Creating snapshot clones of Btrfs backed containers is very fast which is helpful
 especially for experimenting and troubleshooting.
