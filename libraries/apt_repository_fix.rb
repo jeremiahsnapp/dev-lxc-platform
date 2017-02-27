@@ -4,7 +4,6 @@
 class Chef
   class Provider
     class AptRepository
-
       def extract_fingerprints_from_cmd(cmd)
         so = shell_out(cmd)
         so.run_command
@@ -16,11 +15,10 @@ class Chef
       end
 
       def no_new_keys?(file)
-        installed_keys = extract_fingerprints_from_cmd("apt-key adv --list-public-keys --with-fingerprint --with-colons")
+        installed_keys = extract_fingerprints_from_cmd('apt-key adv --list-public-keys --with-fingerprint --with-colons')
         proposed_keys = extract_fingerprints_from_cmd("gpg --with-fingerprint --with-colons #{file}")
         (installed_keys & proposed_keys).sort == proposed_keys.sort
       end
-
     end
   end
 end

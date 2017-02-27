@@ -1,14 +1,13 @@
 #!/usr/bin/env ruby
 
-require "yaml"
+require 'yaml'
 require 'aws-sdk'
 require 'thor'
 
 class KitchenInstanceCTL < Thor
-
-  no_commands{
-    def get_instance_config(kitchen_instance_file=nil)
-      if ! File.exists?(kitchen_instance_file)
+  no_commands do
+    def get_instance_config(kitchen_instance_file = nil)
+      unless File.exist?(kitchen_instance_file)
         puts "ERROR: Kitchen instance file '#{kitchen_instance_file}' does not exist."
         exit 1
       end
@@ -16,26 +15,26 @@ class KitchenInstanceCTL < Thor
       instance_config = YAML.load(IO.read(kitchen_instance_file))
     end
 
-    def get_instance_type(instance_config=nil)
+    def get_instance_type(instance_config = nil)
       if instance_config['server_id']
-        return 'ec2'
+        'ec2'
       elsif instance_config['hostname'] == '127.0.0.1' && instance_config['username'] == 'vagrant'
-        return 'vagrant'
+        'vagrant'
       else
-        puts "ERROR: Unable to determine instance type."
+        puts 'ERROR: Unable to determine instance type.'
         exit 1
       end
     end
 
-    def get_ec2_instance(instance_config=nil)
+    def get_ec2_instance(instance_config = nil)
       Aws::EC2::Instance.new(instance_config['server_id'])
     end
 
-    def get_vagrant_instance_path(kitchen_instance_file=nil)
-      File.join(Dir.pwd, %w{.kitchen kitchen-vagrant}, "kitchen-#{File.basename(Dir.pwd)}-#{File.basename(kitchen_instance_file, '.yml')}")
+    def get_vagrant_instance_path(kitchen_instance_file = nil)
+      File.join(Dir.pwd, %w(.kitchen kitchen-vagrant), "kitchen-#{File.basename(Dir.pwd)}-#{File.basename(kitchen_instance_file, '.yml')}")
     end
 
-    def update_kitchen_instance_file_hostname(kitchen_instance_file=nil, i=nil)
+    def update_kitchen_instance_file_hostname(kitchen_instance_file = nil, i = nil)
       if i.public_dns_name.empty?
         puts "ERROR: Public DNS Name is not set for EC2 instance #{i.id}. Make sure the instance exists and is running."
         puts "Instance #{i.id} is #{i.state.name}"
@@ -49,19 +48,19 @@ class KitchenInstanceCTL < Thor
 
     def update_kitchen_instance_file_port(kitchen_instance_file, port)
       if port == 0
-        puts "ERROR: Port is not set for the Vagrant instance. Make sure the instance exists and is running."
+        puts 'ERROR: Port is not set for the Vagrant instance. Make sure the instance exists and is running.'
         exit 1
       end
       puts "Updating the port in #{kitchen_instance_file} to '#{port}'"
       kitchen_instance = YAML.load(IO.read(kitchen_instance_file))
-      kitchen_instance['port'] = "#{port}"
+      kitchen_instance['port'] = port.to_s
       IO.write(kitchen_instance_file, kitchen_instance.to_yaml)
     end
-  }
+  end
 
-  desc "status [PLATFORM_NAME]", "Print instance state"
-  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`"
-  def status(platform_name=nil)
+  desc 'status [PLATFORM_NAME]', 'Print instance state'
+  option :file, aliases: '-f', desc: 'Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`'
+  def status(platform_name = nil)
     kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
@@ -77,9 +76,9 @@ class KitchenInstanceCTL < Thor
     end
   end
 
-  desc "start [PLATFORM_NAME]", "Start instance"
-  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`"
-  def start(platform_name=nil)
+  desc 'start [PLATFORM_NAME]', 'Start instance'
+  option :file, aliases: '-f', desc: 'Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`'
+  def start(platform_name = nil)
     kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
@@ -92,7 +91,7 @@ class KitchenInstanceCTL < Thor
     when 'vagrant'
       p = get_vagrant_instance_path(kitchen_instance_file)
       puts "Starting Vagrant instance at path #{p}"
-      port = ""
+      port = ''
       Dir.chdir(p) do
         system('vagrant up')
         port = `vagrant port --guest 22`
@@ -101,9 +100,9 @@ class KitchenInstanceCTL < Thor
     end
   end
 
-  desc "stop [PLATFORM_NAME]", "Stop instance"
-  option :file, :aliases => "-f", :desc => "Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`"
-  def stop(platform_name=nil)
+  desc 'stop [PLATFORM_NAME]', 'Stop instance'
+  option :file, aliases: '-f', desc: 'Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`'
+  def stop(platform_name = nil)
     kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
     instance_config = get_instance_config(kitchen_instance_file)
     case get_instance_type(instance_config)
@@ -120,7 +119,6 @@ class KitchenInstanceCTL < Thor
       end
     end
   end
-
 end
 
 KitchenInstanceCTL.start(ARGV)

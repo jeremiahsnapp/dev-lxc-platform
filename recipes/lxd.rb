@@ -2,8 +2,8 @@ package ['lxd', 'lxd-client', 'lxc', 'lxcfs', 'lxc-templates'] do
   action :upgrade
 end
 
-remote_file "/etc/bash_completion.d/lxd-client" do
-  source "file:///usr/share/bash-completion/completions/lxc"
+remote_file '/etc/bash_completion.d/lxd-client' do
+  source 'file:///usr/share/bash-completion/completions/lxc'
 end
 
 service 'lxc-net' do

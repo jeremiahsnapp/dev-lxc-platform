@@ -22,17 +22,17 @@ bash 'extract mitmproxy' do
   action :nothing
 end
 
-ruby_block "export LANG=en_US.UTF-8 for mitmproxy" do
+ruby_block 'export LANG=en_US.UTF-8 for mitmproxy' do
   block do
-    rc = Chef::Util::FileEdit.new("/root/.bashrc")
-    rc.insert_line_if_no_match(/^export LANG=en_US.UTF-8$/, "export LANG=en_US.UTF-8")
+    rc = Chef::Util::FileEdit.new('/root/.bashrc')
+    rc.insert_line_if_no_match(/^export LANG=en_US.UTF-8$/, 'export LANG=en_US.UTF-8')
     rc.write_file
   end
 end
 
-ruby_block "alias mitmproxy --insecure" do
+ruby_block 'alias mitmproxy --insecure' do
   block do
-    rc = Chef::Util::FileEdit.new("/root/.bashrc")
+    rc = Chef::Util::FileEdit.new('/root/.bashrc')
     rc.insert_line_if_no_match(/^alias mitmproxy='mitmproxy --insecure'$/, "alias mitmproxy='mitmproxy --insecure'")
     rc.write_file
   end
@@ -44,7 +44,7 @@ file '/root/.berkshelf/config.json' do
   action :create_if_missing
 end
 
-remote_file "/usr/local/bin/chef-load" do
+remote_file '/usr/local/bin/chef-load' do
   source 'https://github.com/jeremiahsnapp/chef-load/releases/download/v0.4.0/chef-load_0.4.0_Linux_64bit'
   mode 0755
 end
