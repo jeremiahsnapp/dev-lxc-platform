@@ -9,6 +9,7 @@ platforms:
   - name: ec2
     driver:
       name: ec2
+      region: us-east-1
       instance_type: t2.large
       image_search:
         name: ubuntu/images/*/ubuntu-*-16.10*
