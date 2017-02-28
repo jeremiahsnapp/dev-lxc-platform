@@ -1,5 +1,12 @@
 # dev-lxc-platform Change Log
 
+## 9.1.1 (2017-02-28)
+
+* Cookbook style cleanup [\#6](https://github.com/jeremiahsnapp/dev-lxc-platform/pull/6) ([tas50](https://github.com/tas50))
+* Add braces back to environment property since recent style cleanup accidentally removed them
+* Properly specify root user in the 'Create base container' execute resource
+* Add region and tags properties to .kitchen.yml [\#7](https://github.com/jeremiahsnapp/dev-lxc-platform/pull/7) ([irvingpop](https://github.com/irvingpop))
+
 ## 9.1.0 (2017-02-27)
 
 * Preinstall chef-load
