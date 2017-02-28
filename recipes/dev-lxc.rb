@@ -5,7 +5,7 @@ package 'lxc-dev'
 execute 'install dev-lxc gem' do
   command 'chef gem install dev-lxc'
   user 'root'
-  environment('HOME' => '/root')
+  environment({ 'HOME' => '/root' })
 end
 
 cookbook_file '/etc/bash_completion.d/dev-lxc' do
