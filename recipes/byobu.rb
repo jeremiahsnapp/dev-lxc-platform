@@ -17,22 +17,22 @@ end
 
 execute 'enable byobu' do
   command '/usr/bin/byobu-enable'
-  environment ({'HOME' => '/root'})
+  environment ({ 'HOME' => '/root' })
   user 'root'
   not_if 'grep byobu-launch /root/.profile'
 end
 
-ruby_block "alias tls" do
+ruby_block 'alias tls' do
   block do
-    rc = Chef::Util::FileEdit.new("/root/.bashrc")
+    rc = Chef::Util::FileEdit.new('/root/.bashrc')
     rc.insert_line_if_no_match(/^alias tls=/, "alias tls='tmux ls'")
     rc.write_file
   end
 end
 
-ruby_block "alias tks" do
+ruby_block 'alias tks' do
   block do
-    rc = Chef::Util::FileEdit.new("/root/.bashrc")
+    rc = Chef::Util::FileEdit.new('/root/.bashrc')
     rc.insert_line_if_no_match(/^alias tks=/, "alias tks='tmux kill-session -t'")
     rc.write_file
   end
