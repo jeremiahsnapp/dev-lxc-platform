@@ -28,6 +28,11 @@ platforms:
         #cloud-config
         disable_root: false
       aws_ssh_key_id: your_aws_ssh_key_id
+      tags:
+        Created-By: test-kitchen
+        Name: dev-lxc-platform
+        X-Contact: myname
+        X-Dept: mydepartment
     transport:
       ssh_key: ~/.ssh/your_private_key_file
     attributes:
