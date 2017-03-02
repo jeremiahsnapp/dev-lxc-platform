@@ -25,7 +25,8 @@ class KitchenInstanceCTL < Thor
         kitchen_instance_file = File.join(kitchen_root, '.kitchen', "#{name}.yml")
         case data['driver']['name']
         when 'ec2'
-          Aws.config.update({ region: data['driver']['region'] }) if data['driver']['region']
+          region = data['driver']['region']
+          Aws.config.update({ region: region }) if region
           i = Aws::EC2::Instance.new(data['state_file']['server_id'])
           if i.exists?
             case task
