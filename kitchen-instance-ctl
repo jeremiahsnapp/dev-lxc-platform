@@ -1,37 +1,75 @@
 #!chef exec ruby
 
+require 'open3'
 require 'yaml'
 require 'aws-sdk'
 require 'thor'
 
 class KitchenInstanceCTL < Thor
   no_commands do
-    def get_instance_config(kitchen_instance_file = nil)
-      unless File.exist?(kitchen_instance_file)
-        puts "ERROR: Kitchen instance file '#{kitchen_instance_file}' does not exist."
+    def get_instances(instance_regex = nil)
+      stdout, stderr, status = Open3.capture3('kitchen', 'diagnose', '--instances', instance_regex.to_s)
+      unless status.success?
+        puts "Error: No instances for regex '#{instance_regex}', try running 'kitchen list' to see what instances are available."
         exit 1
       end
-      puts "Using kitchen instance file #{kitchen_instance_file}"
-      instance_config = YAML.load(IO.read(kitchen_instance_file))
+      output = YAML.load(stdout)
+      output['instances']
     end
 
-    def get_instance_type(instance_config = nil)
-      if instance_config['server_id']
-        'ec2'
-      elsif instance_config['hostname'] == '127.0.0.1' && instance_config['username'] == 'vagrant'
-        'vagrant'
+    def ctl_instance(task = nil, name = nil, data = nil)
+      if data['state_file'].empty?
+        puts "Kitchen instance #{name} is not created"
       else
-        puts 'ERROR: Unable to determine instance type.'
-        exit 1
+        kitchen_root = data['driver']['kitchen_root']
+        kitchen_instance_file = File.join(kitchen_root, '.kitchen', "#{name}.yml")
+        case data['driver']['name']
+        when 'ec2'
+          region = data['driver']['region']
+          instance_id = data['state_file']['server_id']
+          Aws.config.update({ region: region })
+          i = Aws::EC2::Instance.new(instance_id)
+          if i.exists?
+            case task
+            when 'status'
+              puts "EC2 instance #{i.id} in region #{region} is #{i.state.name}"
+            when 'start'
+              puts "Starting EC2 instance #{i.id}"
+              i.start
+              i.wait_until_running
+              update_kitchen_instance_file_hostname(kitchen_instance_file, i)
+            when 'stop'
+              puts "Stopping EC2 instance #{i.id}"
+              i.stop
+              i.wait_until_stopped
+            end
+          else
+            puts "EC2 instance #{i.id} does not exist in the #{region} region."
+          end
+        when 'vagrant'
+          p = File.join(kitchen_root, %w(.kitchen kitchen-vagrant), "kitchen-#{File.basename(kitchen_root)}-#{name}")
+          puts "Getting status of Vagrant instance at path #{p}"
+          case task
+          when 'status'
+            Dir.chdir(p) do
+              system('vagrant status')
+            end
+          when 'start'
+            puts "Starting Vagrant instance at path #{p}"
+            port = ''
+            Dir.chdir(p) do
+              system('vagrant up')
+              port = `vagrant port --guest 22`
+            end
+            update_kitchen_instance_file_port(kitchen_instance_file, port.to_i)
+          when 'stop'
+            puts "Stopping Vagrant instance at path #{p}"
+            Dir.chdir(p) do
+              system('vagrant halt --force')
+            end
+          end
+        end
       end
-    end
-
-    def get_ec2_instance(instance_config = nil)
-      Aws::EC2::Instance.new(instance_config['server_id'])
-    end
-
-    def get_vagrant_instance_path(kitchen_instance_file = nil)
-      File.join(Dir.pwd, %w(.kitchen kitchen-vagrant), "kitchen-#{File.basename(Dir.pwd)}-#{File.basename(kitchen_instance_file, '.yml')}")
     end
 
     def update_kitchen_instance_file_hostname(kitchen_instance_file = nil, i = nil)
@@ -58,65 +96,27 @@ class KitchenInstanceCTL < Thor
     end
   end
 
-  desc 'status [PLATFORM_NAME]', 'Print instance state'
-  option :file, aliases: '-f', desc: 'Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`'
-  def status(platform_name = nil)
-    kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
-    instance_config = get_instance_config(kitchen_instance_file)
-    case get_instance_type(instance_config)
-    when 'ec2'
-      i = get_ec2_instance(instance_config)
-      puts "EC2 instance #{i.id} is #{i.state.name}"
-    when 'vagrant'
-      p = get_vagrant_instance_path(kitchen_instance_file)
-      puts "Getting status of Vagrant instance at path #{p}"
-      Dir.chdir(p) do
-        system('vagrant status')
-      end
+  desc 'status [INSTANCE|REGEXP]', 'Print instance state'
+  def status(instance_regex = nil)
+    instances = get_instances(instance_regex)
+    instances.each do |instance_name, instance_data|
+      ctl_instance('status', instance_name, instance_data)
     end
   end
 
-  desc 'start [PLATFORM_NAME]', 'Start instance'
-  option :file, aliases: '-f', desc: 'Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`'
-  def start(platform_name = nil)
-    kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
-    instance_config = get_instance_config(kitchen_instance_file)
-    case get_instance_type(instance_config)
-    when 'ec2'
-      i = get_ec2_instance(instance_config)
-      puts "Starting EC2 instance #{i.id}"
-      i.start
-      i.wait_until_running
-      update_kitchen_instance_file_hostname(kitchen_instance_file, i)
-    when 'vagrant'
-      p = get_vagrant_instance_path(kitchen_instance_file)
-      puts "Starting Vagrant instance at path #{p}"
-      port = ''
-      Dir.chdir(p) do
-        system('vagrant up')
-        port = `vagrant port --guest 22`
-      end
-      update_kitchen_instance_file_port(kitchen_instance_file, port.to_i)
+  desc 'start [INSTANCE|REGEXP]', 'Start instance'
+  def start(instance_regex = nil)
+    instances = get_instances(instance_regex)
+    instances.each do |instance_name, instance_data|
+      ctl_instance('start', instance_name, instance_data)
     end
   end
 
-  desc 'stop [PLATFORM_NAME]', 'Stop instance'
-  option :file, aliases: '-f', desc: 'Specify a kitchen instance file such as `.kitchen/default-vagrant.yml`'
-  def stop(platform_name = nil)
-    kitchen_instance_file = options[:file] || ".kitchen/default-#{platform_name}.yml"
-    instance_config = get_instance_config(kitchen_instance_file)
-    case get_instance_type(instance_config)
-    when 'ec2'
-      i = get_ec2_instance(instance_config)
-      puts "Stopping EC2 instance #{i.id}"
-      i.stop
-      i.wait_until_stopped
-    when 'vagrant'
-      p = get_vagrant_instance_path(kitchen_instance_file)
-      puts "Stopping Vagrant instance at path #{p}"
-      Dir.chdir(p) do
-        system('vagrant halt --force')
-      end
+  desc 'stop [INSTANCE|REGEXP]', 'Stop instance'
+  def stop(instance_regex = nil)
+    instances = get_instances(instance_regex)
+    instances.each do |instance_name, instance_data|
+      ctl_instance('stop', instance_name, instance_data)
     end
   end
 end
