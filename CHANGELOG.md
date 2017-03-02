@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 9.1.3 (2017-03-02)
+
+* Minor improvement to kitchen-instance-ctl
+
 ## 9.1.2 (2017-03-02)
 
 * Use 'chef exec ruby' to run kitchen-instance-ctl
