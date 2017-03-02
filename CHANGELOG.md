@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 9.1.4 (2017-03-02)
+
+* Minor fix to kitchen-instance-ctl
+
 ## 9.1.3 (2017-03-02)
 
 * Minor improvement to kitchen-instance-ctl
