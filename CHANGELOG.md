@@ -1,5 +1,13 @@
 # dev-lxc-platform Change Log
 
+## 9.1.2 (2017-03-02)
+
+* Use 'chef exec ruby' to run kitchen-instance-ctl
+* Significant improvements to kitchen-instance-ctl script
+  Instance names or regex can be used just like the kitchen command.
+  'kitchen diagnose' is used under the hood so this script has access to all
+  relevant instance info including EC2 region.
+
 ## 9.1.1 (2017-02-28)
 
 * Cookbook style cleanup [\#6](https://github.com/jeremiahsnapp/dev-lxc-platform/pull/6) ([tas50](https://github.com/tas50))
