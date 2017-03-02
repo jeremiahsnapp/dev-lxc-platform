@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!chef exec ruby
 
 require 'yaml'
 require 'aws-sdk'
