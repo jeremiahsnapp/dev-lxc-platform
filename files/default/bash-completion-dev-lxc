@@ -1,29 +1,33 @@
-_dev-lxc()
+_dl()
 {
     shopt -s extglob
 
-    local cur prev opts base
+    local cur subcommand opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    subcommand="${COMP_WORDS[1]}"
 
     #
     #  The basic options we'll complete.
     #
-    opts="attach destroy halt run-command snapshot status up"
-
-    #replace spaces and place in extglob format
-    pipeopts="@(`echo $opts | sed 's/ /|/g'`)"
+    opts="attach chef-repo create-base-container destroy halt help init prepare-product-cache print-automate-credentials run-command show-config snapshot status up"
 
     #
     #  Complete the arguments to some of the basic commands.
     #
-    case "${prev}" in
-        $pipeopts)
-            local names=`dev-lxc list-images | grep Final | awk  '{ print $NF }'`
-            COMPREPLY=( $(compgen -W "${names}" -- ${cur}) )
+    case "${subcommand}" in
+        attach|destroy|halt|run-command|snapshot|status|up)
+            COMPREPLY=( $(compgen -W "$(dl status | awk '/^\w+/{print $1}')" -- ${cur}) )
             return 0
             ;;
+        create-base-container)
+          COMPREPLY=( $(compgen -W 'b-ubuntu-1204 b-ubuntu-1404 b-ubuntu-1604 b-centos-5 b-centos-6 b-centos-7' -- ${cur}) )
+          return 0
+          ;;
+        init)
+          COMPREPLY=( $(compgen -W '--adhoc --analytics --automate --build-nodes --chef --chef-tier --chef-backend --compliance --nodes --runners --supermarket' -- ${cur}) )
+          return 0
+          ;;
         *)
         ;;
     esac
@@ -32,5 +36,4 @@ _dev-lxc()
    return 0
 }
 
-complete -F _dev-lxc dev-lxc
-complete -F _dev-lxc dl
+complete -F _dl dl
