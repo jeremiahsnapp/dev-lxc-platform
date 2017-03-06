@@ -49,7 +49,7 @@ platforms:
 #        cpus: 2
 #        memory: 6144
 #      # synced_folders:
-#      #   - ["~/work", "/root/work"]
+#      #   - ["~/clusters", "/root/clusters"]
 #      network:
 #        - ["private_network", {ip: "192.168.55.55"}]
 #      persistent_storage:
