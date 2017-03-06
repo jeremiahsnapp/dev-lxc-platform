@@ -15,6 +15,14 @@ cookbook_file '/etc/bash_completion.d/dev-lxc' do
   mode 0755
 end
 
+ruby_block 'enable bash completion' do
+  block do
+    rc = Chef::Util::FileEdit.new('/root/.bashrc')
+    rc.insert_line_if_no_match(/^\s+\. \/etc\/bash_completion/, "if [ -f /etc/bash_completion ] && ! shopt -oq posix; then\n    . /etc/bash_completion\nfi")
+    rc.write_file
+  end
+end
+
 cookbook_file '/usr/local/bin/cluster-view' do
   source 'cluster-view'
   owner 'root'
