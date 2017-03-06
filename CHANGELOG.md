@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 9.1.5 (2017-03-06)
+
+* Reduce number of Vagrant CPUs
+
 ## 9.1.4 (2017-03-02)
 
 * Minor fix to kitchen-instance-ctl
