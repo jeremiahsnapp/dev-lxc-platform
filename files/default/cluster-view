@@ -17,7 +17,7 @@ cd "$cluster_path"
 
 if TMUX= tmux new-session -s "$cluster" -n cluster -d; then
     tmux split-window -h -t "$cluster"
-    tmux send-keys -t "$cluster" "watch -n0.5 dev-lxc status" C-m
+    tmux send-keys -t "$cluster" "watch -n0.5 dl status" C-m
 
     tmux new-window -a -t "$cluster" -n shell
 fi
