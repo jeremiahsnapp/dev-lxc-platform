@@ -1,5 +1,14 @@
 # dev-lxc-platform Change Log
 
+## 10.0.0 (2017-03-06)
+
+* Remove dev-lxc alias
+* Use dl command in create-base-container recipe
+* Use dl command in cluster-view script
+* Improve dev-lxc bash completion script
+* Enable bash completion in .bashrc
+* Change default vagrant synced_folders paths
+
 ## 9.1.5 (2017-03-06)
 
 * Reduce number of Vagrant CPUs
