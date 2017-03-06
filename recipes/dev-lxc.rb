@@ -15,14 +15,6 @@ cookbook_file '/etc/bash_completion.d/dev-lxc' do
   mode 0755
 end
 
-ruby_block 'alias dev-lxc' do
-  block do
-    rc = Chef::Util::FileEdit.new('/root/.bashrc')
-    rc.insert_line_if_no_match(/^alias dl=dev-lxc$/, 'alias dl=dev-lxc')
-    rc.write_file
-  end
-end
-
 cookbook_file '/usr/local/bin/cluster-view' do
   source 'cluster-view'
   owner 'root'
