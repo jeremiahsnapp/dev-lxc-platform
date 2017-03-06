@@ -46,7 +46,7 @@ platforms:
 #      vagrantfile_erb: Vagrantfile.erb
 #      # gui: true
 #      customize:
-#        cpus: 4
+#        cpus: 2
 #        memory: 6144
 #      # synced_folders:
 #      #   - ["~/work", "/root/work"]
