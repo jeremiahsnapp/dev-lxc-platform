@@ -17,9 +17,10 @@ or just general LXC container usage.
 3. Dnsmasq - DHCP networking and DNS resolution
 4. Base Containers - Containers that are built to resemble a traditional server
 5. Sysdig preinstalled for awesome transparency into container activity
-6. mitmproxy preinstalled for awesome transparency into HTTP(S) requests
-7. Docker preinstalled
-8. chef-load preinstalled
+6. tinyproxy preinstalled for easy web access to containers
+7. mitmproxy preinstalled for awesome transparency into HTTP(S) requests
+8. Docker preinstalled
+9. chef-load preinstalled
 
 Creating snapshot clones of Btrfs backed containers is very fast which is helpful
 especially for experimenting and troubleshooting.
@@ -128,29 +129,32 @@ The .kitchen.yml EC2 config uses cloud-config user-data to enable root user SSH 
 
 This makes it easy to use tools such as rsync or Filezilla to transfer files from your workstation directly to the root user's home directory.
 
-## Web browser access
+## Accessing the containers using a web proxy
 
-Web browser access to containers running inside a dev-lxc-platform instance requires an SSH connection to the dev-lxc-platform instance with DynamicForward enabled.
+Systems that are external to the dev-lxc-platform, such as your workstation, must use a web proxy to access the containers running inside the dev-lxc-platform instance.
 
-Web browser access to mitmproxy running inside a dev-lxc-platform instance requires an SSH connection to the dev-lxc-platform instance with LocalForward enabled.
+The dev-lxc-platform runs an instance of tinyproxy on port 8888 to make it easy to access the containers' web ports.
 
-Append the following contents to your workstation's SSH config file, `~/.ssh/config` or `C:\Users\USERNAME\.ssh\config`, so the `kitchen login` command will automatically enable DynamicForward and LocalForward in the SSH connection.
+The dev-lxc-platform also has mitmproxy installed which is a fantastic web proxy console tool which you can choose to send web traffic through to troubleshoot a problem or just simply explore the traffic. You must start mitmproxy when you want to use it. When it's running it listens on port 8080.
+
+If you are running your dev-lxc-platform instance in EC2 you might not have direct network access to dev-lxc-platform's port 8888 or port 8080. In that case, you can append the following contents to your system's SSH config file, `~/.ssh/config` or `C:\Users\USERNAME\.ssh\config`, so the `kitchen login` command will automatically forward your system's port 8888 and port 8080 to port 8888 and port 8080 in the dev-lxc-platform instance.
 
 ```
 # for dev-lxc-platform Vagrant and EC2 instances
 Host 127.0.0.1 *.amazonaws.com
-  # DynamicForward for proxying web browser traffic to dev-lxc servers
-  DynamicForward 1080
-  # LocalForward for proxying web browser traffic to mitmproxy running in the dev-lxc-platform instance
+  # LocalForward for proxying web traffic to tinyproxy running in the dev-lxc-platform instance
+  LocalForward 127.0.0.1:8888 127.0.0.1:8888
+  # LocalForward for proxying web traffic to mitmproxy running in the dev-lxc-platform instance
   LocalForward 127.0.0.1:8080 127.0.0.1:8080
 ```
 
-Configure the web browser to use "127.0.0.1 1080" for SOCKS v5 proxy and "Proxy DNS when using SOCKS5 proxy" when you want to browse directly
-to dev-lxc containers.
+Then you can configure your system's web browser or command line tools to use either of the following for HTTP and HTTPS proxies so they can access dev-lxc containers' web ports.
 
-Configure the web browser to use "127.0.0.1 8080" for HTTP and HTTPS proxies when you want the browser requests to go through mitmproxy running inside the dev-lxc-platform instance.
+tinyproxy: `127.0.0.1:8888`
 
-Be aware that logging out of the SSH session will appear to hang as long as the web browser session is still running.
+mitmproxy: `127.0.0.1:8080`
+
+Be aware that logging out of the SSH session will appear to hang as long as the web browser or command line tool has a proxied session running.
 
 ## Login to the dev-lxc-platform instance
 
