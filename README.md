@@ -40,6 +40,7 @@ Run `chef shell-init` to display its usage docs. Then run the appropriate comman
 
 #### EC2 instance prerequisites:
 
+* Make sure you have an [SSH key pair setup](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair) for your AWS EC2 region.
 * Make sure your `~/.aws/credentials` or `C:\Users\USERNAME\.aws\credentials` file's contents look similar to the following.
 
 ```
@@ -91,44 +92,6 @@ Configure .kitchen.yml for the instance you are building.
 kitchen converge <ec2 or vagrant>
 ```
 
-## Stop and start dev-lxc-platform instances
-
-It can be helpful to stop an instance and start it up again when it's needed but Test Kitchen does not provide a way to do this.
-
-The `kitchen-instance-ctl` command in the root of the dev-lxc-platform repository provides the ability to stop, start and get the status of the kitchen instances.
-
-```
-cd dev-lxc-platform
-./kitchen-instance-ctl status <ec2 or vagrant>
-./kitchen-instance-ctl stop <ec2 or vagrant>
-./kitchen-instance-ctl start <ec2 or vagrant>
-```
-
-## Upgrade dev-lxc-platform instances
-
-If you are upgrading to a new major version then you should destroy the instances first otherwise proceed to the next steps.
-
-```
-cd dev-lxc-platform
-kitchen destroy
-rm Berksfile.lock
-```
-
-Pull down the latest dev-lxc-platform code and converge the instances.
-
-```
-git stash
-git pull --rebase
-# reapply necessary changes to .kitchen.yml using `git stash pop` or manually if necessary
-kitchen converge <ec2 or vagrant>
-```
-
-## Transferring files to EC2 instance
-
-The .kitchen.yml EC2 config uses cloud-config user-data to enable root user SSH access using the same key pair used when logging in as the ubuntu user.
-
-This makes it easy to use tools such as rsync or Filezilla to transfer files from your workstation directly to the root user's home directory.
-
 ## Accessing the containers using a web proxy
 
 Systems that are external to the dev-lxc-platform, such as your workstation, must use a web proxy to access the containers running inside the dev-lxc-platform instance.
@@ -167,7 +130,7 @@ sudo -i
 
 When you are logged in as the root user you should automatically enter a [byobu session](http://byobu.co/).
 
-## Byobu keybindings
+### Byobu keybindings
 
 Byobu makes it easy to manage multiple terminal windows and panes. You can press `F1` to get help which includes a [list of keybindings](http://manpages.ubuntu.com/manpages/wily/en/man1/byobu.1.html#contenttoc8).
 
@@ -190,9 +153,47 @@ Some of the keyboard shortcuts that will be most useful to you are:
 
 Note: `Shift-F2` does not create horizontal splits for Windows users. Use the `C-o |` key binding instead.
 
-### Use dev-lxc
+## Use dev-lxc
 
 Read the [dev-lxc README](https://github.com/jeremiahsnapp/dev-lxc)
+
+## Transferring files to EC2 instance
+
+The .kitchen.yml EC2 config uses cloud-config user-data to enable root user SSH access using the same key pair used when logging in as the ubuntu user.
+
+This makes it easy to use tools such as rsync or Filezilla to transfer files from your workstation directly to the root user's home directory.
+
+## Stop and start dev-lxc-platform instances
+
+It can be helpful to stop an instance and start it up again when it's needed but Test Kitchen does not provide a way to do this.
+
+The `kitchen-instance-ctl` command in the root of the dev-lxc-platform repository provides the ability to stop, start and get the status of the kitchen instances.
+
+```
+cd dev-lxc-platform
+./kitchen-instance-ctl status <ec2 or vagrant>
+./kitchen-instance-ctl stop <ec2 or vagrant>
+./kitchen-instance-ctl start <ec2 or vagrant>
+```
+
+## Upgrade dev-lxc-platform instances
+
+If you are upgrading to a new major version then you should destroy the instances first otherwise proceed to the next steps.
+
+```
+cd dev-lxc-platform
+kitchen destroy
+rm Berksfile.lock
+```
+
+Pull down the latest dev-lxc-platform code and converge the instances.
+
+```
+git stash
+git pull --rebase
+# reapply necessary changes to .kitchen.yml using `git stash pop` or manually if necessary
+kitchen converge <ec2 or vagrant>
+```
 
 ## LXC Introduction
 
