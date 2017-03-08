@@ -10,7 +10,7 @@ platforms:
     driver:
       name: ec2
       region: us-east-1
-      instance_type: t2.large
+      instance_type: c4.xlarge
       image_search:
         name: ubuntu/images/*/ubuntu-*-16.10*
       block_device_mappings:
@@ -46,7 +46,7 @@ platforms:
 #      vagrantfile_erb: Vagrantfile.erb
 #      # gui: true
 #      customize:
-#        cpus: 2
+#        cpus: 4
 #        memory: 6144
 #      # synced_folders:
 #      #   - ["~/clusters", "/root/clusters"]
