@@ -17,7 +17,7 @@ _dl()
     #
     case "${subcommand}" in
         attach|destroy|halt|run-command|snapshot|status|up)
-            COMPREPLY=( $(compgen -W "$(dl status | awk '/^\w+/{print $1}')" -- ${cur}) )
+            COMPREPLY=( $(compgen -W "$(dl status | awk '/^[-A-Za-z0-9]+\.lxc/{print $1}')" -- ${cur}) )
             return 0
             ;;
         create-base-container)
