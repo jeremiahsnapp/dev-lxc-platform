@@ -1,5 +1,12 @@
 # dev-lxc-platform Change Log
 
+## 11.0.0 (2017-03-08)
+
+* Increase CPU count to 4
+* Improve the hostname regex in bash completion script
+* Install and configure tinyproxy
+* Improve web proxy usage documentation
+
 ## 10.0.0 (2017-03-06)
 
 * Remove dev-lxc alias
