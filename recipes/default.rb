@@ -1,4 +1,6 @@
-include_recipe 'apt'
+apt_update 'update' do
+  action :update
+end
 
 apt_package 'ruby' do
   options '--auto-remove'
@@ -11,8 +13,6 @@ execute 'Setup ChefDK as default ruby' do
   environment({ 'HOME' => '/root' })
   not_if "grep 'chef shell-init' /root/.bashrc"
 end
-
-include_recipe 'apt'
 
 include_recipe 'ntp'
 

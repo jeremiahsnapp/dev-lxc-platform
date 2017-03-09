@@ -5,7 +5,6 @@ version           '11.0.0'
 
 supports 'ubuntu'
 
-depends 'apt'
 depends 'build-essential'
 depends 'docker'
 depends 'ntp'
