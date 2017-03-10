@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 11.0.2 (2017-03-10)
+
+* Update bash-completion-dev-lxc script
+
 ## 11.0.1 (2017-03-09)
 
 * Use apt_update resource instead of apt cookbook's default recipe
