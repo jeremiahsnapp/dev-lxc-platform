@@ -5,6 +5,7 @@ _dl()
     local cur subcommand opts
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
     subcommand="${COMP_WORDS[1]}"
 
     #
@@ -21,13 +22,21 @@ _dl()
             return 0
             ;;
         create-base-container)
-          COMPREPLY=( $(compgen -W 'b-ubuntu-1204 b-ubuntu-1404 b-ubuntu-1604 b-centos-5 b-centos-6 b-centos-7' -- ${cur}) )
-          return 0
-          ;;
+            COMPREPLY=( $(compgen -W 'b-ubuntu-1204 b-ubuntu-1404 b-ubuntu-1604 b-centos-5 b-centos-6 b-centos-7' -- ${cur}) )
+            return 0
+            ;;
         init)
-          COMPREPLY=( $(compgen -W '--adhoc --analytics --automate --build-nodes --chef --chef-tier --chef-backend --compliance --nodes --runners --supermarket' -- ${cur}) )
-          return 0
-          ;;
+            case "${prev}" in
+                --base-container)
+                    COMPREPLY=( $(compgen -W 'b-ubuntu-1204 b-ubuntu-1404 b-ubuntu-1604 b-centos-5 b-centos-6 b-centos-7' -- ${cur}) )
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=( $(compgen -W '--adhoc --analytics --automate --build-nodes --chef --chef-tier --chef-backend --compliance --nodes --runners --supermarket --base-container --product-versions' -- ${cur}) )
+                    return 0
+                    ;;
+            esac
+            ;;
         *)
         ;;
     esac
