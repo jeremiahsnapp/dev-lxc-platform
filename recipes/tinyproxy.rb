@@ -6,5 +6,6 @@ cookbook_file '/etc/tinyproxy.conf' do
 end
 
 service 'tinyproxy' do
+  provider Chef::Provider::Service::Systemd
   action [:enable, :start]
 end
