@@ -39,3 +39,5 @@ include_recipe 'dev-lxc-platform::dev-lxc'
 include_recipe 'dev-lxc-platform::mount-docker-btrfs'
 
 include_recipe 'dev-lxc-platform::docker'
+
+include_recipe 'dev-lxc-platform::habitat'

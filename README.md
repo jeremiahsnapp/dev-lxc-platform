@@ -21,6 +21,7 @@ or just general LXC container usage.
 7. mitmproxy preinstalled for awesome transparency into HTTP(S) requests
 8. Docker preinstalled
 9. chef-load preinstalled
+10. habitat preinstalled
 
 Creating snapshot clones of Btrfs backed containers is very fast which is helpful
 especially for experimenting and troubleshooting.

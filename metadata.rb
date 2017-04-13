@@ -9,6 +9,7 @@ depends 'build-essential'
 depends 'docker'
 depends 'ntp'
 depends 'sysdig'
+depends 'habitat'
 
 source_url 'https://github.com/jeremiahsnapp/dev-lxc-platform'
 issues_url 'https://github.com/jeremiahsnapp/dev-lxc-platform/issues'
