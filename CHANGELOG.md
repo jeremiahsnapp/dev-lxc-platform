@@ -1,5 +1,10 @@
 # dev-lxc-platform Change Log
 
+## 11.0.4 (2017-04-13)
+
+* Use product_name to specify chefdk in .kitchen.yml
+* Install habitat
+
 ## 11.0.3 (2017-03-14)
 
 * Use Chef::Provider::Service::Systemd provider for tinyproxy service resource
