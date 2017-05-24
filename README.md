@@ -101,7 +101,7 @@ The dev-lxc-platform runs an instance of tinyproxy on port 8888 to make it easy 
 
 The dev-lxc-platform also has mitmproxy installed which is a fantastic web proxy console tool which you can choose to send web traffic through to troubleshoot a problem or just simply explore the traffic. You must start mitmproxy when you want to use it. When it's running it listens on port 8080.
 
-If you are running your dev-lxc-platform instance in EC2 you might not have direct network access to dev-lxc-platform's port 8888 or port 8080. In that case, you can append the following contents to your system's SSH config file, `~/.ssh/config` or `C:\Users\USERNAME\.ssh\config`, so the `kitchen login` command will automatically forward your system's port 8888 and port 8080 to port 8888 and port 8080 in the dev-lxc-platform instance.
+You might not have direct network access to dev-lxc-platform's port 8888 or port 8080. In that case, you can append the following contents to your system's SSH config file, `~/.ssh/config` or `C:\Users\USERNAME\.ssh\config`, so the `kitchen login` command will automatically forward your system's port 8888 and port 8080 to port 8888 and port 8080 in the dev-lxc-platform instance.
 
 ```
 # for dev-lxc-platform Vagrant and EC2 instances
