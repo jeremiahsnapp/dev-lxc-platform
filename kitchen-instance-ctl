@@ -1,4 +1,4 @@
-#!chef exec ruby
+#!/opt/chefdk/embedded/bin/ruby
 
 require 'open3'
 require 'yaml'
