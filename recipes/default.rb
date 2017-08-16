@@ -38,6 +38,8 @@ include_recipe 'dev-lxc-platform::dev-lxc'
 
 include_recipe 'dev-lxc-platform::mount-docker-btrfs'
 
-include_recipe 'dev-lxc-platform::docker'
+# docker cookbook 2.15.20 has the following bug
+# https://github.com/chef-cookbooks/docker/issues/898
+#include_recipe 'dev-lxc-platform::docker'
 
 include_recipe 'dev-lxc-platform::habitat'
