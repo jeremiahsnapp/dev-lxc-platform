@@ -1,5 +1,10 @@
 # dev-lxc-platform Change Log
 
+## 11.1.0 (2017-08-16)
+
+* Upgrade chef-load to 2.2.0
+* Don't install docker until docker cookbook issue 898 is fixed
+
 ## 11.0.4 (2017-04-13)
 
 * Use product_name to specify chefdk in .kitchen.yml
