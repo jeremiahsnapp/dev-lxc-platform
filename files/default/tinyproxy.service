@@ -1,0 +1,14 @@
+[Unit]
+Description=Tinyproxy lightweight HTTP Proxy
+After=network.target
+Documentation=man:tinyproxy(8) man:tinyproxy.conf(5)
+
+[Service]
+Type=forking
+ExecStart=/usr/sbin/tinyproxy
+PIDFile=/run/tinyproxy/tinyproxy.pid
+Restart=always
+PrivateDevices=yes
+
+[Install]
+WantedBy=multi-user.target
