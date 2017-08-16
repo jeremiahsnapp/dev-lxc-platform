@@ -1,5 +1,9 @@
 # dev-lxc-platform Change Log
 
+## 11.1.1 (2017-08-16)
+
+* Add tinyproxy systemd unit file that restarts the service if it fails
+
 ## 11.1.0 (2017-08-16)
 
 * Upgrade chef-load to 2.2.0
