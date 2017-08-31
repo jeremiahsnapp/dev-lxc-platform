@@ -45,6 +45,6 @@ file '/root/.berkshelf/config.json' do
 end
 
 remote_file '/usr/local/bin/chef-load' do
-  source 'https://github.com/chef/chef-load/releases/download/v2.2.0/chef-load_2.2.0_Linux_64bit'
+  source 'https://github.com/chef/chef-load/releases/download/v3.0.0/chef-load_3.0.0_Linux_64bit'
   mode 0755
 end
